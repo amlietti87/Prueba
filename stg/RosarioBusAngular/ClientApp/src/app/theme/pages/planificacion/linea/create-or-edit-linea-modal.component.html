@@ -1,0 +1,206 @@
+﻿<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+    <div [hidden]="!active" class="m-portlet m-portlet--mobile m-portlet--acce m-portlet--head-sm" id="m_portlet_detail" m-portlet="true">
+
+
+
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <span class="m-portlet__head-icon">
+                        <i class="{{icon}}"></i>
+                    </span>
+                    <h3 class="m-portlet__head-text">
+                        <span *ngIf="detail.Id">Editar {{title}} {{detail.Nombre}}</span>
+                        <span *ngIf="!detail.Id">Crear {{title}}</span>
+                    </h3>
+                </div>
+            </div>
+
+            <div class="m-portlet__head-tools">
+
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item">
+                        <a href="#" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-angle-down"></i>
+                        </a>
+                    </li>
+                    <li class="m-portlet__nav-item">
+                        <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-expand"></i>
+                        </a>
+                    </li>
+                    <li class="m-portlet__nav-item">
+                        <a href="#" (click)="close()" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-close"></i>
+                        </a>
+                    </li>
+                </ul>
+
+
+                <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--right m-tabs-line-danger" role="tablist" style="padding-right:50px">
+                    <li class="nav-item m-tabs__item" [hidden]="!viewMainTab">
+                        <a class="nav-link m-tabs__link active" data-toggle="tab" id="m_heder_portlet_tab_Linea" href="#m_portlet_tab_Linea" role="tab">
+                            Linea
+                        </a>
+                    </li>
+                    <li class="nav-item m-tabs__item" [hidden]="!viewChildTab" *ngIf="viewMode != 1">
+                        <a class="nav-link m-tabs__link" data-toggle="tab" (click)="onRamalColorClick()" id="m_heder_portlet_tab_Ramal" href="#m_portlet_tab_Ramal" role="tab">
+                            Ramal / Color
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="m-portlet__body">
+
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="m_portlet_tab_Linea">
+
+                    <!--<div class="row">
+
+
+                        <div class="form-group col-md-4" [ngClass]="{'has-danger': AsocBan.invalid && ((AsocBan.dirty || AsocBan.touched) || detailForm.submitted)}">
+                            <label>Asoc Ban</label>
+                            <input #AsocBan="ngModel" class="form-control" type="text" name="AsocBan" [(ngModel)]="detail.AsocBan" maxlength="4">
+                        </div>
+
+                    </div>-->
+
+                    <div class="form-group" [ngClass]="{'has-danger': NameInput.invalid && ((NameInput.dirty || NameInput.touched) || detailForm.submitted)}">
+                        <label>Nombre</label>
+                        <input #NameInput="ngModel" required class="form-control" type="text" name="NameInput" [(ngModel)]="detail.DesLin" maxlength="32">
+
+                        <div *ngIf="NameInput.invalid && (NameInput.dirty || NameInput.touched || detailForm.submitted)" class="form-control-feedback">
+                            <div *ngIf="NameInput.errors.required">
+                                El Nombre es requerido
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Unidad de negocio</label>
+                        <input disabled class="form-control" type="text" name="SucursalNombre" value="{{Sucursal}}">
+                    </div>
+                    <div class="form-group">
+
+                        <tipoLinea-combo #TipoLineaId="ngModel" [isRequired]="true" name="TipoLineaId" placeholder="Tipo de Linea" [(ngModel)]="detail.PlaTipoLineaId" emptyText="{{'Seleccione...'}}">
+                        </tipoLinea-combo>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="m-checkbox-list">
+                            <label class="m-checkbox">
+                                <input #Activo="ngModel"  id="Activo" type="checkbox" name="Activo" [(ngModel)]="detail.Activo">
+                                 Activo 
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+
+
+
+                    <div class="m-portlet__foot">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 m--valign-middle">
+
+                            </div>
+                            <div class="col-lg-6 m--align-right">
+                                <div>
+                                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving" [busyText]="'Guardando..'">
+                                        <i class="fa fa-save"></i> <span>Guardar</span>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="tab-pane" id="m_portlet_tab_Ramal">
+                    <div class="row" style="margin-bottom: 10px">
+                        <div class="col-md-8" style="margin-bottom: auto">
+                            <h3>Ramal/Color de {{detail.DesLin}}</h3>
+                        </div>
+
+                        <div class="col-md-4 text-right" *ngIf="viewMode != 1">
+                            <button type="button" (click)="onCreateRamal()" *ngIf="allowRamaColorAdd" class="btn btn-primary blue"><i class="fa fa-plus"></i> Crear Ramal/Color</button>
+                        </div>
+
+                    </div>
+
+
+
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-Datatable-Start>-->
+                        <div class="primeng-datatable-container" [busyIf]="primengDatatableHelper.isLoading">
+
+                            <p-dataTable #dataTableRamales [lazy]="true" (onLazyLoad)="onSearchRamales($event)" [value]="primengDatatableHelper.records" [paginator]="false" emptyMessage="{{l('Sin Datos')}}" scrollable="true" ScrollWidth="100%" responsive="primengDatatableHelper.isResponsive">
+                                <p-column field="Nombre" header="Nombre" [sortable]="true"></p-column>
+
+
+                                <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                    <ng-template let-col let-row="rowData" pTemplate type="body">
+
+                                        <a href="javascript:void(0);" (click)="onEditBanderasEnRamal(row)" *ngIf="allowRamaColorModify" title="ir a Bandera" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill">
+                                            <i class="la la-fast-forward"></i>
+                                        </a>
+
+                                        <a href="#" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown">
+                                            <i class="la la-ellipsis-h"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a href="javascript:void(0);" (click)="onEditRamales(row)" *ngIf="allowRamaColorModify" class="dropdown-item" title="Editar">
+                                                <i class="la la-edit"></i>Editar
+                                            </a>
+                                            <a href="javascript:void(0);" (click)="onDeleteRamales(row)" *ngIf="allowRamaColorDelete" class="dropdown-item" title="Eliminar">
+                                                <i class="la la-trash"></i>Eliminar
+                                            </a>
+
+                                        </div>
+
+
+                                    </ng-template>
+                                </p-column>
+
+                            </p-dataTable>
+
+                            <div class="primeng-paging-container">
+                                <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}" #paginatorRamales (onPageChange)="onSearchRamales($event)" [totalRecords]="primengDatatableHelper.totalRecordsCount" [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    Total:  {{ primengDatatableHelper.totalRecordsCount}}
+                                </span>
+                            </div>
+
+                        </div>
+                        <!--<Primeng-Datatable-End>-->
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+
+
+
+
+
+    </div>
+
+</form>
+
+<createOrEditramalcolorDtoModal #createOrEditramalcolor></createOrEditramalcolorDtoModal>

@@ -1,0 +1,144 @@
+﻿     <div class="modal-header">
+        <h4 class="modal-title">
+            <span>Importar - {{BanderaName}}</span>
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <!-- Portlet body -->
+    <div class="modal-body">
+        <div>
+            <div class="row m--padding-10">
+                <div class="col-md-6">
+
+                    <!-- Elegir archivo Input -->
+                    <button type="button"
+                            [hidden]="fileUpload"
+                            (click)="ElegirArchivo()"
+                            class="btn btn-outline-info btn-sm">
+                        <i class="la la-search"></i>Selecionar Archivo Excel
+                    </button>
+                    <label>{{fileUpload != null ? fileUpload.name : ''}}</label>
+                    <!-- File Input -->
+                    <input #fileInput
+                           style="display:none"
+                           type="file"
+                           name="fileInput"
+                           id="fileInput"
+                           class="form-control form-control-file"
+                           (change)="upload($event)"
+                           accept=".xlsx"
+                           [formControl]="myControl" />
+
+                    <!-- ClearFile() Button -->
+                    <button type="button"
+                            [hidden]="!fileUpload"
+                            (click)="ClearFile()"
+                            class="btn btn-outline-danger  btn-sm">
+                        <i class="la la-times "></i>Borrar
+                    </button>
+
+                    <!-- ClearFile() uploadPlanilla() -->
+                    <button type="button"
+                            [hidden]="!fileUpload"
+                            (click)="uploadPlanilla()"
+                            class="btn btn-outline-success btn-sm">
+
+                        <i class="la la-upload"></i>Importar
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Table -->
+            <div class="row">
+
+                <div class="col-md-12 pTableSectores" [busyIf]="isLoading">
+                    <p-table [value]="resultadoImportacion" [scrollable]="true" scrollHeight="300px" frozenWidth="360px">
+
+                        <ng-template pTemplate="frozenheader">
+                            <tr>
+                                <th style="width:20px;">
+                                </th>
+                                <th style="width:100px" class="ImportarMinxSec">
+                                    <span>T. Dia</span>
+                                    
+                                </th>
+                                <th style="width:80px" class="ImportarMinxSec">
+                                    <span> Bandera</span>
+                                </th>
+                                <th style="width:80px" class="ImportarMinxSec">
+                                    <span> T. Hora</span>
+                                </th>
+                                <th style="width:80px" class="ImportarMinxSec">
+                                    <span>Tiempo MV</span>
+                                </th>
+                            </tr>
+
+                        </ng-template>
+
+                        <ng-template pTemplate="frozenbody" let-row>
+                            <tr [ngClass]="{'rowHasError': !row.IsValid}">
+                                <td style="width:20px">
+                                    <span *ngIf="!row.IsValid" class="m-input-icon__icon m-input-icon__icon--right"
+                                          data-toggle="m-tooltip" data-placement="top" title="{{row.Errors.join(',')}}">
+                                        <span>
+                                            <i class="la la-info m--font-danger" style="font-size:14px"></i>
+                                        </span>
+                                    </span>
+                                </td>
+                                <td style="width:100px" class="ImportarMinxSec" title="{{row.DescripcionTdia}}">{{row.DescripcionTdia}}</td>
+                                <td class="ImportarMinxSec" title="{{row.AbrBan}}">{{row.AbrBan}}</td>
+                                <td class="ImportarMinxSec" title="{{row.DescripcionTipoHora}}">{{row.DescripcionTipoHora}}</td>
+                                <td class="ImportarMinxSec" title="{{row.TotalMin}}">{{row.TotalMin}}</td>
+                            </tr>
+                        </ng-template>
+
+                        <ng-template pTemplate="header" let-columns>
+                            <tr  >
+                                <th style="width:80px;" class="ImportarMinxSec" *ngFor="let col of sectores">
+                                    <span style="white-space:nowrap" title="{{col.Descripcion}}">{{col.Descripcion}}</span>
+                                </th>
+                            </tr>
+                        </ng-template>
+
+
+
+
+                        <ng-template pTemplate="body" let-row>
+                            <tr>
+                                <td *ngFor="let rowData of row.Detalles; let i = index" style="width:80px;min-width:80px" class="ImportarMinxSec">
+                                    {{rowData.Minuto | number :  '1.2-2'}}
+                                </td>
+
+                            </tr>
+                        </ng-template>
+
+
+                    </p-table>
+
+
+
+                </div>
+
+            </div>
+
+
+
+    </div>
+
+        <div class="modal-footer">
+    
+            <!-- Guardar Button -->
+            <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+            <button type="button"
+                    class="btn btn-primary blue"
+                    (click)="Procesar()">
+                <i class="fa fa-save"></i> <span>Guardar</span>
+            </button>
+        </div>
+

@@ -1,0 +1,122 @@
+<form #editFrancoForm="ngForm" novalidate (ngSubmit)="editFrancoForm.form.valid && saveChanges(editFrancoForm)" autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            Editar Franco
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span class="close-button" aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <br>
+    <div class="row row-rango" [hidden]="rangoUnico" [ngClass]="{'has-danger': allowRango && (detail.RangoHorarioId.toString() == 'null' || this.detail.RangoHorarioId.toString() == '') }">
+        <div class="form-group col-md-6">
+            <!-- Rango Horario -->
+            <label>Rango Horario</label>
+            <rangoshorarios-combo #RangoHorarioId="ngModel"
+                                  name="RangoHorarioId"
+                                  [isInEditFranco]="true"
+                                  [francoTrabajado]="true"
+                                  [Anulado]="2"
+                                  [GrupoInspectoresId]="detail.GrupoInspectoresId"
+                                  [RangoHorarioId]="detail.RangoHorarioId"
+                                  [(ngModel)]="detail.RangoHorarioId">
+            </rangoshorarios-combo>
+            <div *ngIf="allowRango && (detail.RangoHorarioId.toString() == 'null' || this.detail.RangoHorarioId.toString() == '') " class="form-control-feedback">
+                <div *ngIf="allowRango && (detail.RangoHorarioId.toString() == 'null' || this.detail.RangoHorarioId.toString() == '') ">
+                    Rango Horario es Requerido
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hora Desde -->
+    <div class="row">
+        <div class="form-group col-md-6" [ngClass]="{'has-danger': HoraDesdeModificadaValue.invalid && (HoraDesdeModificadaValue.dirty || HoraDesdeModificadaValue.touched)}">
+            <label>Hora Desde</label>
+            <ngb-timepicker #HoraDesdeModificadaValue="ngModel"
+                            [(ngModel)]="detail.HoraDesdeModificadaValue"
+                            name="HoraDesdeModificadaValue"
+                            [spinners]="false"
+                            [meridian]="false"
+                            size="small"
+                            required>
+            </ngb-timepicker>
+            <div *ngIf="HoraDesdeModificadaValue.invalid && (HoraDesdeModificadaValue.dirty || HoraDesdeModificadaValue.touched || editFrancoForm.submitted)" class=" form-control-feedback">
+                <div *ngIf="HoraDesdeModificadaValue.errors.required">
+                    Hora Desde es requerida
+                </div>
+            </div>
+        </div>
+
+        <!-- Hora Hasta -->
+        <div class="form-group col-md-6" [ngClass]="{'has-danger': HoraHastaModificadaValue.invalid && (HoraHastaModificadaValue.dirty || HoraHastaModificadaValue.touched)}">
+            <label>Hora Hasta</label>
+            <ngb-timepicker #HoraHastaModificadaValue="ngModel"
+                            [(ngModel)]="detail.HoraHastaModificadaValue"
+                            name="HoraHastaModificadaValue"
+                            [spinners]="false"
+                            [meridian]="false"
+                            size="small"
+                            required>
+            </ngb-timepicker>
+            <div *ngIf="HoraHastaModificadaValue.invalid && (HoraHastaModificadaValue.dirty || HoraHastaModificadaValue.touched || editFrancoForm.submitted)" class=" form-control-feedback">
+                <div *ngIf="HoraHastaModificadaValue.errors.required">
+                    Hora Hasta es requerida
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Zonas -->
+        <div class="form-group col-md-6" [ngClass]="{'has-danger': allowZona && (detail.ZonaId.toString() == 'null' || this.detail.ZonaId.toString() == '') }">
+            <label>Zona</label>
+            <zonas-combo #ComboZona="ngModel"
+                         name="ZonaId"
+                         id="ZonaId"
+                         [Anulado]="2"
+                         [disabledSelectPicker]="true"
+                         [BuscarZona]="true"
+                         [(ngModel)]="detail.ZonaId"
+                         [items]="detail.zonasItems"
+                         emptyText="Seleccione..."
+                         required>
+            </zonas-combo>
+            <div *ngIf="allowZona && (detail.ZonaId.toString() == 'null' || this.detail.ZonaId.toString() == '') " class="form-control-feedback">
+                <div *ngIf="allowZona && (detail.ZonaId.toString() == 'null' || this.detail.ZonaId.toString() == '') ">
+                    Zona es Requerida
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" >
+        <div class="form-group col-md-6"  [ngClass]="{'has-danger':  allowPago && (detail.Pago.toString() == 'null' || detail.Pago.toString() == '') }">
+            <label>Paga/Cambia</label>
+            <pagacambia-combo #Pago="ngModel"
+                              #ComboPagaCambia
+                              [disabled]="detail.allowPagaCambia"
+                              [disabledSelectPicker]="true"
+                              emptyText="{{'Seleccione...'}}"
+                              name="ComboPagaCambia"
+                              id="ComboPagaCambia"
+                              [(ngModel)]="detail.Pago"
+                              required>
+            </pagacambia-combo>
+            <div *ngIf="allowPago && (detail.Pago.toString() == 'null' || detail.Pago.toString() == '') " class="form-control-feedback">
+                <div *ngIf="allowPago && (detail.Pago.toString() == 'null' || detail.Pago.toString() == '') ">
+                    Paga/Cambia es Requerido
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-footer">
+        <!-- Guardar Button -->
+        <button type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue"
+                [disabled]="!editFrancoForm.form.valid">
+            <i class="fa fa-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+</form>

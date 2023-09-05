@@ -1,0 +1,76 @@
+﻿<form  #detailForm="ngForm" 
+      novalidate 
+      (ngSubmit)="detailForm.form.valid && save(detailForm)" 
+      autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span *ngIf="!(viewMode == 1)">{{"Editar Elemento"}}: {{detail.Descripcion}}</span>
+            <span *ngIf="viewMode == 1">{{"Crear Elemento"}}</span>
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group" [ngClass]="{'has-danger': TipoElementoId.invalid && ((TipoElementoId.dirty || TipoElementoId.touched) || detailForm.submitted)}">
+            <label>Tipo de Elemento</label>
+            <tipoelementos-combo #TipoElementoId="ngModel"
+                                name="TipoElementoId"
+                                [(ngModel)]="detail.TipoElementoId" emptyText="{{'Seleccione..'}}">
+            </tipoelementos-combo>
+
+
+            <div *ngIf="TipoElementoId.invalid && (TipoElementoId.dirty || TipoElementoId.touched || detailForm.submitted)"
+                    class=" form-control-feedback">
+                <div *ngIf="TipoElementoId.errors.required" class="has-required">
+                    El campo tipo de elemento es requerido
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group" [ngClass]="{'has-danger': Nombre.invalid && (Nombre.dirty || Nombre.touched)}">
+            <label>Nombre</label>
+            <input #Nombre="ngModel" class="form-control" type="text" name="Nombre" [(ngModel)]="detail.Nombre" required maxlength="2000">
+
+            <div *ngIf="Nombre.invalid && (Nombre.dirty || Nombre.touched)"
+                    class=" form-control-feedback">
+                <div *ngIf="Nombre.errors.required">
+                    El Nombre es Requerido
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Descripcion</label>
+            <input #Descripcion="ngModel" class="form-control" type="text" name="Descripcion" [(ngModel)]="detail.Descripcion" maxlength="2000">
+        </div>
+
+        <div class="form-group" *ngIf="viewMode != 1">
+            <img id="inputimagenEdit" src="{{appDownloadUrl + '\?id=' + detail.Id + '&c=' + time}}" style="max-width: 100px; max-height: 100px;" />
+        </div>
+        <div class="form-group" *ngIf="viewMode == 1 && imagencambiada">
+            <img id="inputimagenAdd" src="{{appDownloadUrl + '\?id=' + detail.Id + '&c=' + time }}" style="max-width: 100px; max-height: 100px;" />
+        </div>
+        <div class="form-group">
+            <p-fileUpload mode="basic" name="files[]"
+                            url="{{appUploadUrl + '\?Id=' + detail.Id}}"
+                            accept="image/*"
+                            [maxFileSize]="null"
+                            chooseLabel="Seleccionar"
+                            (onUpload)="onUpload($event)"
+                            uploadLabel="Subir"
+                            (onError)="onError($event)"
+                            (onBeforeSend)="onBeforeSend($event)">
+
+            </p-fileUpload>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue"
+                [buttonBusy]="saving" [busyText]="'Guardando..'"
+                [disabled]="!detailForm.form.valid">
+            <i class="fa fa-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+</form>

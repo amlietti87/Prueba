@@ -1,0 +1,45 @@
+<div class="m-content">
+    <div class="m-portlet m-portlet--mobile">
+        <div class="modal-header" >
+            <h4 class="modal-title">
+                 {{currentUser.displayName}}
+            </h4>
+        </div>
+        <div class="m-portlet__body">
+            <div *ngIf="showTable" class="row align-items-center">
+                <!--<Primeng-Datatable-Start>-->
+                <div class="primeng-datatable-container"
+                     [busyIf]="primengDatatableHelper.isLoading">
+
+                    <p-dataTable #dataTable
+                                 [value]="primengDatatableHelper.records"
+                                 [paginator]="false"
+                                 emptyMessage="{{l('Cargando Datos')}}"
+                                 scrollable="true"
+                                 ScrollWidth="100%"
+                                 responsive="primengDatatableHelper.isResponsive">
+                        <p-column field="ArchivoId" header="Certificado">
+                            <ng-template let-col let-row="rowData" pTemplate type="body">
+                                {{row.ArchivoNombre}}
+                            </ng-template>
+                        </p-column>
+
+                        <p-column field="FechaActivacion" header="Fecha Vigencia">
+                            <ng-template  let-col let-row="rowData" pTemplate type="body">
+                                {{row.FechaActivacion | date: 'dd-MM-yyyy HH:mm:ss'}}
+                            </ng-template>
+                        </p-column>
+
+                    </p-dataTable>
+                    <div class="modal-footer" style="padding-top: 12em">
+                            <!-- Guardar Button -->
+                        <button type="button" class="btn btn-primary blue" *ngIf="allowDownload" (click)="downloadCertificate(primengDatatableHelper.records[0])"> Descargar</button>
+                        <button type="button" class="btn btn-primary blue" *ngIf="allowSendEmail" (click)="sendEmail(primengDatatableHelper.records[0])"> Enviar Correo</button>
+                    </div> 
+                </div>
+                <!--<Primeng-Datatable-End>-->
+            </div>
+            <label *ngIf="!showTable" style="font-size: 16px;">No tiene ningún certificado activo</label>
+        </div>
+    </div>
+</div>

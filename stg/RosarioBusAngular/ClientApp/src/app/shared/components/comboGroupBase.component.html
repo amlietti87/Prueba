@@ -1,0 +1,21 @@
+﻿<div>
+    <select #combobox
+            class="form-control"
+            [(ngModel)]="value"
+            [disabled]="IsDisabled || isLoading"
+            (ngModelChange)="selectedItemChange.emit($event)"
+            name="combobox"
+            title="{{emptyText}}"
+            jq-plugin="selectpicker"
+            data-container="body"
+            [attr.data-live-search]="livesearch">
+        <optgroup label="{{g.Description}}" *ngFor="let g of ItemsModel">
+            <option *ngFor="let item of g.Items" [value]="item.Id">{{item.Description}}</option>-->
+        </optgroup>
+    </select>
+
+
+    <div *ngIf="isLoading" style="top: -19px;" class="m-loader m-loader--brand">
+
+    </div>
+</div>

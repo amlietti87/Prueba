@@ -1,0 +1,28 @@
+.chart-info {
+    display: table-cell;
+    display: table-cell;
+    vertical-align: middle;
+    /* margin: 15px; */
+    padding-left: 1Rem;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+/*.ui-listbox
+.ui-listbox-list
+.ui-listbox-item
+.ui-listbox-header
+.ui-listbox-filter-container {
+    border: none;
+}*/
+
+.ui-listbox {
+    width: 100% !important;
+    border: 0px solid #c7c7c7 !important;
+    border-radius: 0px !important;
+}
+
+.m-dropdown__header_sm {
+    padding: 0px!important;
+}

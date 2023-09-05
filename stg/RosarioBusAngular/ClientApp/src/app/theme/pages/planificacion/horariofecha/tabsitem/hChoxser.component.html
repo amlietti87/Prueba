@@ -1,0 +1,400 @@
+﻿<div class="row" [hidden]="disableFilter">
+    <div class="form-group col-md-4">
+        <label>Sub Galpon</label>
+        <subgalpon-combo #CodSubg
+                         #CodSubgModel="ngModel"
+                         [(ngModel)]="filter.CodSubg"
+                         (itemstChange)="subgalponitemstChange($event)"
+                         (selectedItemChange)="selectedItemChangesubgalpon($event)"
+                         livesearch="{{false}}" emptyText="{{'Seleccione..'}}"
+                         name="CodSubg" id="CodSubg" placeHolder="Sub galpon">
+        </subgalpon-combo>
+    </div>
+    <div class="form-group col-md-4">
+        <label>Tipo de Dia</label>
+        <tipoDia-combo #CodTdia
+                       #FilterCodTdia="ngModel"
+                       [(ngModel)]="filter.CodTdia"
+                       (itemstChange)="tipoDiaitemstChange($event)"
+                       (selectedItemChange)="selectedItemChangeCodTdia($event)"
+                       livesearch="{{false}}"
+                       emptyText="{{'Seleccione..'}}"
+                       name="FilterCodTdia" id="FilterCodTdia" placeHolder="Tipo de dia">
+        </tipoDia-combo>
+    </div>
+
+
+    <div class="form-group col-md-4">
+        <button type="button" class="btn btn-accent"
+                style="position: relative;top: 25px;"
+                [hidden]="!(allowImportarDuracion && parentEntity && parentEntity.BeforeMigration == false)"
+                (click)="showImportarDuracion()">
+            Importar Duración
+        </button>
+    </div>
+
+
+
+</div>
+<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+
+    <div class="row" [busyIf]="isLoading">
+        <div class="col-md-10">
+
+
+            <p-table [value]="duraciones" (onEditInit)="onCellEdit($event)" #duracionesTable class="ui-edit-table" [scrollable]="true" scrollHeight="300px">
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 20px">
+
+                        </th>
+                        <th>
+                            Servicio
+                        </th>
+                        <th>
+                            Sale
+                        </th>
+                        <th>
+                            Llega
+                        </th>
+                        <!-- <th>
+                            Duracion
+                        </th> -->
+                        <th>
+                            Sale R
+                        </th>
+                        <th>
+                            Llega R
+                        </th>
+                        <!-- <th>
+                            Duracion R
+                        </th> -->
+                        <th>
+                            Sale A
+                        </th>
+                        <th>
+                            Llega A
+                        </th>
+                        <!-- <th>
+                            Duracion A
+                        </th> -->
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row>
+                    <tr [ngClass]="{'rowHasChange': row.HasChange}">
+
+                        <td style="width: 20px">
+                            <span *ngIf="row.HasError" class="m-input-icon__icon m-input-icon__icon--right"
+                                  data-toggle="m-tooltip" data-placement="top" title="{{row.ErrorMessages.join(',')}}">
+                                <span>
+                                    <i class="la la-info m--font-danger"></i>
+                                </span>
+                            </span>
+                        </td>
+
+                        <td>{{ row.DescripcionServicio }}</td>
+                        <td [pEditableColumn]="row" [pEditableColumnField]="'Sale'" id="Sale_{{row.DescripcionServicio}}" [ngClass]="{'ColumnWarning': row.HasErrorSale}">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+
+                                    <div *ngIf="!row.canEditSale">
+                                        <div *ngIf="row.Sale != null">
+                                            {{row.Sale | date: 'HH:mm'}}
+                                        </div>
+                                        <div *ngIf="row.Sale == null">
+                                            {{row.Sale}}
+                                        </div>
+                                    </div>
+                                    <div *ngIf="row.canEditSale" class="m-input-icon m-input-icon--right">
+                                        <p-calendar [(ngModel)]="row.Sale"
+                                                    appendTo="body"
+                                                    #Sale="ngModel"
+                                                    hourFormat="24"
+                                                    required="{{isRequiredSale}}"
+                                                    (onInput)="CalcularDiaSaleLlega(row)"
+                                                    [inputStyle]="{'width':'100%'}"
+                                                    [showOnFocus]="false"
+                                                    [readonlyInput]="!row.canEditSale"
+                                                    name="Sale_{{row.DescripcionServicio}}" id="Sale_{{row.DescripcionServicio}}" [timeOnly]="true">
+                                        </p-calendar>
+                                        <span *ngIf="Sale && Sale.invalid && (Sale.dirty || Sale.touched) && Sale.errors.required" class="m-input-icon__icon m-input-icon__icon--right"
+                                              data-toggle="m-tooltip" data-placement="top" title="Es Requerido">
+                                            <span>
+                                                <i class="la la-info m--font-danger"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    <div *ngIf="row.Sale != null">
+                                        {{row.Sale | date: 'HH:mm'}}
+                                    </div>
+                                    <div *ngIf="!row.Sale == null">
+                                        {{row.Sale}}
+                                    </div>
+                                </ng-template>
+
+                            </p-cellEditor>
+                        </td>
+
+                        <td [pEditableColumn]="row" [pEditableColumnField]="'Llega'" id="Llega_{{row.DescripcionServicio}}" [ngClass]="{'ColumnWarning': row.HasErrorLlega}">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <div *ngIf="!row.canEditLlega">
+                                        <div *ngIf="row.Llega != null">
+                                            {{row.Llega | date: 'HH:mm'}}
+                                        </div>
+                                        <div *ngIf="row.Llega == null">
+                                            {{row.Llega}}
+                                        </div>
+                                    </div>
+                                    <div *ngIf="row.canEditLlega" class="m-input-icon m-input-icon--right">
+                                        <p-calendar [(ngModel)]="row.Llega"
+                                                    appendTo="body"
+                                                    hourFormat="24"
+                                                    required="{{isRequiredLlega}}"
+                                                    #Llega="ngModel"
+                                                    (onInput)="CalcularDiaSaleLlega(row)"
+                                                    [inputStyle]="{'width':'100%'}"
+                                                    [showOnFocus]="false"
+                                                    [readonlyInput]="!row.canEditLlega"
+                                                    name="Llega_{{row.DescripcionServicio}}" id="Llega_{{row.DescripcionServicio}}" [timeOnly]="true" [style]="{'width':'100%'}"></p-calendar>
+                                        <span *ngIf="Llega && Llega.invalid && (Llega.dirty || Llega.touched) && Llega.errors.required" class="m-input-icon__icon m-input-icon__icon--right"
+                                              data-toggle="m-tooltip" data-placement="top" title="Es Requerido">
+                                            <span>
+                                                <i class="la la-info m--font-danger"></i>
+                                            </span>
+                                        </span>
+
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    <div *ngIf="row.Llega != null">
+                                        {{row.Llega | date: 'HH:mm'}}
+                                    </div>
+                                    <div *ngIf="!row.Llega == null">
+                                        {{row.Llega}}
+                                    </div>
+                                </ng-template>
+
+                            </p-cellEditor>
+                        </td>
+
+                        <!-- <td [ngClass]="{'cotaMaxima': row.Duracion > 573, 'cotaMinima': (row.Duracion < 389 && row.Duracion > 0)}">
+                            {{row.DuracionFomat}}
+                        </td> -->
+
+                        <td [pEditableColumn]="row" [pEditableColumnField]="'SaleR'" id="SaleR_{{row.DescripcionServicio}}" [ngClass]="{'ColumnWarning': row.HasErrorSaleR}">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <div *ngIf="!row.canEditSaleR">
+                                        <div *ngIf="row.SaleRelevo != null">
+                                            {{row.SaleRelevo | date: 'HH:mm'}}
+                                        </div>
+                                        <div *ngIf="row.SaleRelevo == null">
+                                            {{row.SaleRelevo}}
+                                        </div>
+                                    </div>
+                                    <div *ngIf="row.canEditSaleR" class="m-input-icon m-input-icon--right">
+                                        <p-calendar [(ngModel)]="row.SaleRelevo"
+                                                    appendTo="body"
+                                                    #SaleR="ngModel"
+                                                    hourFormat="24"
+                                                    required="{{isRequiredSaleR}}"
+                                                    (onInput)="CalcularDiaSaleLlega(row)"
+                                                    [inputStyle]="{'width':'100%'}"
+                                                    [showOnFocus]="false"
+                                                    [readonlyInput]="!row.canEditSaleR"
+                                                    name="SaleR_{{row.DescripcionServicio}}" id="SaleR_{{row.DescripcionServicio}}" [timeOnly]="true">
+                                        </p-calendar>
+                                        <span *ngIf="SaleR && SaleR.invalid && (SaleR.dirty || SaleR.touched) && SaleR.errors.required" class="m-input-icon__icon m-input-icon__icon--right"
+                                              data-toggle="m-tooltip" data-placement="top" title="Es Requerido">
+                                            <span>
+                                                <i class="la la-info m--font-danger"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </ng-template>
+
+                                <ng-template pTemplate="output">
+                                    <div *ngIf="row.SaleRelevo != null">
+                                        {{row.SaleRelevo | date: 'HH:mm'}}
+                                    </div>
+                                    <div *ngIf="!row.SaleRelevo == null">
+                                        {{row.SaleRelevo}}
+                                    </div>
+                                </ng-template>
+
+                            </p-cellEditor>
+                        </td>
+
+                        <td [pEditableColumn]="row" [pEditableColumnField]="'LlegaR'" id="LlegaR_{{row.DescripcionServicio}}" [ngClass]="{'ColumnWarning': row.HasErrorLlegaR}">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <div *ngIf="!row.canEditLlegaR">
+                                        <div *ngIf="row.LlegaRelevo != null">
+                                            {{row.LlegaRelevo | date: 'HH:mm'}}
+                                        </div>
+                                        <div *ngIf="row.LlegaRelevo == null">
+                                            {{row.LlegaRelevo}}
+                                        </div>
+                                    </div>
+                                    <div *ngIf="row.canEditLlegaR" class="m-input-icon m-input-icon--right">
+                                        <p-calendar [(ngModel)]="row.LlegaRelevo"
+                                                    appendTo="body"
+                                                    #LlegaR="ngModel"
+                                                    hourFormat="24"
+                                                    required="{{isRequiredLlegaR}}"
+                                                    (onInput)="CalcularDiaSaleLlega(row)"
+                                                    [inputStyle]="{'width':'100%'}"
+                                                    [showOnFocus]="false"
+                                                    [readonlyInput]="!row.canEditLlegaR"
+                                                    name="LlegaR_{{row.DescripcionServicio}}" id="LlegaR_{{row.DescripcionServicio}}" [timeOnly]="true">
+                                        </p-calendar>
+                                        <span *ngIf="LlegaR && LlegaR.invalid && (LlegaR.dirty || LlegaR.touched) && LlegaR.errors.required" class="m-input-icon__icon m-input-icon__icon--right"
+                                              data-toggle="m-tooltip" data-placement="top" title="Es Requerido">
+                                            <span>
+                                                <i class="la la-info m--font-danger"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    <div *ngIf="row.LlegaRelevo != null">
+                                        {{row.LlegaRelevo | date: 'HH:mm'}}
+                                    </div>
+                                    <div *ngIf="!row.LlegaRelevo == null">
+                                        {{row.LlegaRelevo}}
+                                    </div>
+                                </ng-template>
+
+                            </p-cellEditor>
+                        </td>
+
+                        <!-- <td [ngClass]="{'cotaMaxima': row.DuracionRelevo > 573, 'cotaMinima': (row.DuracionRelevo < 389 && row.DuracionRelevo > 0)}">
+                            {{row.DuracionRelevoFomat}}
+                        </td> -->
+
+                        <td [pEditableColumn]="row" [pEditableColumnField]="'SaleA'" id="SaleA_{{row.DescripcionServicio}}" [ngClass]="{'ColumnWarning': row.HasErrorSaleA}">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <div *ngIf="!row.canEditSaleA">
+                                        <div *ngIf="row.SaleAuxiliar != null">
+                                            {{row.SaleAuxiliar | date: 'HH:mm'}}
+                                        </div>
+                                        <div *ngIf="row.SaleAuxiliar == null">
+                                            {{row.SaleAuxiliar}}
+                                        </div>
+                                    </div>
+                                    <div *ngIf="row.canEditSaleA" class="m-input-icon m-input-icon--right">
+                                        <p-calendar [(ngModel)]="row.SaleAuxiliar"
+                                                    appendTo="body"
+                                                    #SaleA="ngModel"
+                                                    hourFormat="24"
+                                                    required="{{isRequiredSaleA}}"
+                                                    (onInput)="CalcularDiaSaleLlega(row)"
+                                                    [inputStyle]="{'width':'100%'}"
+                                                    [showOnFocus]="false"
+                                                    [readonlyInput]="!row.canEditSaleA"
+                                                    name="SaleA_{{row.DescripcionServicio}}" id="SaleA_{{row.DescripcionServicio}}" [timeOnly]="true">
+                                        </p-calendar>
+                                        <span *ngIf="SaleA && SaleA.invalid && (SaleA.dirty || SaleA.touched) && SaleA.errors.required" class="m-input-icon__icon m-input-icon__icon--right"
+                                              data-toggle="m-tooltip" data-placement="top" title="Es Requerido">
+                                            <span>
+                                                <i class="la la-info m--font-danger"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    <div *ngIf="row.SaleAuxiliar != null">
+                                        {{row.SaleAuxiliar | date: 'HH:mm'}}
+                                    </div>
+                                    <div *ngIf="!row.SaleAuxiliar == null">
+                                        {{row.SaleAuxiliar}}
+                                    </div>
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+
+                        <td [pEditableColumn]="row" [pEditableColumnField]="'LlegaA'" id="LlegaA_{{row.DescripcionServicio}}" [ngClass]="{'ColumnWarning': row.HasErrorLlegaA}">
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <div *ngIf="!row.canEditLlegaA">
+                                        <div *ngIf="row.LlegaAuxiliar != null">
+                                            {{row.LlegaAuxiliar | date: 'HH:mm'}}
+                                        </div>
+                                        <div *ngIf="row.LlegaAuxiliar == null">
+                                            {{row.LlegaAuxiliar}}
+                                        </div>
+                                    </div>
+                                    <div *ngIf="row.canEditLlegaA" class="m-input-icon m-input-icon--right">
+                                        <p-calendar [(ngModel)]="row.LlegaAuxiliar"
+                                                    appendTo="body"
+                                                    #LlegaA="ngModel"
+                                                    hourFormat="24"
+                                                    required="{{isRequiredLlegaA}}"
+                                                    (onInput)="CalcularDiaSaleLlega(row)"
+                                                    [inputStyle]="{'width':'100%'}"
+                                                    [showOnFocus]="false"
+                                                    [readonlyInput]="!row.canEditLlegaA"
+                                                    name="LlegaA_{{row.DescripcionServicio}}" id="LlegaA_{{row.DescripcionServicio}}" [timeOnly]="true">
+                                        </p-calendar>
+                                        <span *ngIf="LlegaA && LlegaA.invalid && (LlegaA.dirty || LlegaA.touched) && LlegaA.errors.required" class="m-input-icon__icon m-input-icon__icon--right"
+                                              data-toggle="m-tooltip" data-placement="top" title="Es Requerido">
+                                            <span>
+                                                <i class="la la-info m--font-danger"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    <div *ngIf="row.LlegaAuxiliar != null">
+                                        {{row.LlegaAuxiliar | date: 'HH:mm'}}
+                                    </div>
+                                    <div *ngIf="!row.LlegaAuxiliar == null">
+                                        {{row.LlegaAuxiliar}}
+                                    </div>
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+
+                        <!-- <td [ngClass]="{'cotaMaxima': row.DuracionAuxiliar > 573, 'cotaMinima': (row.DuracionAuxiliar < 389 && row.DuracionAuxiliar > 0)}">
+                            {{row.DuracionAuxiliarFomat}}
+                        </td> -->
+
+                    </tr>
+                </ng-template>
+
+            </p-table>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>Cantidad de Coches Reales: </label>
+                <input #CantidadCochesReal="ngModel" class="form-control" type="text"
+                       currencyMask min="0" max="500000"
+                       [options]="{ allowNegative: false, precision : 0,  prefix: '', thousands: '', decimal: ',' }"
+                       name="CantidadCochesReal" [(ngModel)]="hHorariosConfiDto.CantidadCochesReal">
+            </div>
+
+            <div class="form-group">
+                <label>Cantidad de Conductores Reales</label>
+                <input #CantidadConductoresReal="ngModel" class="form-control" type="text"
+                       currencyMask min="0" max="500000"
+                       [options]="{ allowNegative: false, precision : 0,  prefix: '', thousands: '', decimal: ',' }"
+                       name="CantidadConductoresReal" [(ngModel)]="hHorariosConfiDto.CantidadConductoresReal">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue"
+                [disabled]="!detailForm.form.valid || !isValid" [hidden]="!(parentEntity && parentEntity.BeforeMigration == false)"
+                [buttonBusy]="saving" [busyText]="'Guardando..'">
+            <i class="fa fa-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+
+</form>

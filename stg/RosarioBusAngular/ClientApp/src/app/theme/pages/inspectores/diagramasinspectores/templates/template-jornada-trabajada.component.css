@@ -1,0 +1,49 @@
+﻿body {
+}
+.template-jornadatrabajada {
+    color: black !important;
+    font-size: 8px;
+    text-align:  center;
+    padding: 0px !important;
+    max-width: 75px;
+    display: inline-block;
+    background-color: transparent;
+    border: 0px;
+}
+input {
+    color:black; 
+    border:0px; 
+    font-size: 8px !important; 
+    font-weight:bold 
+}
+
+.celda-rango {
+    vertical-align: middle !important;
+    width: 62px;
+}
+
+
+.celda-acciones {
+    padding: 3px;
+}
+
+.acciones {
+    width: 8px !important;
+    height: 15px !important;
+}
+
+.accion-icon {
+    font-size: 12px !important;
+    color: black !important;
+}
+
+.informacion {
+    color: red !important;
+    font-size:8px;
+    padding:1px !important
+}
+
+.template-jornadatrabajada table {
+    table-layout: initial !important;
+}
+

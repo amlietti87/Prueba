@@ -1,0 +1,155 @@
+﻿<div class="m-content">
+    <div [hidden]="!active"
+         class="m-portlet m-portlet--mobile">
+        <div class="m-portlet__body">
+            <form class="horizontal-form filters"
+                  autocomplete="off">
+                <div class="m-form m-form--label-align-right">
+                    <div class="row m--margin-bottom-10"
+                         [hidden]="!advancedFiltersAreShown">
+
+                        <!-- filter.TipoInvolucradoId-->
+                        <div class="form-group col-xl-2">
+                            <label>Tipo Involucrado </label>
+                            <tipoinvolucrado-combo name="TipoInvolucradoId"
+                                                   id="TipoInvolucradoId"
+                                                   #TipoInvolucradoId="ngModel"
+                                                   #TipoInvolucradoCombo
+                                                   [(ngModel)]="filter.TipoInvolucradoId"
+                                                   emptyText="{{'Todos'}}">
+                            </tipoinvolucrado-combo>
+
+                        </div>
+                        <div class="form-group col-xl-2">
+                            <label>Dominio involucrado</label>
+                            <input #Dominio
+                                   class="form-control"
+                                   type="text"
+                                   name="Dominio"
+                                   [(ngModel)]="filter.Dominio">
+                        </div>
+                        <div class="form-group col-xl-2">
+                            <label>Tipo doc. involucrado/conductor</label>
+                            <tipoDocId-combo [showAddButton]="false"
+                                             [TipoDocId]="filter.TipoDocumentoId"
+                                             name="TipoDocumentoId"
+                                             id="TipoDocumentoId"
+                                             #TipoDocumentoId="ngModel"
+                                             #TipoDocumentoIdCombo
+                                             [(ngModel)]="filter.TipoDocumentoId"
+                                             emptyText="{{'Todos'}}">
+                            </tipoDocId-combo>
+
+                        </div>
+                        <div class="form-group col-xl-2">
+                            <label>Nro. doc. involucrado/conductor</label>
+                            <input #Documento class="form-control"
+                                   type="text"
+                                   name="Documento"
+                                   [(ngModel)]="filter.Documento">
+                        </div>
+                        <div class="form-group col-xl-2">
+                            <label>Apellido involucrado/conductor</label>
+                            <input #Apellido class="form-control"
+                                   type="text"
+                                   name="Apellido"
+                                   [(ngModel)]="filter.Apellido">
+                        </div>
+                        <div class="form-group col-xl-2">
+                            <label>Domicilio mueble/inmueble</label>
+                            <input #Domicilio class="form-control"
+                                   type="text"
+                                   name="Domicilio"
+                                   [(ngModel)]="filter.Domicilio">
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="col-sm-12 text-right">
+                                <button class="btn btn-metal"
+                                        (click)="RefreshWithFilters()">
+                                    <i class="fa fa-refresh"></i> Actualizar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row margin-bottom-10">
+                        <div class="col-sm-12">
+                            <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> Mostrar filtros avanzados</span>
+                            <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> Ocultar filtros avanzados</span>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+            <div class="row m--padding-10">
+                <div class="col-md-6 m--align-left">
+                    <button type="button"
+                            (click)="onCreate()"
+                            *ngIf="allowInvAgregar"
+                            class="btn btn-primary blue">
+                        <i class="fa fa-plus"></i> Agregar Involucrado
+                    </button>
+                </div>
+            </div>
+
+
+
+            <div class="row align-items-center">
+                <!--<Primeng-Datatable-Start>-->
+                <div class="primeng-datatable-container primeng-small" 
+                     style="overflow:auto;" 
+                     [busyIf]="!active">
+                    <p-dataTable [value]="primengDatatableHelper.records"
+                                 [paginator]="false"
+                                 scrollable="false"
+                                 responsive="primengDatatableHelper.isResponsive"
+                                 #dt
+                                 emptyMessage="">
+                        <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                            <ng-template let-col let-row="rowData" pTemplate type="body">
+                                <div class="dropdown">
+                                    <a href="javascript:void(0);" (click)="onEdit(row)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Editar">
+                                        <i class="la la-edit"></i>
+                                    </a>
+                                    <a href="javascript:void(0);" *ngIf="allowInvEliminar" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" (click)="onDelete(row)"><i class="la la-trash"></i></a>
+                                    <a href="javascript:void(0);" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" (click)="onAdjuntarArchivosShow(row)"><i class="la la-paperclip"></i></a>
+                                </div>
+
+                            </ng-template>
+                        </p-column>
+                        <p-column field="NroInvolucrado" header="Nro. Involucrado" filterPlaceholder="Buscar..." [sortable]="true" styleClass="bold">
+                        </p-column>
+                        <p-column field="TipoInvolucradoNombre" header="Tipo Involucrado" filterPlaceholder="Buscar..."></p-column>
+                        <p-column field="InvolucradoColumn" header="Involucrado" [sortable]="false"></p-column>
+                        <p-column field="ConductorNombre" header="Conductor"></p-column>
+                        <p-column field="VehiculoNombre" header="Vehículo"></p-column>
+                        <p-column field="EstadoInsercion" header="Estado Inserción" [sortable]="false"></p-column>
+                        <p-column field="MuebleInmuebleNombre" header="Mueble/Inmueble"></p-column>
+                        <p-column field="LesionadoNombre" header="Lesionado"></p-column>
+
+                    </p-dataTable>
+                    <div class="primeng-paging-container">
+                        <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                                     #paginator
+                                     (onPageChange)="onSearch($event)"
+                                     [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                                     [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                        </p-paginator>
+                        <span class="total-records-count">
+                            Registros totales:  {{ primengDatatableHelper.totalRecordsCount}}
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+
+<!--</div>
+        <ng-template #createOrEdit></ng-template>
+</div>-->

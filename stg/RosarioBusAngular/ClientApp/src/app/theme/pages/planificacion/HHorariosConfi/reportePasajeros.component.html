@@ -1,0 +1,78 @@
+﻿<div>
+    <div class="m-subheader">
+        <div style="text-align: right;">
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form #FilterForm="ngForm" class="horizontal-form filters" autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+
+                        <!-- Fecha y Linea -->
+                        <div class="row m--margin-bottom-10">
+
+
+                            <!--Lineas-->
+                            <div class="form-group col-md-3">
+                                <label>Línea</label>
+                                <span class="ui-fluid" [ngClass]="{'has-danger': LineaFiltro.invalid && (LineaFiltro.dirty || LineaFiltro.touched || FilterForm.submitted)}">
+                                    <linea-autocomplete #Linea
+                                                        #LineaFiltro="ngModel"
+                                                        [(ngModel)]="linea"
+                                                        name="lineas"
+                                                        id="lineas"
+                                                        required
+                                                        placeHolder="Líneas"
+                                                        (ngModelChange)="OnLineaChange($event)">
+                                    </linea-autocomplete>
+                                </span>
+                                <div *ngIf="LineaFiltro.invalid && (LineaFiltro.dirty || LineaFiltro.touched || FilterForm.submitted)"
+                                     class=" form-control-feedback">
+                                    <div *ngIf="LineaFiltro.errors.required">
+                                        Es requerido
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label>Banderas</label>
+                                <p-pickList [source]="BanderasSource" [target]="BanderasTarget"
+                                            sourceHeader="Banderas"
+                                            targetHeader="Banderas Seleccionadas" [responsive]="true" filterBy="Description"
+                                            sourceFilterPlaceholder="Búsqueda por texto"
+                                            targetFilterPlaceholder="Búsqueda por texto" [sourceStyle]="{'height':'200px'}" [targetStyle]="{'height':'200px'}"
+                                            [showSourceControls]="false" [showTargetControls]="false" required>
+                                    <ng-template let-bandera pTemplate="item">
+                                        {{bandera.Description}}
+                                    </ng-template>
+                                </p-pickList>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </form>
+
+
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button [disabled]="generando" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+            <button type="button" class="btn btn-primary blue"
+                    (click)="GetReporte()"
+                    [buttonBusy]="generando" [busyText]="'Generando Reporte...'">
+                <i class="fa fa-save"></i> <span>Generar Reporte</span>
+            </button>
+        </div>
+
+    </div>
+
+
+    <ng-template #createOrEdit></ng-template>
+
+</div>
+
+

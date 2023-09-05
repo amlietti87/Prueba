@@ -1,0 +1,27 @@
+{
+    
+    "LOGIN_BUTTON": "Entrar",
+    "PASSWORD": "Clave",
+    "DNI": "DNI",
+    "REMEMBER": "Recordame",
+    
+    "DATE": "Fecha",
+    "LINES": "Líneas",
+    "TYPE OF DAY": "Tipo de Día",
+    "FLAG": "Bandera",
+    "WAY": "Sentido",
+    "RELATED FLAGS": "Banderas Relacionadas",
+    "SEARCH": "Buscar",
+    "SERVICE": "Servicio",
+    "DRIVER": "Conductor",
+    "EXIT": "SALIR",
+    "ACCEPT": "ACEPTAR",
+    "DEPARTURE": "Sale",
+    "ARRIVES": "Llega",
+    "FREQ": "Frec.",
+    "READY": "Listo",
+    "FREQUENCY": "Frecuencia",
+    "PERMISSION_ERROR": "No posee permisos para esta acción. Notifique a Sistemas.",
+    "PERMISSION_ERROR_AUTHORIZATION": "Existen datos pendiente de sincronización. Serán enviados automáticamente cuando se inicie sesión."
+
+}   

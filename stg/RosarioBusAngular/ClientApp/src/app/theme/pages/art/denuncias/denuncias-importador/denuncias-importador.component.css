@@ -1,0 +1,18 @@
+﻿
+
+
+.thDenunciasImportador {
+    width: 80px !important;
+    min-width: 80px !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+}
+
+.tdDenunciasImportador {
+    width: 80px !important;
+    min-width: 80px !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+}

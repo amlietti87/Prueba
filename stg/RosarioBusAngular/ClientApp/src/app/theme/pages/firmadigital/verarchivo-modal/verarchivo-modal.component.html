@@ -1,0 +1,174 @@
+﻿<form #detailForm="ngForm"
+      novalidate
+      autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span>
+                <label>Documento Procesado</label>
+            </span>
+        </h4>
+        <div class="m-portlet__nav-item">
+            <a href="#"
+               (click)="close()"
+               class="m-portlet__nav-link m-portlet__nav-link--icon">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>  
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group col-lg-2">
+                <label>Tipo de Documento</label>
+                <input matInput class="form-control" type="text" name="TipoDocumento" [(ngModel)]="archivosUrl[currentIndex].TipoDocumento" value="archivosUrl[currentIndex].TipoDocumento" [disabled]="true" title={{archivosUrl[currentIndex].TipoDocumento}}/>
+            </div>
+            <div class="form-group col-lg-2">
+                <label>Fecha</label>
+                <br/>
+                <mat-form-field style="width: 100%;">
+                    <input matInput [(ngModel)]="archivosUrl[currentIndex].Fecha" name="Fecha" value="archivosUrl[currentIndex].Fecha" [disabled]="true"/>
+                    <mat-datepicker-toggle matSuffix [for]="Fecha"></mat-datepicker-toggle>
+                    <mat-datepicker #Fecha></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="form-group col-lg-3">
+                <label>Empleado</label>
+                <!--<empresa-combo #EmpresaId name="Empleado" emptyText="{{archivosUrl[currentIndex].NombreEmpleado}}" [disabled]="true">
+                </empresa-combo>-->
+                <input matInput [(ngModel)]="archivosUrl[currentIndex].NombreEmpleado" name="NombreEmpleado" value="archivosUrl[currentIndex].NombreEmpleado" [disabled]="true" />
+            </div>
+            <div class="form-group col-lg-5">
+                <label>Datos del Empleado</label>
+                <br/>
+                <span *ngIf="archivosUrl">
+                    Empresa: {{archivosUrl[currentIndex].Empresa}} - U. de Negocio: {{archivosUrl[currentIndex].UNegocio}}<br/>
+                    Nom y Ap: {{archivosUrl[currentIndex].NombreEmpleado}} - CUIL: {{archivosUrl[currentIndex].CuilEmpleado}}<br/>
+                    Legajo: {{archivosUrl[currentIndex].Legajo}}
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-2">
+                <label>Fecha Procesado</label>
+                <br/>
+                <mat-form-field style="width: 100%;">
+                    <input matInput [(ngModel)]="archivosUrl[currentIndex].FechaProcesado" name="FechaProcesado" value="archivosUrl[currentIndex].FechaProcesado" [disabled]="true"/>
+                    <mat-datepicker-toggle matSuffix [for]="FechaProcesado"></mat-datepicker-toggle>
+                    <mat-datepicker #FechaProcesado></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="form-group col-lg-2">
+                <label>Estado</label>
+                <input matInput [(ngModel)]="archivosUrl[currentIndex].Estado" name="tado" value="archivosUrl[currentIndex].Estado" [disabled]="true" />
+            </div>
+            <div class="form-group col-lg-3">
+                <label>Archivo</label>
+                <label>{{archivosUrl[currentIndex].ArchivoNombre}}</label>
+                <br/>
+                    <a href="javascript:void(0);" (click)="onAbrir()" class="fa fa-folder-open" title="Abrir" [hidden]="!allowAbrirArchivo" ></a>
+               
+                <a href="javascript:void(0);" (click)="onDescargar()" class="fa fa-download"  title="Descargar" [hidden] ="!allowDescargarArchivo"  ></a>
+            </div>
+            <div class="m-checkbox" style=" padding-left: 15px;">
+                <label [hidden]="!(archivosUrl[currentIndex].EmpleadoConforme != null && archivosUrl[currentIndex].EmpleadoConforme == true)"> 
+                    <i class="fa fa-check-square-o" style="font-size: 18px; padding-right: 5px;"></i>Empleado Conforme 
+                </label>
+                <label [hidden]="!(archivosUrl[currentIndex].EmpleadoConforme != null && archivosUrl[currentIndex].EmpleadoConforme == false)"> 
+                    <i class="fa fa-square-o" style="font-size: 18px; padding-right: 5px;"></i>Empleado Conforme 
+                </label>
+                <label [hidden]="archivosUrl[currentIndex].EmpleadoConforme != null"> 
+                    <i class="fa fa-square" style="font-size: 18px; padding-right: 5px;"></i>Empleado Conforme 
+                </label>
+
+                <label [hidden]="!archivosUrl[currentIndex].Cerrado" style="margin-left: 20px;"> 
+                    <i class="fa fa-check-square-o" style="font-size: 18px; padding-right: 5px;"></i>Cerrado 
+                </label>
+                <label [hidden]="archivosUrl[currentIndex].Cerrado" style="margin-left: 20px;"> 
+                    <i class="fa fa-square-o" style="font-size: 18px; padding-right: 5px;"></i>Cerrado 
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="m-checkbox-list form-group col-lg-2">
+                <label class="m-checkbox">
+                    <input #Rechazado="ngModel" id="Rechazado" type="checkbox" name="Rechazado" [(ngModel)]="archivosUrl[currentIndex].Rechazado" [disabled]="true"/>
+                    Rechazado
+                    <span></span>
+                </label>
+            </div>
+            <div class="form-group col-auto widthFixer">
+                <label>Motivo rechazo</label>
+                <textarea matInput class="form-control textbox" type="text" name="MotivoRechazo" [(ngModel)]="archivosUrl[currentIndex].MotivoRechazo" value="archivosUrl[currentIndex].MotivoRechazo" [disabled]="true"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <a href="#" [hidden]="!showPrevious" style="float:left"
+                   (click)="PreviousFile()">
+                    <i class="fa fa-arrow-left visor"></i>
+                </a>
+                <a href="#" [hidden]="!showNext" style="float:right"
+                   (click)="NextFile()">
+                    <i class="fa fa-arrow-right visor"></i>
+                </a>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="primeng-datatable-container primeng-small primeng-small-buttons-small">
+
+                <p-dataTable [value]="historial"
+                             scrollable="true"
+                             scrollHeight="300px"
+                             [editable]="false"
+                             responsive="false"
+                             emptyMessage="">
+
+
+                    <!-- Column Cantidad-->
+                    <p-column field="Fecha y Hora"
+                              header="Fecha y Hora"
+                              [editable]="false"
+                              [sortable]="false">
+                        <ng-template let-row="rowData"
+                                     pTemplate="body">
+                            <div><span>{{row.FechaHoraString}}</span></div>
+                        </ng-template>
+                    </p-column>
+
+                    <p-column field="Estado"
+                              header="Estado"
+                              [editable]="false"
+                              [sortable]="false"
+                              styleClass="col-primeng-medium">
+                        <ng-template let-row="rowData"
+                                     pTemplate="body">
+                            <div><span>{{row.EstadoH}}</span></div>
+                        </ng-template>
+                    </p-column>
+
+                    <p-column field="Rechazado"
+                              header="Rechazado"
+                              [editable]="false"
+                              [sortable]="false">
+                        <ng-template let-row="rowData"
+                                     pTemplate="body">
+                            <div><span>{{row.RechazadoH}}</span></div>
+                        </ng-template>
+                    </p-column>
+
+                    <p-column field="Usuario"
+                              header="Usuario"
+                              [editable]="false"
+                              [sortable]="false">
+                        <ng-template let-row="rowData"
+                                     pTemplate="body">
+                            <div><span>{{row.Usuario}}</span></div>
+                        </ng-template>
+                    </p-column>
+
+                </p-dataTable>
+            </div>
+        </div>
+     </div>
+</form>
+

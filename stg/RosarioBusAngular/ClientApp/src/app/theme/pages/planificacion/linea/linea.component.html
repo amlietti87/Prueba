@@ -1,0 +1,140 @@
+﻿<div>
+    <div class="m-subheader" [hidden]="!active">
+        <div style="text-align: right;">
+            <button (click)="onCreate()" *ngIf="allowAdd" class="btn btn-primary blue"><i class="fa fa-plus"></i>
+                Crear Línea</button>
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div [hidden]="!active" class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form class="horizontal-form filters" autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+                        <div class="row m--margin-bottom-10" [hidden]="!advancedFiltersAreShown">
+                            <div class="form-group col-xl-3">
+                                <label>Nombre</label>
+                                <input [(ngModel)]="filter.FilterText" #filterText name="filterText" autoFocus class="form-control m-input"
+                                    [placeholder]="'Buscar...'" type="text">
+                            </div>
+
+                            <div class="form-group col-xl-3">
+                                <label>Tipo de línea</label>
+                                <tipoLinea-combo 
+                                                 class="without-underline"
+                                                 #filterTipoLineaId="ngModel" name="TipoLineaIdFiltro" [(ngModel)]="filter.TipoLineaId" emptyText="{{'Seleccione..'}}">
+                                </tipoLinea-combo>
+                            </div>
+
+                            <!--<div class="form-group col-xl-3">
+                                <label>Grupo de línea {{sucursal}}</label>
+
+                                <grupolineas-combo #filterGrupolineaId="ngModel"
+                                                   SucursalId="{{sucursalid}}"
+                                                   name="GrupoLineaId"
+                                                   [(ngModel)]="filter.GrupoLineaId" emptyText="{{'Seleccione..'}}">
+                                </grupolineas-combo>
+
+
+                            </div>-->
+                            <div class="col-xl-2">
+                                <div class="form-group">                                                                        
+                                    <p-triStateCheckbox #filterActivo="ngModel"  label="Activo" name="filterActivo" [(ngModel)]="filter.Activo"></p-triStateCheckbox>
+                                    <!--<label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': filter.Activo}">
+        <input [(ngModel)]="filter.Activo" name="Activo" type="checkbox">
+        <em>Activo</em>
+        <span></span>
+    </label>-->
+                                </div>
+                            </div>
+
+                            <div class="form-group col-xl-1">
+                                <div class="col-sm-12 text-right">
+                                    <button (click)="onSearch()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i>Buscar</button>
+                                </div>
+                            </div>
+ 
+                        </div>
+                        <div class="row margin-bottom-10">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-down"></i> Mostrar filtros avanzados</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i
+                                        class="fa fa-angle-up"></i> Ocultar filtros avanzados</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container primeng-small" [busyIf]="primengDatatableHelper.isLoading">
+
+                        <p-dataTable #dataTable [lazy]="true" (onLazyLoad)="onSearch($event)" [value]="primengDatatableHelper.records"
+                            [paginator]="false" emptyMessage="Sin Datos" scrollable="true" ScrollWidth="100%" sortField="DesLin"
+                            sortOrder="{{1}}" responsive="primengDatatableHelper.isResponsive">
+                            <p-column field="DesLin" header="Nombre" [sortable]="true"></p-column>
+
+                            <p-column field="PlaTipoLineaId" header="Tipo de línea" [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    {{row.TipoLinea }}
+                                </ng-template>
+                            </p-column>
+                            <p-column field="Activo" header="Activo" [sortable]="false">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <span *ngIf="row.Activo" data-toggle="tooltip" title="Estado" class="m-badge m-badge--success m-badge--wide">
+                                        Activo
+                                    </span>
+                                    <span *ngIf="!row.Activo" data-toggle="tooltip" title="Estado" class="m-badge m-badge--brand m-badge--wide">
+                                        Pendiente
+                                    </span>
+                                </ng-template>
+                            </p-column>
+                            <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div class="dropdown">
+                                        <a href="javascript:void(0);" (click)="onEditRamalesEnLinea(row)" *ngIf="allowModify"
+                                            title="ir a ramales" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill">
+                                            <i class="la la-fast-forward"></i>
+                                        </a>
+                                        <a href="#" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                            data-toggle="dropdown">
+                                            <i class="la la-ellipsis-h"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a href="javascript:void(0);" (click)="onEdit(row)" *ngIf="allowModify"
+                                                class="dropdown-item" title="Editar">
+                                                <i class="la la-edit"></i>Editar
+                                            </a>
+                                            <a href="javascript:void(0);" (click)="onDelete(row)" *ngIf="allowDelete"
+                                                class="dropdown-item" title="Eliminar">
+                                                <i class="la la-trash"></i>Eliminar
+                                            </a>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </p-column>
+                        </p-dataTable>
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}" #paginator
+                                (onPageChange)="onSearch($event)" [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                Registros totales: {{ primengDatatableHelper.totalRecordsCount}}
+                            </span>
+                        </div>
+
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+
+                </div>
+            </div>
+        </div>
+
+        <ng-template #createOrEdit></ng-template>
+
+    </div>
+</div>

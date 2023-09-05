@@ -1,0 +1,206 @@
+﻿<div [hidden]="!active" class="m-portlet m-portlet--mobile m-portlet--acce m-portlet--head-sm" id="m_portlet_detail" m-portlet="true">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon">
+                    <i class="fa fa-map-signs"></i>
+                </span>
+                <h3 class="m-portlet__head-text">
+                    <span *ngIf="detail.Id">{{"Editar Tipo de parada"}}: {{detail.Nombre}}</span>
+                    <span *ngIf="!detail.Id">{{"Crear Tipo de parada"}}</span>
+                </h3>
+            </div>
+        </div>
+        <div class="m-portlet__head-tools">
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item">
+                    <a href="#" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-angle-down"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item">
+                    <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-expand"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item">
+                    <a href="#" (click)="close()" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-close"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="m-portlet__body">
+
+        <form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+
+            <div>
+
+                <div class="form-group" [ngClass]="{'has-danger': Nombre.invalid && (Nombre.dirty || Nombre.touched)}">
+                    <label>Nombre</label>
+                    <input #Nombre="ngModel" class="form-control" type="text" name="Nombre" [(ngModel)]="detail.Nombre" required maxlength="200">
+
+                    <div *ngIf="Nombre.invalid && (Nombre.dirty || Nombre.touched)"
+                         class=" form-control-feedback">
+                        <div *ngIf="Nombre.errors.required">
+                            El nombre es Requerido
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group" [ngClass]="{'has-danger': Abreviatura.invalid && (Abreviatura.dirty || Abreviatura.touched)}">
+                    <label>Abreviatura</label>
+                    <input #Abreviatura="ngModel" class="form-control" type="text" name="Abreviatura" [(ngModel)]="detail.Abreviatura" required maxlength="10">
+
+                    <div *ngIf="Abreviatura.invalid && (Abreviatura.dirty || Abreviatura.touched)"
+                         class=" form-control-feedback">
+                        <div *ngIf="Abreviatura.errors.required">
+                            El Abreviatura es Requerido
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="text-right">
+                    <button type="button" (click)="addNewTiempoEsperadoDeCarga()" class="btn btn-primary blue" style="margin-bottom: 15px;"><i class="fa fa-plus"></i> Agregar</button>
+                </div>
+
+
+                
+                <span class="ng-star-inserted">Tiempos esperado de carga</span>
+
+                <div class="align-items-center">
+                    <!--<Primeng-Datatable-Start>   [busyIf]="primengDatatableHelper.isLoading"-->
+                    <div class="primeng-datatable-container">
+
+                        <p-dataTable #dataTable
+                                     [value]="detail.TiempoEsperadoDeCarga"
+                                     scrollable="true"
+                                     scrollHeight="300px"
+                                     emptyMessage="{{l('Sin Datos')}}"
+                                     [editable]="true"
+                                     responsive="false">
+
+                            <p-column field="TipoDiaNombre" header="Tipo de día" [editable]="true" [sortable]="true">
+                                <ng-template let-row="rowData" pTemplate="editor">
+                                        <p-dropdown [options]="TiposDiasSelectItem"
+                                        (onChange)="onTipoDiaChange($event,row)"
+                                        
+                                        
+                                        plaveholder="Seleccione..."
+                                        autofocus="true"
+                                        required="true"
+                                        appendTo="body"
+                                        #TipoDeDiaId="ngModel" name="TipodeDiaId{{row.Id}}" id="TipodeDiaId{{row.Id}}" [(ngModel)]="row.TipodeDiaId" [style]="{'width':'100%'}"></p-dropdown>
+
+
+
+
+                                    <!-- <tipoDia-combo #TipoDeDiaId="ngModel"
+                                                   required
+                                                   [items]="TiposDias"
+                                                   (change)="onTipoDiaChange($event.target.value, row)"
+                                                   id="{{ 'TipodeDiaId' + row.Id }}"
+                                                   name="{{ 'TipodeDiaId' + row.Id }}"
+                                                   allowNullable="{{false}}"
+                                                   livesearch="{{false}}"
+                                                   [(ngModel)]="row.TipodeDiaId">
+                                    </tipoDia-combo> -->
+
+                                    <div *ngIf="TipoDeDiaId.invalid && (TipoDeDiaId.dirty || TipoDeDiaId.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="TipoDeDiaId.errors.required" class="has-required">
+                                            El campo  TipoDeDiaId es requerido
+                                        </div>
+                                    </div>
+
+                                </ng-template>
+                                <ng-template let-row="rowData" pTemplate="body">
+                                    <div>
+                                        {{ row.TipoDiaNombre }}
+                                    </div>
+                                </ng-template>
+                            </p-column>
+
+                            <p-column field="HoraDesde" [editable]="true" header="Hora desde" [sortable]="true">
+                                <ng-template let-row="rowData" pTemplate="editor">
+                                    <div>
+                                        <input #HoraDesde="ngModel" required type="time" id="{{ 'HoraDesde' + row.Id }}" name="{{ 'HoraDesde' + row.Id }}" [(ngModel)]="row.HoraDesde">
+                                    </div>
+
+                                </ng-template>
+                                <ng-template let-row="rowData" pTemplate="body">
+                                    <div>
+                                        {{ row.HoraDesde | slice:0:5 }}
+                                    </div>
+                                </ng-template>
+                            </p-column>
+
+                            <p-column field="HoraHasta" [editable]="true" header="Hora hasta" [sortable]="true">
+                                <ng-template let-row="rowData" pTemplate="editor">
+                                    <div>
+                                        <input #HoraHasta="ngModel"  type="time" id="{{ 'HoraHasta' + row.Id }}" name="{{ 'HoraHasta' + row.Id }}" [(ngModel)]="row.HoraHasta" required>
+                                    </div>
+
+                                </ng-template>
+                                <ng-template let-row="rowData" pTemplate="body">
+                                    <div>
+                                        {{ row.HoraHasta | slice:0:5 }}
+                                    </div>
+                                </ng-template>
+                            </p-column>
+
+                            <p-column field="TiempoDeCarga" [editable]="true" header="Tiempo esperado de carga" [sortable]="true">
+                                <ng-template let-row="rowData" pTemplate="editor">
+                                    <div>
+                                        <input #TiempoDeCarga="ngModel" type="time" step="1"
+                                                
+                                               id="{{ 'TiempoDeCarga' + row.Id }}"
+                                               name="{{ 'TiempoDeCarga' + row.Id }}"
+                                               [(ngModel)]="row.TiempoDeCarga" required>
+                                    </div>
+
+                                </ng-template>
+                            </p-column>
+
+                            <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div class="dropdown">
+                                        <a href="javascript:void(0);" (click)="onCargaDelete(row)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Eliminar">
+                                            <i class="la la-trash"></i>
+                                        </a>
+                                    </div>
+
+                                </ng-template>
+                            </p-column>
+                        </p-dataTable>
+
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                
+                <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                <button type="submit" class="btn btn-primary blue"
+                        [disabled]="!detailForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="'Guardando..'">
+                    <i class="fa fa-save"></i> <span>Guardar</span>
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+<ng-template #createOrEditChild></ng-template>

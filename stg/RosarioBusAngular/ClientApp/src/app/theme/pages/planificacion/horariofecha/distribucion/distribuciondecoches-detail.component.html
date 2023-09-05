@@ -1,0 +1,132 @@
+﻿<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span *ngIf="viewMode == 2">{{"Editar Estimación"}}</span>
+            <span *ngIf="viewMode != 2">{{"Crear Estimación"}}</span>
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <div class="row">
+            <div class="form-group col-md-4" [ngClass]="{'has-danger': CodTdia.invalid && (CodTdia.dirty || CodTdia.touched || detailForm.submitted)}">
+                <label>Tipo de Dia</label>
+
+                <tipoDia-combo #CodTdia="ngModel" [(ngModel)]="detail.CodTdia"
+                               autoLoad="{{true}}" required
+                               #tipoDiaCombo
+                               name="CodTdia"
+                               (selectedItemChange)="onChangeTipoDedia($event)"
+                               id="CodTdia"
+                               placeHolder="Tipo de dia">
+                </tipoDia-combo>
+
+                <div *ngIf="CodTdia.invalid && (CodTdia.dirty || CodTdia.touched  || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="CodTdia.errors.required">
+                        El tipo de dia es requerido
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group col-md-4" [ngClass]="{'has-danger': CantidadDeCochesEstimados.invalid && (CantidadDeCochesEstimados.dirty || CantidadDeCochesEstimados.touched || detailForm.submitted)}">
+                <label>Cantidad De Coches Estimados</label>
+                <input #CantidadDeCochesEstimados="ngModel" 
+                       currencyMask min="0" max="500000"
+                       [options]="{ allowNegative: false, precision : 0,  prefix: '', thousands: '', decimal: ',' }"
+                       class="form-control" required type="text" name="CantidadDeCochesEstimados" [(ngModel)]="detail.CantidadDeCochesEstimados" maxlength="2000">
+                <div *ngIf="CantidadDeCochesEstimados.invalid && (CantidadDeCochesEstimados.dirty || CantidadDeCochesEstimados.touched || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="CantidadDeCochesEstimados.errors.required">
+                        La Cantidad es requerida
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4" [ngClass]="{'has-danger': CantidadDeConductoresEstimados.invalid && (CantidadDeConductoresEstimados.dirty || CantidadDeConductoresEstimados.touched || detailForm.submitted)}">
+                <label>Cantidad De Conductores Estimados</label>
+                <input #CantidadDeConductoresEstimados="ngModel" class="form-control" required
+         currencyMask min="0" max="500000"
+                       [options]="{ allowNegative: false, precision : 0,  prefix: '', thousands: '', decimal: ',' }"
+                       
+                       name="CantidadDeConductoresEstimados" [(ngModel)]="detail.CantidadDeConductoresEstimados" maxlength="2000">
+                <div *ngIf="CantidadDeConductoresEstimados.invalid && (CantidadDeConductoresEstimados.dirty || CantidadDeConductoresEstimados.touched || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="CantidadDeConductoresEstimados.errors.required">
+                        La Cantidad es requerida
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+
+        <div class="row">
+
+
+            <div class="form-group col-md-6" [ngClass]="{'has-danger': Motivo.invalid && (Motivo.dirty || Motivo.touched || detailForm.submitted)}">
+                <label>Motivo</label>
+
+                <textarea #Motivo="ngModel"
+                          class="form-control"
+                          type="text"
+                          name="Motivo"
+                          rows="4"
+                          required
+                          maxlength="2000"
+                          [(ngModel)]="detail.Motivo">
+
+                </textarea>
+
+                <div *ngIf="Motivo.invalid && (Motivo.dirty || Motivo.touched  || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="Motivo.errors.required">
+                        El campo es requerido
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group col-md-6">
+                <label>Descripción</label>
+
+                <span class="ui-fluid">
+                    <destdia-predictivo #Descripcion="ngModel"
+                                        [(ngModel)]="detail.Descripcion"
+                                        style="width:  100% !important;"
+                                        name="Descripcion"
+                                        #PredictivoDesTDia
+                                        id="Descripcion"                                       
+                                        [detail]="detail"
+                                        placeHolder="">
+                    </destdia-predictivo>
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue">
+            <i class="fa fa-save"></i> <span>Aceptar</span>
+        </button>
+    </div>
+</form>
+
+
+
+
+
+
+
+

@@ -1,0 +1,26 @@
+﻿.pTableSectores .ui-state-highlight{
+color:unset;
+}
+
+.thDenunciasImportador {
+    width: 80px !important;
+    min-width: 80px !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+}
+
+.tdDenunciasImportador {
+    width: 80px !important;
+    min-width: 80px !important;
+    min-height: 39px !important;
+    height: 39px !important;
+    font-size: 0.90em !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+}
+mat-form-field {
+    width: 165px;
+}
+

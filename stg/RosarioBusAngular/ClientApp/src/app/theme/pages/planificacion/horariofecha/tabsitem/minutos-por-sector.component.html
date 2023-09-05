@@ -1,0 +1,212 @@
+﻿<form #filterMinutosSecorForm="ngForm" novalidate autocomplete="off">
+    <div class="row">
+        <div class="form-group col-md-3" [ngClass]="{'has-danger': FilterCodTdia.invalid && (TipoHoraFiltro.dirty || FilterCodTdia.touched || filterMinutosSecorForm.submitted)}">
+            <label>Tipo de Dia</label>
+            <div class="input-group">
+                <tipoDia-combo #codTipoDiaCombo [(ngModel)]="filter.CodTdia" (itemstChange)="tipoDiaitemstChange($event)" (selectedItemChange)="LlenarGrilla()" livesearch="{{false}}" emptyText="{{'Seleccione..'}}" style="width: calc(100% - 48px);" name="FilterCodTdia"
+                               id="FilterCodTdia" required #FilterCodTdia="ngModel" placeHolder="Tipo de dia">
+                </tipoDia-combo>
+                <div class="input-group-append">
+                    <button type="button" [hidden]="!(allowCopiarMinutosPorSector && detail.BeforeMigration == false)" class="btn btn-accent" (click)="CopiarMinutos()">  <i class="fa fa-copy"></i></button>
+                </div>
+            </div>
+            <div *ngIf="FilterCodTdia.invalid && (FilterCodTdia.dirty || FilterCodTdia.touched || filterMinutosSecorForm.submitted)" class=" form-control-feedback">
+                <div *ngIf="FilterCodTdia.errors.required">
+                    Es Requerido
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="form-group col-md-3" [ngClass]="{'has-danger': FilterCodBanMinutos.invalid && (FilterCodBanMinutos.dirty || FilterCodBanMinutos.touched || filterMinutosSecorForm.submitted)}">
+            <label>Bandera</label>
+
+            <div class="input-group">
+
+                <bandera-combo #banderaComboMinutos [(ngModel)]="filter.CodBan" (itemstChange)="CodBanitemstChange($event)" (selectedItemChange)="LlenarGrilla()" emptyText="{{'Seleccione..'}}" name="FilterCodBanMinutos" style="width: calc(100% - 48px);" #FilterCodBanMinutos="ngModel"
+                               id="FilterCodBanMinutos" required placeHolder="Bandera">
+                </bandera-combo>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-accent" [hidden]="!(allowImportarMinutosPorSector && detail.BeforeMigration == false)" (click)="ImportarExcel()">  <i class="fa fa-file-excel-o"></i></button>
+                </div>
+                <div *ngIf="FilterCodBanMinutos.invalid && (FilterCodBanMinutos.dirty || FilterCodBanMinutos.touched || filterMinutosSecorForm.submitted)" class=" form-control-feedback">
+                    <div *ngIf="FilterCodBanMinutos.errors.required">
+                        Es Requerido
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group col-md-3" [ngClass]="{'has-danger': TipoHoraFiltro.invalid && (TipoHoraFiltro.dirty || TipoHoraFiltro.touched || filterMinutosSecorForm.submitted)}">
+            <label>Tipo de Hora</label>
+
+
+            <!--optionLabel="Description"
+            [options]="htposhoras"
+        dataKey="Id"-->
+
+            <p-dropdown [options]="htposhorasSelectItem" (onChange)="LlenarGrilla()" dropdownIcon="fa fa-fw fa-angle-down " filter="true" #tipoHoraCombo #TipoHoraFiltro="ngModel" name="TipoHoraFiltro" id="TipoHoraFiltro" [(ngModel)]="filter.TipoHora" [style]="{'width':'100%'}"></p-dropdown>
+
+
+
+
+            <div *ngIf="TipoHoraFiltro.invalid && (TipoHoraFiltro.dirty || TipoHoraFiltro.touched || filterMinutosSecorForm.submitted)" class=" form-control-feedback">
+                <div *ngIf="TipoHoraFiltro.errors.required">
+                    Es Requerido
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="col-md-3">
+            <button type="button" class="btn btn-accent" (click)="Buscar()" style="    position: relative;top: 25px;">Buscar</button>
+            <button *ngIf="minutos && minutos != null && allowExportarMinutosPorSector" type="button" class="btn btn-accent" (click)="ExportarExcel()" style="    position: relative;top: 25px;">
+                <i class="fa fa-file-excel-o"></i> <span>Exportar</span>
+            </button>
+        </div>
+
+
+    </div>
+</form>
+
+
+
+<!--<input type="text" value="99:99" [(ngModel)]="mask" name="datamask2">
+<input type="text" value="99:99" [(ngModel)]="patron" name="patron"  pattern="^(?:([0-5]?\d).)?([0-5]\d)$">-->
+
+<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+
+
+    <!--<div class="form-group col-md-4" [ngClass]="{'has-danger': datamask.hasError('pattern') ||  datamask.hasError('required')}">-->
+    <!--<input type="text"
+           class="form-control" mask="{{mask}}"
+                       pattern="^([0-5]?[0-9](\.([0-5]?[0-9])?)?)$"
+           #datamask="ngModel" [dropSpecialCharacters]="false" required [(ngModel)]="datamaskValue" name="datamask">-->
+    <!--<div *ngIf="datamask.hasError('pattern')"
+             class=" form-control-feedback">
+
+                patron no valido
+
+        </div>
+
+        <div *ngIf="datamask.hasError('required')"
+             class=" form-control-feedback">
+            <div *ngIf="datamask.errors.required">
+                requerido
+            </div>
+        </div>
+
+
+    </div>
+
+    <input type="text" [(ngModel)]="mask" name="datamask2" />-->
+    <!--{{datamaskValue}}-->
+    <!--<span *ngIf="datamask.hasError('pattern')">
+
+    </span>-->
+    <!--<span *ngIf="datamask.hasError('pattern')">
+        patron no valido
+    </span>-->
+    <!-- Tabla -->
+    <div class="row">
+
+        <div class="col-md-12 pTableSectores" [busyIf]="isLoadingMediaVueltas">
+            <!--[columns]="scrollableCols" [frozenColumns]="frozenCols"-->
+            <p-table [value]="minutos" [scrollable]="true" scrollHeight="300px" frozenWidth="290px">
+                <!--<ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+                <col *ngFor="let col of columns">
+            </colgroup>
+        </ng-template>-->
+
+
+                <ng-template pTemplate="frozenheader">
+                    <tr>
+                        <th style="width:20px">
+                        </th>
+                        <th style="width:70px; max-width: 70px !important" [hidden]="filter.TipoHora != ''">
+                            Tipo de Hora
+                        </th>
+                        <th style="width:40px !important; max-width: 40px !important">
+                            Total
+                        </th>
+                        <th style="width:40px !important; max-width: 40px !important">
+                            Suma
+                        </th>
+                        <th style="width:40px !important; max-width: 40px !important">
+                            Dif.<br />
+                        </th>
+                    </tr>
+
+                </ng-template>
+
+                <ng-template pTemplate="frozenbody" let-row>
+                    <tr [ngClass]="{'rowHasError': row.HasError}">
+                        <td style="width:20px">
+                            <span *ngIf="row.HasError" class="m-input-icon__icon m-input-icon__icon--right" data-toggle="m-tooltip" data-placement="top" title="{{row.ErrorMessages.join(',')}}">
+                                <span>
+                                    <i class="la la-info m--font-danger" style="font-size:14px"></i>
+                                </span>
+                            </span>
+                        </td>
+                        <td style="width:70px !important; max-width: 70px !important" [hidden]="filter.TipoHora != ''">{{row.TipoHoraDesc}}</td>
+                        <td style="width:40px !important; max-width: 40px !important">{{row.TotalMin}}</td>
+                        <td style="width:40px !important; max-width: 40px !important">{{row.Suma}}</td>
+                        <td style="width:40px !important; max-width: 40px !important" [ngClass]="{'ColumnWarning': row.Dif != 0}">
+                            {{row.Dif| number : '1.2-2'}}
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of sectores" style="width:80px">
+                            {{col.Calle1}}- {{col.Calle2}}
+                        </th>
+                    </tr>
+                </ng-template>
+
+
+
+
+                <ng-template pTemplate="body" let-row>
+                    <tr #myTr>
+                        <td pEditableColumn class="{{row.Id.toString()}}-{{rowData.Orden}}" *ngFor="let rowData of row.HDetaminxtipo; let i = index" style="width:80px">
+                            <p-cellEditor [class.firstCE]="i==1" >
+                                <ng-template pTemplate="input">
+                                    <input [attr.tabindex]="i==0 ? -1: null" (keydown)="UpDownFocus(row, rowData, $event)" [readonly]="i==0" pInputText type="number" [(ngModel)]="rowData.Minuto" name="{{rowData.CodMinxtipo}}_{{i}}" (focus)="focusFunction($event)" (input)="OnInputChanged(row, rowData)">
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    <span *ngIf="i > 0"> {{rowData.Minuto | number :  '1.2-2'}}</span>
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                    </tr>
+                </ng-template>
+
+
+            </p-table>
+
+
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue"
+                [disabled]="!detailForm.form.valid"      [hidden]="!(allowGuardarMinutosPorSector && detail.BeforeMigration == false)"
+                [buttonBusy]="saving" [busyText]="'Guardando..'">
+            <i class="fa fa-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+
+</form>

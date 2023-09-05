@@ -1,0 +1,37 @@
+﻿<td>
+    <div class="template-vacio">
+        <rangoshorarios-combo #ComboTurno
+                              name="ComboTurno"
+                              id="ComboTurno"
+                              emptyText="{{'Seleccione..'}}"
+                              [disabledSelectPicker]="true"
+                              [BuscarRangoHorario]="true" 
+                              [(ngModel)]="item.RangoHorarioId"
+                              [IsDisabled] ="!allowmodificarDiagramacion"
+                              (ngModelChange)="OnTurnoComboChanged($event, item)"
+                              [items]="rangohorariosItemsSinFT">
+        </rangoshorarios-combo>
+    </div>
+    <div class="template-vacio">
+        <zonas-combo #ComboZona
+                     name="ComboZona"
+                     id="ComboZona"
+                     emptyText="{{'Seleccione..'}}"
+                     [disabledSelectPicker]="true"
+                     [IsDisabled]="isDisabledZona || !allowmodificarDiagramacion"
+                     [Anulado]="2"
+                     [BuscarZona]="true"
+                     [(ngModel)]="item.ZonaId"
+                     (ngModelChange)="OnZonaComboChanged($event, item)"
+                     [items]="zonasItems">
+        </zonas-combo>
+        <div *ngIf="(!isDisabledZona) "
+             class="validacion-zona">
+            <div *ngIf="(!isDisabledZona)" class="validacion-zona">
+                Zona Requerida
+            </div>
+        </div>
+    </div>
+</td>
+
+

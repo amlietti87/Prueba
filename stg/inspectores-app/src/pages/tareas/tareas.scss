@@ -1,0 +1,35 @@
+page-tareas {
+
+  .select-form {
+    border-bottom: 1px solid #dedede !important;
+  }
+
+  .item-md{
+    padding-left: 0px !important;
+  }
+
+  //Pagina sin consultas
+  .sin-consultas {
+    padding-top: 30px;
+  }
+    
+  .item-icon-not-search{
+    text-align: center;
+  }
+    
+  .label-info{
+    font-size: 20px;
+    color: #D7DBDD;
+  }
+    
+  .icon-not-search {
+    font-size: 300px;
+    color: #1ABC9C;
+    opacity: 0.2;
+  }
+    
+  .has-refresher > .scroll-content{
+    border-top-color: #ffffff !important;
+  }
+
+}

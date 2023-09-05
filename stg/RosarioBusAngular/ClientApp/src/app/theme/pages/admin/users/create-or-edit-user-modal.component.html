@@ -1,0 +1,293 @@
+﻿<div bsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #detailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="detail.Id">Editar Usuario : {{detail.NomUsuario}}</span>
+                        <span *ngIf="!detail.Id">Crear usuario</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <tabset class="tab-container tabbable-line">
+                        <tab heading="{{'Usuario'}}" customClass="m-tabs__item">
+                            <div class="row">
+                                <div class="col-sm-3 text-center margin-bottom-15 margin-top-15">
+                                    <img src="../../../../../assets/app/media/img/users/default-profile-picture.jpg" width="70" height="70" class="img-thumbnail img-rounded" />
+                                </div>
+
+                                <div class="col-sm-9">
+                                    <div class="form-group">
+                                        <label>{{l("Usuario")}}</label>
+                                        <div class="input-group">
+                                            <input #LogonName="ngModel" class="form-control" type="text" id="LogonName" name="LogonName"
+                                                   [(ngModel)]="detail.LogonName"
+                                                   disabled *ngIf="!detail.PermiteLoginManual">
+
+                                            <input #LogonNameNroDoc="ngModel" class="form-control" type="text" id="LogonNameNroDoc" name="LogonNameNroDoc"
+                                                   [(ngModel)]="detail.NroDoc"
+                                                   disabled *ngIf="detail.PermiteLoginManual">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--*ngIf="IsLdapActive"-->
+                            <div class="row">
+                                <div *ngIf="!detail.PermiteLoginManual" class="form-group col-md-4" [ngClass]="{'has-danger':  LogicalLogon &&  LogicalLogon.invalid && (LogicalLogon.dirty || LogicalLogon.touched)}">
+                                    <label>{{"LogicalLogon"}}</label>
+                                    <input #LogicalLogon="ngModel" type="text" class="form-control" [(ngModel)]="detail.LogicalLogon"
+                                           name="LogicalLogon" [disabled]="!detail.PermiteLoginManual  || modoInspector"
+                                           *ngIf="!detail.PermiteLoginManual"
+                                           required maxlength="30">
+                                    <div *ngIf="LogicalLogon && LogicalLogon.invalid && (LogicalLogon.dirty || LogicalLogon.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="LogicalLogon.errors.required">
+                                            El LogicalLogon es Requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4" [ngClass]="{'has-danger': DisplayName.invalid && (DisplayName.dirty || DisplayName.touched)}">
+                                    <label>Alias</label>
+                                    <input #DisplayName="ngModel" type="text" class="form-control" [(ngModel)]="detail.DisplayName"
+                                           name="DisplayName" [disabled]="!detail.PermiteLoginManual || modoInspector"
+                                           required maxlength="50">
+                                    <div *ngIf="DisplayName.invalid && (DisplayName.dirty || DisplayName.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="DisplayName.errors.required">
+                                            El Alias es Requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4" [ngClass]="{'has-danger': CanonicalName.invalid && (CanonicalName.dirty || CanonicalName.touched)}">
+                                    <label>Nombre Completo</label>
+                                    <input #CanonicalName="ngModel" type="text" class="form-control" [(ngModel)]="detail.CanonicalName"
+                                           name="CanonicalName" [disabled]="!detail.PermiteLoginManual || modoInspector"
+                                           required maxlength="150">
+                                    <div *ngIf="CanonicalName.invalid && (CanonicalName.dirty || CanonicalName.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="CanonicalName.errors.required">
+                                            El Nombre Completo es Requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4" [ngClass]="{'has-danger': Mail.invalid && (Mail.dirty || Mail.touched)}">
+                                    <label>Email</label>
+                                    <input #Mail="ngModel" type="email" class="form-control" [(ngModel)]="detail.Mail"
+                                           name="email" [disabled]="!detail.PermiteLoginManual || modoInspector"
+                                           pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,10}$"
+                                           required
+                                           maxlength="100">
+                                    <div *ngIf="Mail.invalid && (Mail.dirty || Mail.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="Mail.errors.pattern">
+                                            No es un Email valido
+                                        </div>
+                                        <div *ngIf="Mail.errors.required">
+                                            El Email es requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4" [ngClass]="{'has-danger': Area.invalid && (Area.dirty || Area.touched)}">
+                                    <label>Área</label>
+                                    <input #Area="ngModel" type="text" class="form-control" [(ngModel)]="detail.Area"
+                                           name="Area" [disabled]="!detail.PermiteLoginManual || modoInspector"
+                                           required maxlength="50">
+                                    <div *ngIf="Area.invalid && (Area.dirty || Area.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="Area.errors.required">
+                                            El Área es Requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4" [ngClass]="{'has-danger': TpoDoc.invalid && (TpoDoc.dirty || TpoDoc.touched)}">
+                                    <label>Tipo de documento</label>
+                                    <input #TpoDoc="ngModel" type="text" class="form-control" [(ngModel)]="detail.TpoDoc"
+                                           name="TpoDoc" [disabled]="!detail.PermiteLoginManual || modoInspector"
+                                           required maxlength="6">
+                                    <div *ngIf="TpoDoc.invalid && (TpoDoc.dirty || TpoDoc.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="TpoDoc.errors.required">
+                                            El Tipo de documento es Requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4" [ngClass]="{'has-danger': NroDoc.invalid && (NroDoc.dirty || NroDoc.touched)}">
+                                    <label>Nro. documento</label>
+                                    <input #NroDoc="ngModel" type="text" class="form-control" [(ngModel)]="detail.NroDoc"
+                                           name="NroDoc" [disabled]="!detail.PermiteLoginManual || modoInspector"
+                                           required maxlength="15">
+                                    <div *ngIf="NroDoc.invalid && (NroDoc.dirty || NroDoc.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="NroDoc.errors.required">
+                                            El Nro. documento es Requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4" [ngClass]="{'has-danger': TelTrabajo.invalid && (TelTrabajo.dirty || TelTrabajo.touched)}">
+                                    <label>Teléfono laboral</label>
+                                    <input #TelTrabajo="ngModel" type="text" class="form-control" [(ngModel)]="detail.TelTrabajo"
+                                           name="TelTrabajo" [disabled]="!detail.PermiteLoginManual || modoInspector"
+                                           required maxlength="30">
+                                    <div *ngIf="TelTrabajo.invalid && (TelTrabajo.dirty || TelTrabajo.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="TelTrabajo.errors.required">
+                                            El Teléfono laboral es Requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4" [ngClass]="{'has-danger': TelPersonal.invalid && (TelPersonal.dirty || TelPersonal.touched)}">
+                                    <label>Teléfono personal</label>
+                                    <input #TelPersonal="ngModel" type="text" class="form-control" [(ngModel)]="detail.TelPersonal"
+                                           name="TelPersonal" [disabled]="!detail.PermiteLoginManual || modoInspector"
+                                           required maxlength="40">
+                                    <div *ngIf="TelPersonal.invalid && (TelPersonal.dirty || TelPersonal.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="TelPersonal.errors.required">
+                                            El Teléfono personal es Requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4" [ngClass]="{'has-danger': Baja.invalid && (Baja.dirty || Baja.touched)}">
+                                    <label>{{"Baja"}}</label>
+                                    <input #Baja="ngModel" type="text" class="form-control" [(ngModel)]="detail.Baja"
+                                           name="Baja" disabled
+                                           maxlength="1">
+                                    <div *ngIf="Baja.invalid && (Baja.dirty || Baja.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="Baja.errors.required">
+                                            El Baja es Requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4" [ngClass]="{'has-danger': CodEmp.invalid && (CodEmp.dirty || CodEmp.touched)}">
+                                    <label>Legajo</label>
+                                    <input #CodEmp="ngModel" type="text" class="form-control" [(ngModel)]="detail.CodEmp"
+                                           name="CodEmp" disabled
+                                           maxlength="100">
+                                    <div *ngIf="CodEmp.invalid && (CodEmp.dirty || CodEmp.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="CodEmp.errors.required">
+                                            El Legajo es Requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group col-md-4">
+                                    <label>Unidad de negocio</label>
+                                    <sucursal-combo #SucursalId="ngModel"
+                                                    name="SucursalId"
+                                                    [disabled]="!detail.PermiteLoginManual && false || modoInspector"
+                                                    [(ngModel)]="detail.SucursalId" emptyText="{{'Seleccione...'}}">
+                                    </sucursal-combo>
+                                </div>
+
+                                <div class="form-group col-md-4" [ngClass]="{'has-danger': allowInspector && (this.detail.GruposInspectoresId == null || this.detail.GruposInspectoresId.toString() == '')}">
+                                    <label>Grupos de Inspectores</label>
+                                    <gruposinspectores-combo #GruposInspectoresId
+                                                             name="GruposInspectoresId"
+                                                             [disabled]="!detail.PermiteLoginManual && false"
+                                                             [Anulado]="2"
+                                                             [(ngModel)]="detail.GruposInspectoresId" 
+                                                             (ngModelChange)="OnChangeGrupos($event)"
+                                                             emptyText="{{'Seleccione...'}}">
+                                    </gruposinspectores-combo>
+                                    <div *ngIf="allowInspector && (detail.GruposInspectoresId == null || detail.GruposInspectoresId.toString() == '') "
+                                         class=" form-control-feedback">
+                                        <div *ngIf="allowInspector && (detail.GruposInspectoresId == null || detail.GruposInspectoresId.toString() == '')">
+                                            El Grupo de Inspectores es Requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-4" [ngClass]="{'has-danger': allowEmpleado && selecEmpleado == null}">
+                                    <label>Empleado</label><br />
+                                    <span class="ui-fluid">
+                                        <empleado-autocomplete [(ngModel)]="selecEmpleado"
+                                                               #EmpleadoId
+                                                               name="EmpleadoId"
+                                                               id="EmpleadoId"
+                                                               placeHolder="Empleado"
+                                                               (onChange) ="OnChangeEmpleado($event, selecEmpleado)">
+                                        </empleado-autocomplete>
+                                    </span>
+                                    <div *ngIf="allowEmpleado && selecEmpleado == null"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="allowEmpleado && selecEmpleado == null ">
+                                            El empleado es Requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4" [ngClass]="{'has-danger': allowTurno && (this.detail.TurnoId == null || this.detail.TurnoId.toString() == '')}">
+                                    <label>Turno</label>
+                                    <persturnos-combo   #TurnoId
+                                                        name="TurnoId"
+                                                        [filtrarPorGrupos] = 'true'
+                                                        [GrupoInspectorId] = 'detail.GruposInspectoresId'
+                                                        [disabled]="!detail.PermiteLoginManual && false"
+                                                        [(ngModel)]="detail.TurnoId" 
+                                                        emptyText="{{'Seleccione...'}}">
+                                    </persturnos-combo>
+                                    <div *ngIf="allowTurno && (this.detail.TurnoId == null || this.detail.TurnoId.toString() == '') "
+                                         class=" form-control-feedback">
+                                        <div *ngIf="allowTurno && (this.detail.TurnoId == null || this.detail.TurnoId.toString() == '')">
+                                            El Turno es Requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </tab>
+
+                        <tab heading="{{'Roles'}}" customClass="m-tabs__item" *ngIf="!modoInspector" >
+                            <ng-template tabHeading>
+                                <span class="badge badge-primary">{{getAssignedRoleCount()}}</span>
+                            </ng-template>
+                            <div class="m-checkbox-list">
+                                <label attr.for="EditUser_{{role.RoleName}}" class="m-checkbox" *ngFor="let role of roles">
+                                    <input id="EditUser_{{role.RoleName}}" type="checkbox" name="{{role.RoleName}}" [(ngModel)]="role.IsAssigned" (ngModelChange)="OnChangeRole($event, role)">
+                                    {{role.RoleDisplayName}}
+                                    <span></span>
+                                </label>
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-brand"
+                            [buttonBusy]="saving" [busyText]="'Procesando..'" style="margin-right: 100px;"
+                            *ngIf="detail.PermiteLoginManual && viewMode!= 1 && allowBlanquearPassword"
+                            [hidden]="modoInspector"
+                            (click)="resetPassword()">
+                        <i class="fa fa-save"></i> <span>Blanquear Contraseña</span>
+                    </button>
+
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary blue"
+                            [buttonBusy]="saving" [busyText]="'Guardando..'"
+                            [disabled]="!detailForm.form.valid"
+                            [hidden]="!allowModificarUsr"
+                            >
+                        <i class="fa fa-save"></i> <span>Guardar</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

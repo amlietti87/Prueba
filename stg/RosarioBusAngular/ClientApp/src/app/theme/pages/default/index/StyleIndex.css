@@ -1,0 +1,154 @@
+﻿#layout-dialog .aui-dialog {
+    border: none;
+}
+
+#layout-dialog h2 a, #layout-dialog h2 a:link, #layout-dialog h2 a:visited, #layout-dialog h2 a:hover, #layout-dialog h2 a:active, #layout-dialog h2 a:focus {
+    background: transparent url('/s/en_US-gaxdwv/729/65/3.1.21/_/download/resources/com.atlassian.gadgets.dashboard:dashboard/../../resources/com.atlassian.gadgets.dashboard%3Adashboard/images/icons/close.png') no-repeat 0 0;
+    display: block;
+    height: 16px;
+    position: absolute;
+    right: .5em;
+    text-indent: -9999px;
+    top: .75em;
+    width: 16px;
+}
+
+#layout-dialog .dialog-panel-body {
+    padding: 10px 0 10px 16px;
+}
+
+#layout-dialog p {
+    margin: 0 0 1em 0;
+    text-align: left;
+}
+
+#layout-dialog ul {
+    margin: 0;
+    padding: 0;
+}
+
+    #layout-dialog ul li {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+        #layout-dialog ul li a, #layout-dialog ul li a:link, #layout-dialog ul li a:visited {
+            border: 1px solid #bbb;
+            display: block;
+            float: left;
+            margin: 0 1em 1em 0;
+            outline: none;
+            padding: .35em;
+            width: auto;
+        }
+
+            #layout-dialog ul li a:hover, #layout-dialog ul li a:active, #layout-dialog ul li a:focus {
+                border-color: #666;
+            }
+
+            #layout-dialog ul li a strong {
+                background: #fff url('/../../../assets/vendors/base/images/sprite-layouts.png') no-repeat 0;
+                cursor: pointer;
+                display: block;
+                float: left;
+                height: 37px;
+                text-indent: -9999px;
+                width: 68px;
+            }
+
+ul li a#layout-a strong {
+    background-position: 0 0;
+}
+
+ul li a#layout-aa strong {
+    background-position: 0 -41px;
+}
+
+ul li a#layout-ba strong {
+    background-position: 0 -82px;
+}
+
+ul li a#layout-ab strong {
+    background-position: 0 -123px;
+}
+
+ul li a#layout-aaa strong {
+    background-position: 0 -163px;
+}
+
+ul li a#layout-aab strong {
+    background-position: 0 -204px;
+}
+
+.layout-a ul li #layout-a strong, #layout-dialog #layout-a:hover strong, #layout-dialog #layout-a:active strong, #layout-dialog #layout-a:focus strong {
+    background-position: -72px -1px;
+}
+
+.layout-aa ul li #layout-aa strong, #layout-dialog #layout-aa:hover strong, #layout-dialog #layout-aa:active strong, #layout-dialog #layout-aa:focus strong {
+    background-position: -72px -41px;
+}
+
+.layout-ba #layout-ba strong, #layout-dialog #layout-ba:hover strong, #layout-dialog #layout-ba:active strong, #layout-dialog #layout-ba:focus strong {
+    background-position: -72px -82px;
+}
+
+.layout-ab #layout-ab strong, #layout-dialog #layout-ab:hover strong, #layout-dialog #layout-ab:active strong, #layout-dialog #layout-ab:focus strong {
+    background-position: -72px -122px;
+}
+
+.layout-aaa #layout-aaa strong, #layout-dialog #layout-aaa:hover strong, #layout-dialog #layout-aaa:active strong, #layout-dialog #layout-aaa:focus strong {
+    background-position: -72px -163px;
+}
+
+.layout-aaa #layout-aab strong, #layout-dialog #layout-aab:hover strong, #layout-dialog #layout-aab:active strong, #layout-dialog #layout-aab:focus strong {
+    background-position: -72px -204px;
+}
+
+.layout-a ul li a#layout-a, .layout-aa ul li a#layout-aa, .layout-ba ul li a#layout-ba, .layout-ab ul li a#layout-ab, .layout-aaa ul li a#layout-aaa {
+    background-color: #eee;
+    border-color: #666;
+}
+
+
+
+.m-portlet .m-portlet--sortable-empty {
+    background: transparent;
+    color: #aaa;
+    font-size: 2em;
+    padding: 2em;
+    text-align: center;
+    background: #f5f5f5;
+    border: 2px dashed #bbb;
+    height: 200px;
+}
+
+.sortable { 
+    border-radius: 0.25rem; 
+}
+
+.porletContainner {
+    padding: 0px;
+}
+
+.porletContainner .list-group-item {
+        border: none;
+        background-color: transparent;
+        padding: 0px 15px 0px 15px;
+    }
+
+.list-group {
+    border: none;
+    background-color: transparent;
+}
+
+
+.isEdit .porletContainner {
+    border: 1px dashed #c3c3c3;
+}
+
+.isEdit .sortable {
+    background: #eee;
+    border-radius: 0.25rem;
+    min-height: 400px;
+}

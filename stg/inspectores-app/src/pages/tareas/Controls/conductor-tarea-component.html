@@ -1,0 +1,12 @@
+<ion-item class="item-searcheable">
+  <conductores-searcheables #conductorSearchables  (conductorSeleccionado)="onConductorChange($event)">
+    </conductores-searcheables>
+    <button *ngIf="value" class="btn-add" ion-button icon-only item-end clear="true" large (click)="verConductor()">
+    <ion-icon name="ios-add" color="primary"></ion-icon>
+  </button>
+</ion-item>
+
+
+<ion-item *ngIf="showRequired" no-lines>
+  <p color="danger" ion-text >{{conductorSearchables.label}} es requerido</p>
+</ion-item>

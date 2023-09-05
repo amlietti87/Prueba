@@ -1,0 +1,303 @@
+﻿<div [busyIf]="aplicandoAccion">
+    <div class="m-content" >
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form class="horizontal-form filters"
+                      autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+                        <div class="row m--margin-bottom-10"
+                             [hidden]="!advancedFiltersAreShown">
+                            <!--aca los filtros-->
+
+
+                            <div class="form-group col-lg-2">
+                                <label>Unidad de Negocio</label>
+                                <sucursal-combo name="SucursalId" 
+                                                #SucursalCombo 
+                                                name="SucursalId"
+                                                id="SucursalId"
+                                                [(ngModel)]="filter.SucursalId" emptyText="{{'Todas'}}">
+                                </sucursal-combo>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Empresa</label>
+                                <empresa-combo #EmpresaId name="EmpresaId" [(ngModel)]="filter.EmpresaId" emptyText="{{'Todas'}}">
+                                </empresa-combo>
+                            </div>
+                            <div class="form-group col-lg-1" style="margin-right: 5rem;" styleClass="fixer">
+                                <label>Desde</label>
+                                <br />
+                                <mat-form-field style="width: 120px !important;" styleClass="fixer">
+                                    <input matInput [(ngModel)]="filter.FechaDesde" name="FechaDesde" [matDatepicker]="FechaDesde">
+                                    <mat-datepicker-toggle matSuffix [for]="FechaDesde"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaDesde></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-group col-lg-1" style="margin-right: 5rem;" styleClass="fixer">
+                                <label>Hasta</label>
+                                <br />
+                                <mat-form-field style="width: 120px !important;" styleClass="fixer">
+                                    <input matInput [(ngModel)]="filter.FechaHasta" name="FechaHasta" [matDatepicker]="FechaHasta">
+                                    <mat-datepicker-toggle matSuffix [for]="FechaHasta"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaHasta></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-group col-lg-3">
+                                <label>Tipo de Documento</label>
+                                <fdtiposdocumentos-combo name="TipoDocumentoId" [(ngModel)]="filter.TipoDocumentoId" emptyText="{{'Todos'}}">
+                                </fdtiposdocumentos-combo>
+                            </div>
+
+                            <div class="form-group col-lg-4">
+                                <label>Empleado</label><br />
+                                <span class="ui-fluid">
+                                    <empleado-autocomplete [(ngModel)]="filter.EmpleadoId"
+                                                           #ConductorId
+                                                           name="EmpleadoId"
+                                                           id="EmpleadoId"
+                                                           placeHolder="Todos">
+                                    </empleado-autocomplete>
+                                </span>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label>Estado</label>
+                                <fdestados-combo name="EstadoId" [MostrarBDEmpleado]="false"  [(ngModel)]="filter.EstadoId" emptyText="{{'Todos'}}">
+                                </fdestados-combo>
+                            </div>
+                            <div class="form-group col-lg-2" style="max-width: 10rem !important;">
+                                <label>Rechazado</label>
+                                <yesnoall-combo name="Rechazado"
+                                                #RechazadoCombo
+                                                id="Rechazado"
+                                                #Rechazado="ngModel"
+                                                [(ngModel)]="filter.Rechazado"
+                                                emptyText="{{'Todos'}}">
+                                </yesnoall-combo>
+                            </div>
+                            <div class="form-group col-lg-2" style="max-width: 10rem !important;">
+                                <label>Cerrado</label>
+                                <yesnoall-combo name="Cerrado"
+                                                id="Cerrado"
+                                                #CerradoCombo
+                                                #Cerrado="ngModel"
+                                                [(ngModel)]="filter.Cerrado"
+                                                emptyText="{{'Todos'}}">
+                                </yesnoall-combo>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-sm-12 text-right">
+                                    <button type="button" class="btn btn-metal" (click)="BorrarFiltros()">
+                                        <i class="fa fa-refresh"></i> Borrar Filtros
+                                    </button>
+                                    <button type="button" class="btn btn-metal"
+                                            (click)="actualizar()">
+                                        <i class="fa fa-refresh"></i> Actualizar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margin-bottom-10">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" [hidden]="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> Mostrar filtros avanzados</span>
+                                <span class="clickable-item text-muted" [hidden]="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> Ocultar filtros avanzados</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row" [hidden]="!(AccionCombo.items && AccionCombo.items.length > 0)">
+                                <div class="form-group col-lg-4" style="display:inline-block; min-width: 50% !important" *ngIf="historialEstados">
+                                    <input type="checkbox"
+                                            name="ocultarGrillaCtrl"
+                                            #ocultarGrillaCtrl="ngModel"
+                                            [(ngModel)]="mostrarGrilla" />
+                                    <label style="margin-bottom: 1rem;">Totales por Estado</label>
+                                    <button type="button" class="btn btn-metal" style="margin-left: 25%;" *ngIf="allowExportarExcel && primengDatatableHelper.records && primengDatatableHelper.records != null && primengDatatableHelper.records.length > 0" (click)="ExportarExcel()">
+                                        <i class="fa fa-save"></i> Exportar a Excel
+                                    </button>
+                                    <div class="primeng-datatable-container primeng-small primeng-small-buttons-small" [hidden]="!mostrarGrilla" style="text-align:center">
+                                        <p-dataTable [value]="historialEstados"
+                                                        scrollable="true"
+                                                        scrollHeight="300px"
+                                                        [editable]="false"
+                                                        responsive="false"
+                                                        emptyMessage="">
+
+                                            <!-- Column Estado-->
+                                            <p-column field="Estado"
+                                                        header="Estado"
+                                                        [editable]="false"
+                                                        [sortable]="false"
+                                                        styleClass="col-primeng-large">
+                                                <ng-template let-row="rowData"
+                                                                pTemplate="body">
+                                                    <div><span>{{ row.Estado }}</span></div>
+                                                </ng-template>
+                                            </p-column>
+
+
+                                            <!-- Column Cantidad-->
+                                            <p-column field="Cantidad"
+                                                        header="Cantidad"
+                                                        [editable]="false"
+                                                        [sortable]="false"
+                                                        styleClass="col-primeng-small">
+                                                <ng-template let-row="rowData"
+                                                                pTemplate="body">
+                                                    <div><span>{{ row.Cantidad}}</span></div>
+                                                </ng-template>
+
+                                            </p-column>
+
+                                        </p-dataTable>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="row" [hidden]="!(AccionCombo.items && AccionCombo.items.length > 0)">
+                                <div class="form-group col-lg-4">
+                                    <label>Acciones</label>
+                                    <accionesgrilla-combo #AccionCombo [MostrarBDEmpleado]="false" [DocumentosGrilla]="allData" name="AccionId" (selectedItemChange)="ChangeAction()" [(ngModel)]="filter.AccionId" emptyText="{{'Seleccione...'}}" [disabled]="selectedData != null && selectedData.length > 0">
+                                    </accionesgrilla-combo>
+                                </div>
+                                <div class="form-group col-lg-2" style="padding-top: 2rem;">
+                                    <button type="button" class="btn btn-metal" *ngIf="filter.AccionId && filter.AccionId != null && selectedData && selectedData != null && selectedData.length > 0" (click)="EjecutarAccion()">
+                                        <i class="fa fa-save"></i> Procesar
+                                    </button>
+                                </div>          
+                                <label class="form-group col-lg-4" style="padding-top: 2.5rem;" *ngIf="selectedData != null && selectedData.length > 0">
+                                    <b>Total de documentos marcados:  {{selectedData.length}}</b>
+                                </label>                      
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+
+                    <div class="primeng-datatable-container primeng-small" style="overflow:auto; "
+                         [busyIf]="primengDatatableHelper.isLoading">
+
+                        <p-dataTable #dataTable
+                                     [lazy]="true"
+                                     (onLazyLoad)="onSearch($event)"
+                                     [value]="primengDatatableHelper.records"
+                                     [paginator]="false"
+                                     emptyMessage="{{l('Sin Datos')}}"
+                                     [scrollable]="false"
+                                     [tableStyle]="{'table-layout':'auto'}"
+                                     [(selection)]="selectedData"
+                                     (onHeaderCheckboxToggle)="onTableHeaderCheckboxToggle($event)"
+                                     (onRowSelect)="onRowSelect($event)"
+                                     responsive="primengDatatableHelper.isResponsive">
+
+                            <p-column *ngIf="filter.AccionId && filter.AccionId != null">
+                                <ng-template pTemplate="header">
+                                    <!-- <label class="m-checkbox m-checkbox--air ">
+                                        <input type="checkbox" id="{{'checkedAllRows'}}" (change)="selectAllRows($event)" /><span></span>
+                                    </label> -->                                 
+                                    <div class="m-checkbox m-checkbox--air" style="margin-top: 5px !important; padding-top: 2px !important; padding-left: 0px !important; margin-bottom: 0px !important;" (click)="selectAllRows($event)" [class.isDisabled]="IsCheckingAll">
+                                            <label [hidden]="!checkedAll"> 
+                                                <i class="fa fa-check-square-o" style="font-size: 18px;"></i>
+                                            </label>
+                                            <label [hidden]="checkedAll"> 
+                                                <i class="fa fa-square-o" style="font-size: 18px;"></i> 
+                                            </label>
+                                        </div>
+                                </ng-template>
+                                <ng-template let-col let-row="rowData" pTemplate="body" style="text-align:center">
+                                    <div class="m-checkbox m-checkbox--air" style="margin-top: 5px !important; padding-top: 2px !important; padding-left: 0px !important; margin-bottom: 0px !important;"  (click)="checkRow(row)" *ngIf="checkIfShowBox(row)">
+                                        <label [hidden]="!row.IsSelected">  
+                                            <i class="fa fa-check-square-o" style="font-size: 18px;"></i>
+                                        </label>
+                                        <label [hidden]="row.IsSelected"> 
+                                            <i class="fa fa-square-o" style="font-size: 18px;"></i> 
+                                        </label>
+                                    </div>
+                                </ng-template>
+                            </p-column>
+                            
+                            <p-column field="TipoDocumento.Descripcion" styleClass="own-row" header="Tipo Doc." [sortable]="true">
+                                <ng-template let-col
+                                             let-row="rowData"
+                                             pTemplate
+                                             type="body">
+                                    {{row.TipoDocumentoDescripcion}}
+                                </ng-template>
+                            </p-column>
+                            <p-column field="Fecha" header="Fecha" styleClass="fecha" [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">{{row.Fecha | date: 'dd/MM/yyyy'}}</ng-template>
+                            </p-column>
+                            <p-column field="NombreEmpleado" header="Empleado" [sortable]="true">
+                            </p-column>
+                            <p-column field="LegajoEmpleado" styleClass="own-row" header="Legajo" [sortable]="true">
+                            </p-column>
+                            <p-column field="Sucursal.DscSucursal" styleClass="own-row" header="U. Negocio" [sortable]="true">
+                                <ng-template let-col
+                                             let-row="rowData"
+                                             pTemplate
+                                             type="body">
+                                    {{row.SucursalDescripcion}}
+                                </ng-template>
+                            </p-column>
+                            <p-column field="Empresa.DesEmpr" styleClass="own-row" header="Empresa" [sortable]="true">
+                                <ng-template let-col
+                                             let-row="rowData"
+                                             pTemplate
+                                             type="body">
+                                    {{row.EmpresaDescripcion}}
+                                </ng-template>
+                            </p-column>
+                            <p-column field="EstadoId" styleClass="estado-large" header="Estado" [sortable]="false">
+                                <ng-template let-col
+                                             let-row="rowData"
+                                             pTemplate
+                                             type="body">
+                                    <img *ngFor="let item of row.EstadosConHistorico" id="inputimagenAdd" title="{{item.Descripcion}}" src="{{appDownloadUrl + '\?id=' + item.ImagenGrilla }}" style="max-width: 30px; max-height: 30px;" />
+                                </ng-template>
+                            </p-column>
+                            <p-column field="Rechazado" header="Rech" [sortable]="true" styleClass="own-row">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div style="text-align:center">
+                                        <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': row.Rechazado}">
+                                            <input [(ngModel)]="row.Rechazado" type="checkbox" disabled><span></span>
+                                        </label>
+                                    </div>
+                                </ng-template>
+                            </p-column>
+                            <p-column field="Cerrado" header="Cerrado" [sortable]="true" styleClass="own-row">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div style="text-align:center">
+                                        <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': row.Cerrado}">
+                                            <input [(ngModel)]="row.Cerrado" type="checkbox" disabled><span></span>
+                                        </label>
+                                    </div>
+                                </ng-template>
+                            </p-column>
+                        </p-dataTable>
+
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                                         #paginator
+                                         (onPageChange)="onSearch($event)"
+                                         [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                Registros totales:  {{ primengDatatableHelper.totalRecordsCount}}
+                                <!-- <div class="col-lg-2" style="margin-bottom: 0rem; padding: 0rem 1rem 0rem 0rem;"> -->
+                                    <button type="button" class="btn btn-metal" style="margin-left: 55px;" *ngIf="filter.AccionId && filter.AccionId != null && selectedData && selectedData != null && selectedData.length > 0" (click)="EjecutarAccion()">
+                                        <i class="fa fa-save"></i> Procesar
+                                    </button>
+                                    <label *ngIf="selectedData != null && selectedData.length > 0" style="padding-left: 15px">
+                                        <b>Total de documentos marcados:  {{selectedData.length}}</b>
+                                    </label>        
+                                <!-- </div> -->
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

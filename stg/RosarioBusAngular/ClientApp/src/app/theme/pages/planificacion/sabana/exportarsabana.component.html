@@ -1,0 +1,25 @@
+<form #exporExcelForm="ngForm" novalidate (ngSubmit)="export()" autocomplete="off" [busyIf]="isExporting">
+    <div class="modal-header" >
+        <h4 class="modal-title">
+            Tipo de Informe.
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <!--  Portlet body  -->
+    <div class="row">
+        <div class="ui-g" style="width:100%;margin-bottom:10px">
+            <div class="ui-g-12"><p-radioButton #TipoInforme="ngModel" id="TipoInforme" value="1" type="checkbox" name="TipoInforme" label="Reporte Sin Minutos" [(ngModel)]="horarios.TipoInforme"></p-radioButton></div>
+            <div class="ui-g-12"><p-radioButton #TipoInforme="ngModel" id="TipoInforme" value="2" type="checkbox" name="TipoInforme" label="Reporte Con Minutos" [(ngModel)]="horarios.TipoInforme"></p-radioButton></div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <!-- Guardar Button  -->
+        <button type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue">
+                <i class="fa fa-file-excel-o"></i> <span>Exportar</span>
+        </button>
+    </div>
+</form>

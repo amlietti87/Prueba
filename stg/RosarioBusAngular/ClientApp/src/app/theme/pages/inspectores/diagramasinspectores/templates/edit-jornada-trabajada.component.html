@@ -1,0 +1,101 @@
+<form #editJornadaForm="ngForm" novalidate (ngSubmit)="editJornadaForm.form.valid && saveChanges(editJornadaForm)" autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            {{titulo}}
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true" style="font-size:22px !important">&times;</span>
+        </button>
+    </div>
+
+    <!-- Hora Desde -->
+    <div class="row" style="padding-top: 10px">
+        <div class="form-group col-md-6" [ngClass]="{'has-danger': HoraDesdeModificadaValue.invalid && (HoraDesdeModificadaValue.dirty || HoraDesdeModificadaValue.touched)}">
+            <label>Hora Desde</label>
+            <ngb-timepicker #HoraDesdeModificadaValue="ngModel"
+                            [(ngModel)]="detail.HoraDesdeModificadaValue"
+                            name="HoraDesdeModificadaValue"
+                            [spinners]="false"
+                            [meridian]="false"
+                            size="small"
+                            required>
+            </ngb-timepicker>
+            <div *ngIf="HoraDesdeModificadaValue.invalid && (HoraDesdeModificadaValue.dirty || HoraDesdeModificadaValue.touched || editJornadaForm.submitted)" class=" form-control-feedback">
+                <div *ngIf="HoraDesdeModificadaValue.errors.required">
+                    Hora Desde es requerida
+                </div>
+            </div>
+        </div>
+
+        <!-- Hora Hasta -->
+        <div class="form-group col-md-6" [ngClass]="{'has-danger': HoraHastaModificadaValue.invalid && (HoraHastaModificadaValue.dirty || HoraHastaModificadaValue.touched)}">
+            <label>Hora Hasta</label>
+            <ngb-timepicker #HoraHastaModificadaValue="ngModel"
+                            [(ngModel)]="detail.HoraHastaModificadaValue"
+                            name="HoraHastaModificadaValue"
+                            [spinners]="false"
+                            [meridian]="false"
+                            size="small"
+                            required>
+            </ngb-timepicker>
+            <div *ngIf="HoraHastaModificadaValue.invalid && (HoraHastaModificadaValue.dirty || HoraHastaModificadaValue.touched || editJornadaForm.submitted)" class=" form-control-feedback">
+                <div *ngIf="HoraHastaModificadaValue.errors.required">
+                    Hora Hasta es requerida
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Zonas -->
+        <div class="form-group col-md-6" [ngClass]="{'has-danger': allowZona && (detail.ZonaId.toString() == 'null' || detail.ZonaId.toString() == '') }">
+            <label>Zona</label>
+            <zonas-combo #ComboZona="ngModel"
+                         #ZonaComboComponent
+                         emptyText="{{'Seleccione..'}}"   
+                         [disabledSelectPicker]="true"
+                         name="ZonaId"
+                         id="ZonaId"
+                         [Anulado]="2"
+                         [BuscarZona]="true"
+                         [(ngModel)]="detail.ZonaId"
+                         [items]="detail.zonasItems"
+                         required>
+            </zonas-combo>
+            <div *ngIf="allowZona && (detail.ZonaId.toString() == 'null' || detail.ZonaId.toString() == '') " class="form-control-feedback">
+                <div *ngIf="allowZona && (detail.ZonaId.toString() == 'null' || detail.ZonaId.toString() == '') ">
+                    Zona es Requerida
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-6" *ngIf="detail.EsFrancoTrabajado" [ngClass]="{'has-danger': detail.EsFrancoTrabajado && allowPago && (detail.Pago.toString() == 'null' || detail.Pago.toString() == '') }">
+            <label>Paga/Cambia</label>
+            <pagacambia-combo #Pago="ngModel"
+                              #ComboPagaCambia
+                              emptyText="{{'Seleccione..'}}"
+                              [disabled]="detail.allowPagaCambia"
+                              [disabledSelectPicker]="true"
+                              name="ComboPagaCambia"
+                              id="ComboPagaCambia"
+                              [(ngModel)]="detail.Pago"                              
+                              required>
+            </pagacambia-combo>
+            <div *ngIf="allowPago && (detail.Pago.toString() == 'null' || detail.Pago.toString() == '') " class="form-control-feedback">
+                <div *ngIf="allowPago && (detail.Pago.toString() == 'null' || detail.Pago.toString() == '') ">
+                    Paga/Cambia es Requerido
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-footer">
+        <!-- Guardar Button -->
+        <button type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue" [disabled]="!editJornadaForm.form.valid">
+            <i class="fa fa-file-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+</form>

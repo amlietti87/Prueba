@@ -1,0 +1,17 @@
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\bin\Debug\netcoreapp2.1\TECSO.FWK.ApiServices.deps.json
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\bin\Debug\netcoreapp2.1\TECSO.FWK.ApiServices.runtimeconfig.json
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\bin\Debug\netcoreapp2.1\TECSO.FWK.ApiServices.runtimeconfig.dev.json
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\bin\Debug\netcoreapp2.1\TECSO.FWK.ApiServices.dll
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\bin\Debug\netcoreapp2.1\TECSO.FWK.ApiServices.pdb
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\bin\Debug\netcoreapp2.1\TECSO.FWK.AppService.dll
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\bin\Debug\netcoreapp2.1\TECSO.FWK.dll
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\bin\Debug\netcoreapp2.1\TECSO.FWK.Domain.dll
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\bin\Debug\netcoreapp2.1\TECSO.FWK.AppService.pdb
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\bin\Debug\netcoreapp2.1\TECSO.FWK.Domain.pdb
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\bin\Debug\netcoreapp2.1\TECSO.FWK.pdb
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\obj\Debug\netcoreapp2.1\TECSO.FWK.ApiServices.csprojAssemblyReference.cache
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\obj\Debug\netcoreapp2.1\TECSO.FWK.ApiServices.AssemblyInfoInputs.cache
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\obj\Debug\netcoreapp2.1\TECSO.FWK.ApiServices.AssemblyInfo.cs
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\obj\Debug\netcoreapp2.1\TECSO.FWK.ApiServices.csproj.CopyComplete
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\obj\Debug\netcoreapp2.1\TECSO.FWK.ApiServices.dll
+D:\RBus\RBusRepo\stg\TECSO.FWK.ApiServices\obj\Debug\netcoreapp2.1\TECSO.FWK.ApiServices.pdb

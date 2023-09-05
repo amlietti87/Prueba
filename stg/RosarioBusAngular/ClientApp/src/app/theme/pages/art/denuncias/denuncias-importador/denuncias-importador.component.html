@@ -1,0 +1,242 @@
+﻿<div class="m-portlet m-portlet--mobile">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon">
+                    <i class="la la-clock-o"></i>
+                </span>
+                <h3 class="m-portlet__head-text">
+                    <span>Importar Denuncias desde Excel</span>
+                </h3>
+            </div>
+        </div>
+        <div class="m-portlet__head-tools">
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item">
+                    <a href="#"
+                       m-portlet-tool="toggle"
+                       class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-angle-down"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item">
+                    <a href="#"
+                       m-portlet-tool="fullscreen"
+                       class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-expand"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item">
+                    <a href="#"
+                       (click)="close()"
+                       class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-close"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="m-portlet__body">
+        <div class="row m--padding-10">
+            <div class="col-md-6">
+                <button type="button"
+                        [hidden]="fileUpload"
+                        (click)="onSeleccionarArchivoExcelClick()"
+                        class="btn btn-outline-info btn-sm">
+                    <i class="la la-search"></i>Selecionar Archivo Excel
+                </button>
+
+                <label>{{fileUpload != null ? fileUpload.name : ''}}</label>
+                <input #fileInput
+                       style="display:none"
+                       type="file"
+                       name="fileInput"
+                       id="fileInput"
+                       class="form-control form-control-file"
+                       (change)="onFileInputChange($event)"
+                       accept=".xlsx"
+                       [formControl]="myControl" />
+
+                <button type="button"
+                        [hidden]="!fileUpload"
+                        (click)="onBorrarClick($event)"
+                        class="btn btn-outline-danger btn-sm"
+                        [buttonBusy]="isLoading">
+                    <i class="la la-times "></i>Borrar
+                </button>
+                <button type="button"
+                        [hidden]="!isFileSelected"
+                        (click)="onImportarClick()"
+                        [buttonBusy]="isLoading"
+                        class="btn btn-outline-success btn-sm">
+                    <i class="la la-upload"></i>Importar
+                </button>
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            <div class="col-md-12 pTableSectores" [busyIf]="isLoading">
+                <p-table [value]="items" [scrollable]="true" scrollHeight="300px" frozenWidth="440px">
+
+                    <ng-template pTemplate="frozenheader">
+                        <tr>
+                            <th style="width:20px">
+                            <th class="thDenunciasImportador">
+                                <span style="white-space:nowrap" title="Nro. Denuncia">Nro. Denuncia</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:250px !important; min-width: 250px !important;">
+                                <span style="white-space:nowrap" title="Pr. Medico">Pr. Medico</span>
+                            </th>
+                        </tr>
+
+                    </ng-template>
+
+                    <ng-template pTemplate="frozenbody" let-row>
+                        <tr [ngClass]="{'rowHasError': !row.IsValid}">
+                            <td style="width:20px">
+                                <span *ngIf="!row.IsValid" class="m-input-icon__icon m-input-icon__icon--right"
+                                      data-toggle="m-tooltip" data-placement="top" title="{{row.Errors.join(',')}}">
+                                    <span>
+                                        <i class="la la-info m--font-danger" style="font-size:14px"></i>
+                                    </span>
+                                </span>
+                            </td>
+                            <td title="{{row.NroDenuncia}}" class="tdDenunciasImportador">{{row.NroDenuncia}}</td>
+                            <td title="{{row.PrestadorMedico}}" class="tdDenunciasImportador" style="width:250px !important; min-width: 250px !important;">{{row.PrestadorMedico}}</td>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th class="thDenunciasImportador">
+                                <span style="white-space:nowrap" title="Estado">Estado</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Empresa">Empresa</span>
+                            </th>
+                            <th class="thDenunciasImportador">
+                                <span style="white-space:nowrap" title="DNI Empleado">DNI Emp.</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:100px !important; min-width: 100px !important;">
+                                <span style="white-space:nowrap" title="CUIL Empleado">CUIL Emp.</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:100px !important; min-width: 100px !important;">
+                                <span style="white-space:nowrap" title="Fecha Ocurrencia">F. Ocur</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:100px !important; min-width: 100px !important;">
+                                <span style="white-space:nowrap" title="Fecha Recepcion">F. Recep.</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Contingencia">Conting.</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Diagnostico">Diagn.</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Patología">Patolog.</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:100px !important; min-width: 100px !important;">
+                                <span style="white-space:nowrap" title="Fecha Baja Servicio">F. Baja Serv.</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Tratamiento">Tratam.</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:100px !important; min-width: 100px !important;">
+                                <span style="white-space:nowrap" title="Fecha Ultimo Control">F. Ult. Ctrl.</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:100px !important; min-width: 100px !important;">
+                                <span style="white-space:nowrap" title="Fecha Proxima Consulta">F. Prox. Cons.</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:100px !important; min-width: 100px !important;">
+                                <span style="white-space:nowrap" title="Fecha Audiencia">F. Audiencia</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Motivo Audiencia">Motivo Aud.</span>
+                            </th>
+                            <th class="thDenunciasImportador">
+                                <span style="white-space:nowrap" title="% incapacidad">% Incap.</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:100px !important; min-width: 100px !important;">
+                                <span style="white-space:nowrap" title="Fecha Alta Medica">F. Alta Méd.</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:100px !important; min-width: 100px !important;">
+                                <span style="white-space:nowrap" title="Fecha Alta Laboral">F. Alta Lab.</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:100px !important; min-width: 100px !important;">
+                                <span style="white-space:nowrap" title="Fecha Probable Alta">F. Prob. Alta</span>
+                            </th>
+                            <th class="thDenunciasImportador">
+                                <span style="white-space:nowrap" title="Nro Denuncia Origen">N° Den. Origen</span>
+                            </th>
+                            <th class="thDenunciasImportador">
+                                <span style="white-space:nowrap" title="Nro Siniestro">N° Siniestro</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Observaciones">Observ.</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Motivo Notificacion">Mot. Notif.</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:100px !important; min-width: 100px !important;">
+                                <span style="white-space:nowrap" title="Fecha Notificacion">F. Notif.</span>
+                            </th>
+                            <th class="thDenunciasImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Observacion Notificacion">Obs. Notif.</span>
+                            </th>
+                        </tr>
+                    </ng-template>
+
+
+
+
+                    <ng-template pTemplate="body" let-row>
+                        <tr [ngClass]="{'rowHasError': !row.IsValid}">
+                            <td class="tdDenunciasImportador" title="{{row.Estado}}">{{row.Estado}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.Empresa}}" style="width:150px !important; min-width: 150px !important;">{{row.Empresa}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.EmpleadoDNI}}">{{row.EmpleadoDNI}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.EmpleadoCUIL}}" style="width:100px !important; min-width: 100px !important;">{{row.EmpleadoCUIL}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.EmpleadoCUIL}}" style="width:100px !important; min-width: 100px !important;">{{row.FechaOcurrencia | date: 'dd-MM-yyyy'}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.FechaRecepcionDenuncia | date: 'dd-MM-yyyy'}}" style="width:100px !important; min-width: 100px !important;">{{row.FechaRecepcionDenuncia | date: 'dd-MM-yyyy'}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.Contingencia}}" style="width:150px !important; min-width: 150px !important;">{{row.Contingencia}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.Diagnostico}}" style="width:150px !important; min-width: 150px !important;">{{row.Diagnostico}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.Patologia}}" style="width:150px !important; min-width: 150px !important;">{{row.Patologia}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.FechaBajaServicio | date: 'dd-MM-yyyy'}}" style="width:100px !important; min-width: 100px !important;">{{row.FechaBajaServicio | date: 'dd-MM-yyyy'}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.Tratamiento}}" style="width:150px !important; min-width: 150px !important;">{{row.Tratamiento}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.FechaUltimoControl | date: 'dd-MM-yyyy'}}" style="width:100px !important; min-width: 100px !important;">{{row.FechaUltimoControl | date: 'dd-MM-yyyy'}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.FechaProximaConsulta | date: 'dd-MM-yyyy'}}" style="width:100px !important; min-width: 100px !important;">{{row.FechaProximaConsulta | date: 'dd-MM-yyyy'}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.FechaAudienciaMedica | date: 'dd-MM-yyyy'}}" style="width:100px !important; min-width: 100px !important;">{{row.FechaAudienciaMedica | date: 'dd-MM-yyyy'}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.MotivoAudiencia}}" style="width:150px !important; min-width: 150px !important;">{{row.MotivoAudiencia}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.PorcentajeIncapacidad}}">{{row.PorcentajeIncapacidad}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.FechaAltaMedica | date: 'dd-MM-yyyy'}}" style="width:100px !important; min-width: 100px !important;">{{row.FechaAltaMedica | date: 'dd-MM-yyyy'}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.FechaAltaLaboral | date: 'dd-MM-yyyy'}}" style="width:100px !important; min-width: 100px !important;">{{row.FechaAltaLaboral | date: 'dd-MM-yyyy'}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.FechaProbableAlta | date: 'dd-MM-yyyy'}}" style="width:100px !important; min-width: 100px !important;">{{row.FechaProbableAlta | date: 'dd-MM-yyyy'}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.NroDenunciaOrigen}}">{{row.NroDenunciaOrigen}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.NroSiniestro}}">{{row.NroSiniestro}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.Observaciones}}" style="width:150px !important; min-width: 150px !important;">{{row.Observaciones}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.MotivoNotificacion}}" style="width:150px !important; min-width: 150px !important;">{{row.MotivoNotificacion}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.FechaNotificacion | date: 'dd-MM-yyyy'}}" style="width:100px !important; min-width: 100px !important;">{{row.FechaNotificacion | date: 'dd-MM-yyyy'}}</td>
+                            <td class="tdDenunciasImportador" title="{{row.ObservacionesNotificacion}}" style="width:150px !important; min-width: 150px !important;">{{row.ObservacionesNotificacion}}</td>
+
+                        </tr>
+                    </ng-template>
+
+
+                </p-table>
+
+
+
+            </div>
+
+        </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary blue" [buttonBusy]="isLoading" [disabled]="anyErrores" (click)="onProcesarClick()">
+                    <i class="fa fa-save"></i> <span>Guardar</span>
+                </button>
+            </div>
+    </div>
+</div>

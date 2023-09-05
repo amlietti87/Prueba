@@ -1,0 +1,78 @@
+﻿.has-danger .cocheAndNroMuertos {
+    color: red !important;
+}
+
+.cocheAndNroMuertos {
+    color: darkgreen;
+    font-weight: bold;
+}
+
+.campoRequerido {
+    color: red !important;
+}
+
+.primeng-datatable-container .ui-datatable table thead tr th {
+    white-space: nowrap;
+}
+
+.primeng-datatable-container .ui-datatable table thead tr td {
+    white-space: nowrap;
+}
+
+.mat-expansion-panel-body{
+    padding-left: 24px!important;
+    padding-right: 24px!important;
+    padding-bottom: 1px!important;
+}
+
+.nav.nav-tabs.m-tabs-line {
+    margin-bottom: 0px;
+}
+
+.mat-expansion-panel {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+.mat-form-field-mat-datepicker {
+    width: 85px;
+}
+
+mat-form-field-mat-datepicker-100p {
+    width: 100% !important;
+    display: initial;
+}
+
+ngb-timepicker input.form-control {
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 35px;
+}
+
+.hideHeder.mat-expanded .mat-expansion-panel-content {
+    margin-top: -26px;
+}
+
+.hideHeder.mat-expanded .mat-expansion-panel-header-title {
+    display: none;
+}
+
+.mat-expansion-panel-header-title-custom {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+
+    div .ui-multiselect {
+    width: 100%;
+    line-height: 15px;
+}
+
+div.ui-multiselect label.ui-multiselect-label {
+    margin-bottom: 0px;
+}
+
+.smallsize mat-select {
+    height: 2rem !important;
+    padding-top: 5px !important;
+}

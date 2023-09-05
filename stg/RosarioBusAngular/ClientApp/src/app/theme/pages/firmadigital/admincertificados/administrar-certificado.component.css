@@ -1,0 +1,7 @@
+empleado-autocomplete div p-autocomplete span input {
+    width: 25rem !important;
+}
+
+empleado-autocomplete div p-autocomplete{
+    width: 25rem !important;
+}

@@ -1,0 +1,22 @@
+﻿<div [ngStyle]="{'background':getColor()}" class="template-franco" [hidden]="item.EsJornada || item.EsFrancoTrabajado">
+    <table>
+        <tr>
+
+            <td class="celda-rango">
+                <span [ngStyle]="{'background':getColor()}" class="template-franco"><b>{{item.NombreRangoHorario}}</b></span>
+                <br />
+            </td>
+            <td class="celda-acciones">
+                <a [hidden]="item.FrancoNovedad || !allowmodificarDiagramacion" *ngIf="(item.PasadaSueldos | uppercase) != 'S'" href="javascript:void(0);" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill acciones" title="Editar" (click)="editarFranco()">
+                    <i class="la la-edit accion-icon"></i>
+                </a>
+                <br />
+                <a [hidden]="!allowmodificarDiagramacion" *ngIf="(item.PasadaSueldos | uppercase) != 'S' " href="javascript:void(0);" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill acciones" title="Eliminar" (click)="eliminarFranco(item)">
+                    <i class="la la-trash accion-icon"></i>
+                </a>
+            </td>
+        </tr>
+ 
+    </table>
+</div>
+

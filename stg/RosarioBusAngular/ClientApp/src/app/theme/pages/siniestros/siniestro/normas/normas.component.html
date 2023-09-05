@@ -1,0 +1,11 @@
+﻿<div class="form-group">
+    <label>Norma / Conducta</label>
+    <span class="ui-fluid">
+        <normas-combo #ConductaId="ngModel"
+                            name="ConductaId"
+                            id="ConductaId"
+                      [ConductaId]="detail.ConductaId"
+                            [(ngModel)]="detail.ConductaId" emptyText="{{'Seleccione..'}}">
+        </normas-combo>
+    </span>
+</div>

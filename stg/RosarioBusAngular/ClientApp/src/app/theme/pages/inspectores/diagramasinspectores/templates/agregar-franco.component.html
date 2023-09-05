@@ -1,0 +1,36 @@
+<form #agregarFrancoForm="ngForm" novalidate  autocomplete="off" >
+    <div class="modal-header">
+        <h4 class="modal-title">
+            Insertar Franco
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true" style="font-size:22px !important">&times;</span>
+        </button>
+    </div>
+    <div>
+        <!-- Portlet body -->
+        <div class="modal-body">      
+
+            <div class="form-group col-md-4">
+                    <label>Rango Horario</label>
+                <!-- Rango Horario -->
+                <rangoshorarios-combo #ComboRangoHorario
+                                      name="ComboRangoHorario"
+                                      [francoTrabajado]="false"
+                                      [EsFranco]="true"
+                                      [Anulado]="2"
+                                      [GrupoInspectoresId]="filter.GrupoInspectoresId"
+                                      [RangoHorarioId]="filter.RangoHorarioId"
+                                      [(ngModel)]="filter.RangoHorarioId">
+                </rangoshorarios-combo>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" >
+        <!-- Guardar Button -->
+        <button type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="button" class="btn btn-primary blue" (click)="agregarFranco(filter.RangoHorarioId)">
+            <i class="fa fa-file-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+</form>

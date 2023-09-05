@@ -1,0 +1,79 @@
+page-grilla-horarios {
+    .cabecera-grilla{
+        height:58px;
+        //font-weight: bold; 
+        font-size: 12px;  
+        background: rgba(68, 94, 124, 0.92);
+        color: #fff;
+    }
+
+    .contenido-grilla{
+        position: absolute;
+        left:0;
+        height:100%;
+        width:100%;
+    }
+
+    .contenido-grilla-horarios {
+        .scroll-content {
+            margin-top: 142px !important;
+        }
+
+        &.landscape-serv-cond {
+            .scroll-content {
+                margin-top: 78px !important;
+            }
+        }
+    }
+
+    .row-header{
+        font-weight: bold; 
+        padding-top: 8px; 
+        font-size: 15px;  
+    }
+
+    .select-col-fijas{
+        color: #fff;
+        margin-left: 100px;
+        max-width: 80%;
+    }
+
+    ion-row:nth-of-type(even) {
+        ion-col {
+            background: rgba(240, 240, 240, 1);
+        }
+    }
+
+    .icon-serv-cond{
+        padding-right: 5px
+    }
+
+    .row-serv-cond{
+        padding: 7px 7px 7px 20px;
+        background: rgba(240, 240, 240, 1);
+        font-size: 12px;
+    }
+
+    .cabecera-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height:58px;
+
+        .dinamica {
+            font-size: 11px;
+        }
+    }
+
+    .EsRelevo{
+        color: white;
+        background: #1ABC9C !important;
+        font-weight: bold;
+    }
+
+    .card-info{
+        background-color: #F9E79F;
+        font-style: italic;
+    }
+
+}

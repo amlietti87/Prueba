@@ -1,0 +1,15 @@
+﻿:host ::ng-deep .ng2-pdf-viewer-container {
+    width: 100% !important;
+}
+
+.visor{
+    font-size: 2.5rem !important;
+}
+.hiddenButton {
+    height: 47px;
+    background: transparent;
+    position: absolute;
+    width: 55px;
+    right: 6px;
+    margin-top: 11px;
+}

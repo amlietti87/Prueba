@@ -1,0 +1,115 @@
+<div class="m-portlet">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon m--hide">
+                    <i class="la la-gear"></i>
+                </span>
+                <h3 class="m-portlet__head-text">
+                    <span>A&ntilde;adir Configuraci&oacute;n</span>
+                </h3>
+            </div>
+        </div>
+    </div>
+    <div class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+        <form #detailForm="ngForm" class="m-form m-form--group-seperator-dashed">
+            <div class="m-portlet__body">
+
+                <div class="m-section">
+
+                    <div class="m-section__content">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Grupo</label>
+
+                                <grupo-combo [showAddButton]="false"
+                                             #GrupoCombo
+                                             name="Grupo"
+                                             id="Grupo"
+                                             [(ngModel)]="Configu.CodGru"
+                                             emptyText="{{'Seleccione..'}}">
+                                </grupo-combo>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Empresa</label>
+
+                                <empresa-combo [showAddButton]="false"
+                                               #EmpresaCombo
+                                               name="Empresa"
+                                               id="Empresa"
+                                               [(ngModel)]="Configu.CodEmpr"
+                                               emptyText="{{'Seleccione..'}}">
+                                </empresa-combo>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Sucursal</label>
+
+                                <sucursal-combo [showAddButton]="false"
+                                                #SucursalCombo
+                                                name="Sucursal"
+                                                id="Sucursal"
+                                                [(ngModel)]="Configu.CodSuc"
+                                                emptyText="{{'Seleccione..'}}">
+                                </sucursal-combo>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Linea</label>
+
+                                <linea-autocomplete #LineaAutoComplete
+                                                    name="Linea"
+                                                    id="Linea"
+                                                    [(ngModel)]="Configu.selectLinea"
+                                                    placeHolder="Lineas"
+                                                    field="Description">
+                                </linea-autocomplete>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label>Galpon</label>
+
+                                <galpon-combo [showAddButton]="false"
+                                              #GalponCombo
+                                              name="Galpon"
+                                              id="Galpon"
+                                              [(ngModel)]="Configu.CodGal"
+                                              emptyText="{{'Seleccione..'}}">
+                                </galpon-combo>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Fecha baja</label>
+                                <br />
+                                <mat-form-field class="mat-form-field-mat-datepicker mat-form-field-mat-datepicker-100p">
+                                    <input matInput
+                                           [(ngModel)]="Configu.FecBaja"
+                                           name="FecBaja"
+                                           id="FecBaja"
+                                           [matDatepicker]="FecBaja">
+                                    <mat-datepicker-toggle matSuffix [for]="FecBaja"></mat-datepicker-toggle>
+                                    <mat-datepicker #FecBaja></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit text-right">
+                <div class="m-form__actions m-form__actions--solid">
+                    <button type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                    <button type="button" class="btn btn-primary blue"
+                            (click)="save()"
+                            [disabled]="!detailForm.form.valid">
+                        <i class="fa fa-save"></i> <span>Aceptar</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

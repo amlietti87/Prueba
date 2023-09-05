@@ -1,0 +1,79 @@
+page-diagramacion {
+  @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+  .fecha-diag {
+    font-size: 25px;
+    padding-bottom: 20px;
+  }
+
+  .icon-calendar-diagramacion{
+    font-size: 35px;
+    color: #1ABC9C;
+  }
+
+  .card-header {
+    padding: 8px !important;
+    background: #F7F9F9;
+    // border-top: 2px solid;
+  }
+
+  .row-esJornada{
+    text-align: center;
+    font-size: 16px;
+    .label {
+      font-family: 'Montserrat', sans-serif;
+    }
+
+  }
+
+  .p-conductor{
+    font-weight: bold;
+    color: #5D6D7E; 
+  }
+
+  .row-esJornada-zona{
+    border-top: 1px solid #D7DBDD;
+  }
+
+  .item-esJornada-zona{
+    text-align: center;
+  }
+
+  .card-content-diagramacion {
+    padding-bottom: 0 !important;
+  }
+
+  .noDiagramacion {
+    color: #5D6D7E;
+    text-align: center;
+    font-size: 16px;
+  }
+
+  // .sin-consultas {
+  //   padding-top: 50px;
+  // }
+
+  .item-icon-not-search{
+    text-align: center;
+  }
+
+  .label-info{
+    font-size: 18px;
+    color: #D7DBDD;
+    white-space: normal !important;
+  }
+
+  .icon-not-search {
+    font-size: 300px;
+    color: #1ABC9C;
+    opacity: 0.2;
+  }
+
+  .p-turno{
+    color: #2874A6;
+    font-weight: bold;
+    text-align: center;
+    font-size: 12px;
+    font-family: 'Montserrat', sans-serif;
+  }
+}

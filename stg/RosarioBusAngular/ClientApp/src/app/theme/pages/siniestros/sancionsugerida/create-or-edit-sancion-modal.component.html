@@ -1,0 +1,45 @@
+﻿
+<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span *ngIf="detail.Id">{{"Editar Sanción Sugerida"}}: {{detail.Descripcion}}</span>
+            <span *ngIf="!detail.Id">{{"Crear Sanción Sugerida"}}</span>
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group" [ngClass]="{'has-danger': Descripcion.invalid && (Descripcion.dirty || Descripcion.touched)}">
+            <label>Descripción</label>
+            <input #Descripcion="ngModel" class="form-control" type="text" name="Descripcion" [(ngModel)]="detail.Descripcion" required maxlength="2000">
+
+            <div *ngIf="Descripcion.invalid && (Descripcion.dirty || Descripcion.touched)"
+                 class=" form-control-feedback">
+                <div *ngIf="Descripcion.errors.required">
+                    La Descripción es Requerida
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="m-checkbox-list">
+                <label class="m-checkbox">
+                    <input #Anulado="ngModel" id="Anulado" type="checkbox" name="Anulado" [(ngModel)]="detail.Anulado">
+                    <em>Anulado</em>
+                    <span></span>
+                </label>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue"
+                [buttonBusy]="saving" [busyText]="'Guardando..'"
+                [disabled]="!detailForm.form.valid">
+            <i class="fa fa-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+</form>

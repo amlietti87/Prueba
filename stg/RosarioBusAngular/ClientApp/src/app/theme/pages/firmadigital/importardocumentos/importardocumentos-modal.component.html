@@ -1,0 +1,33 @@
+﻿<form #detailForm="ngForm"
+      novalidate
+      autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span>
+                Confirmación
+            </span>
+        </h4>
+        <div class="m-portlet__nav-item">
+            <a href="#"
+               (click)="close(false)"
+               class="m-portlet__nav-link m-portlet__nav-link--icon">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12" style="text-align: center;">
+                <button type="button" class="btn btn-default" (click)="close(false)">
+                    Cancelar
+                </button>
+
+                <button class="btn btn-primary"  (click)="close(true)">
+                    <i class="fa fa-save"></i>
+                    <span>Confirmar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+

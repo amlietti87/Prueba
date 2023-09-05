@@ -1,0 +1,259 @@
+﻿<form novalidate [formGroup]="detalleSiniestroForm1" autocomplete="off">
+
+    <div class="row">
+
+        <!-- 3 Textarea (Izquierda) -->
+        <div class="col-md-8">
+
+            <div class="form-group margin-top-10less" [ngClass]="{'has-danger': detalleSiniestroForm1.controls.Comentario.invalid && (detalleSiniestroForm1.controls.Comentario.dirty || detalleSiniestroForm1.controls.Comentario.touched)}">
+                <label class="campoRequerido"><b>Detalle de la forma en que ocurre el siniestro</b></label>
+                <textarea formControlName="Comentario" rows="7" class="form-control" type="text" name="Comentario" [(ngModel)]="detail.Comentario" maxlength="2000"></textarea>
+                <div *ngIf="detalleSiniestroForm1.controls.Comentario.invalid && (detalleSiniestroForm1.controls.Comentario.dirty || detalleSiniestroForm1.controls.Comentario.touched)" class="form-control-feedback">
+
+                    <div *ngIf="detalleSiniestroForm1.controls.Comentario.errors.required">
+                        Detalle requerido.
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group margin-top-10less">
+                <label>Detalle de los daños</label>
+                <textarea formControlName="ObsDanios" rows="2" class="form-control" type="text" name="ObsDanios" [(ngModel)]="detail.ObsDanios" maxlength="2000"></textarea>
+            </div>
+
+            <div class="form-group margin-top-10less">
+                <label>Comentario interno del siniestro</label>
+                <textarea formControlName="ObsInterna" rows="2" class="form-control" type="text" name="ObsInterna" [(ngModel)]="detail.ObsInterna" maxlength="2000"></textarea>
+            </div>
+
+        </div>
+
+        <!-- Labels y Dropdowns (Derecha) -->
+        <div class="col-md-4">
+
+            <div class="row">
+                <div [hidden]="!(detail.EmpPractConId == 1)" class="form-group col-xl-6" style="padding-left: 0px;" [ngClass]="{'has-danger': detalleSiniestroForm1.controls.InformeConId.invalid && (detalleSiniestroForm1.controls.InformeConId.dirty || detalleSiniestroForm1.controls.InformeConId.touched)}">
+                    <label><b>Informe</b></label><br />
+                    <informe-combo #InformeConId formControlName="InformeConId" name="InformeConId" IsDisabled="{{disableInforme}}" [(ngModel)]="detail.InformeConId" emptyText="{{'Seleccione..'}}">
+                    </informe-combo>
+                    <div *ngIf="detalleSiniestroForm1.controls.InformeConId.invalid && (detalleSiniestroForm1.controls.InformeConId.dirty || detalleSiniestroForm1.controls.InformeConId.touched)" class="form-control-feedback">
+
+                        <div *ngIf="detalleSiniestroForm1.controls.InformeConId.errors.required">
+                            Informe requerido.
+                        </div>
+                    </div>
+                </div>
+                <div [hidden]="!(detail.InformeConId == 1)" class="form-group col-xl-6">
+                    <label>Sanción sugerida</label><br />
+                    <sancion-combo [showAddButton]="allowAddSancionSugerida" #SancionSugeridaId formControlName="SancionSugeridaId" IsDisabled="{{disableSancionSugerida}}" name="SancionSugeridaId" [(ngModel)]="detail.SancionSugeridaId" emptyText="{{'Seleccione..'}}">
+                    </sancion-combo>
+                </div>
+            </div>
+            <div class="row">
+                <div *ngIf="detail.EmpPractConId == 1" class="form-group col-xl-6" style="padding-left: 0px;">
+                    <label class="cocheAndNroMuertos">Nro. Informe</label>
+                    <input formControlName="CodInforme" disabled class="form-control" type="text" name="CodInforme" [(ngModel)]="detail.nro_informe" maxlength="250">
+                </div>
+                <div class="form-group col-xl-6" style="padding-left: 0px;" [ngClass]="{'has-danger': detalleSiniestroForm1.controls.DescargoConId.invalid && (detalleSiniestroForm1.controls.DescargoConId.dirty || detalleSiniestroForm1.controls.DescargoConId.touched)}">
+                    <label>Descargo</label><br />
+                    <descargo-combo formControlName="DescargoConId" name="DescargoConId" [(ngModel)]="detail.DescargoConId" emptyText="{{'Seleccione..'}}">
+                    </descargo-combo>
+                    <div *ngIf="detalleSiniestroForm1.controls.DescargoConId.invalid && (detalleSiniestroForm1.controls.DescargoConId.dirty || detalleSiniestroForm1.controls.DescargoConId.touched)" class="form-control-feedback">
+
+                        <div *ngIf="detalleSiniestroForm1.controls.DescargoConId.errors.required">
+                            Descargo requerido
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="form-group col-xl-6" style="margin-bottom: 1rem; padding-left: 0px;">
+                    <label>Nro. Siniestro que otorga la compañ&iacute;a</label>
+                    <input formControlName="NroSiniestroSeguro" class="form-control" type="text" name="NroSiniestroSeguro" [(ngModel)]="detail.NroSiniestroSeguro" maxlength="250">
+                </div>
+                <div class="form-group col-xl-6" style="padding-left: 0px;" [ngClass]="{'has-danger': detalleSiniestroForm1.controls.TipoColisionId.invalid && (detalleSiniestroForm1.controls.TipoColisionId.dirty || detalleSiniestroForm1.controls.TipoColisionId.touched)}">
+                    <label class="campoRequerido"><b>Tipo Colisión</b></label><br />
+                    <tipocolision-combo formControlName="TipoColisionId" name="TipoColisionId" [showAddButton]="allowAddTipoColision" [(ngModel)]="detail.TipoColisionId" emptyText="{{'Seleccione..'}}">
+                    </tipocolision-combo>
+                    <div *ngIf="detalleSiniestroForm1.controls.TipoColisionId.invalid && (detalleSiniestroForm1.controls.TipoColisionId.dirty || detalleSiniestroForm1.controls.TipoColisionId.touched)" class="form-control-feedback">
+
+                        <div *ngIf="detalleSiniestroForm1.controls.TipoColisionId.errors.required">
+                            Tipo Colisión requerido
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-xl-4" style="padding-left: 0px;" [ngClass]="{'has-danger': detalleSiniestroForm1.controls.ResponsableConId.invalid && (detalleSiniestroForm1.controls.ResponsableConId.dirty || detalleSiniestroForm1.controls.ResponsableConId.touched)}">
+                    <label class="cocheAndNroMuertos">Responsable</label><br />
+                    <responsable-combo formControlName="ResponsableConId" name="ResponsableConId" [(ngModel)]="detail.ResponsableConId" emptyText="{{'Seleccione..'}}">
+                    </responsable-combo>
+                    <div *ngIf="detalleSiniestroForm1.controls.ResponsableConId.invalid && (detalleSiniestroForm1.controls.ResponsableConId.dirty || detalleSiniestroForm1.controls.ResponsableConId.touched)" class="form-control-feedback">
+
+                        <div *ngIf="detalleSiniestroForm1.controls.ResponsableConId.errors.required">
+                            Responsable requerido
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+</form>
+
+<form novalidate [formGroup]="detalleSiniestroForm2" autocomplete="off">
+
+    <div class="row">
+
+        <!-- Causa -->
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Causa</label><br />
+                <causas-combo [showAddButton]="allowAddCausa" formControlName="CausaId" name="CausaId" #causascombo [CausaId]="detail.CausaId" [(ngModel)]="detail.CausaId" emptyText="{{'Seleccione..'}}">
+                </causas-combo>
+            </div>
+        </div>
+
+        <!-- Sub-Causa -->
+        <div class="col-md-3">
+            <div class="form-group" [hidden]="!detail.CausaId"  [ngClass]="{'has-danger': detalleSiniestroForm2.controls.SubCausaId.invalid && (detalleSiniestroForm2.controls.SubCausaId.dirty || detalleSiniestroForm2.controls.SubCausaId.touched)}">
+                <label>Sub-Causa</label><br />
+                <subcausas-combo formControlName="SubCausaId" #subcausacombo (itemstChange)="CheckCausaRequired()" name="SubCausaId" [CausaId]="detail.CausaId" [SubCausaId]="detail.SubCausaId" [(ngModel)]="detail.SubCausaId" emptyText="{{'Seleccione..'}}">
+                </subcausas-combo>
+                <div *ngIf="detalleSiniestroForm2.controls.SubCausaId.invalid && (detalleSiniestroForm2.controls.SubCausaId.dirty || detalleSiniestroForm2.controls.SubCausaId.touched)" class="form-control-feedback">
+
+                    <div *ngIf="detalleSiniestroForm2.controls.SubCausaId.errors.required">
+                        Sub-Causa requerida
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Factor Interviniente -->
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>Factor Interviniente</label>
+                <span class="ui-fluid">
+                    <factores-combo [showAddButton]="allowAddFactor"
+                                    formControlName="FactoresId"
+                                    name="FactoresId"
+                                    id="FactoresId"
+                                    [FactoresId]="detail.FactoresId"
+                                    [(ngModel)]="detail.FactoresId"
+                                    emptyText="{{'Seleccione..'}}">
+                    </factores-combo>
+                </span>
+            </div>
+        </div>
+
+        <!-- Norma / Conducta -->
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>Norma / Conducta</label>
+                <span class="ui-fluid">
+                    <normas-combo [showAddButton]="allowAddNorma"
+                                  formControlName="ConductaId"
+                                  name="ConductaId"
+                                  id="ConductaId"
+                                  [ConductaId]="detail.ConductaId"
+                                  [(ngModel)]="detail.ConductaId"
+                                  emptyText="{{'Seleccione..'}}">
+                    </normas-combo>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group" style="padding-left: 0px;">
+            <button *ngIf="allowAddSiniestroConsecuencia" class="btn btn-primary blue" type="button" (click)="OnConsecuenciasRowAdded()">
+                <i class="fa fa-save"></i> <span>Agregar Consecuencia</span>
+            </button>
+        </div>
+
+    </div>
+
+</form>
+
+<div class="row">
+    <div class="col-md-12">
+        <!--style="    position: absolute;    top: -43px;    right: 15px;"-->
+
+        <div class="primeng-datatable-container primeng-small primeng-small-buttons-small" style="padding-bottom: 6px;">
+            <p-dataTable [value]="SiniestroConsecuencias" scrollable="true" scrollHeight="300px" [editable]="true" responsive="false" emptyMessage="">
+
+                <!-- Column Consecuencia-->
+                <p-column field="Descripcion" header="Consecuencia" [editable]="true" [sortable]="true">
+                    <ng-template let-row="rowData" pTemplate="editor">
+                        <div>
+                            <consecuencia-combo [showAddButton]="allowAddConsecuencia" name="{{'Consecuencia' + row.Id}}" id="{{'Consecuencia' + row.Id}}" [(ngModel)]="row.ConsecuenciaId" (ngModelChange)="OnConsecuenciasComboChanged($event, row)" emptyText="{{'Seleccione..'}}">
+                            </consecuencia-combo>
+                        </div>
+                    </ng-template>
+
+                    <ng-template let-row="rowData" pTemplate="body">
+                        <div><span style="color: blue;">{{ row.ConsecuenciaNombre }}</span></div>
+                    </ng-template>
+
+                </p-column>
+
+                <!-- Column Cantidad -->
+                <p-column field="Cantidad" [editable]="true" header="Cant" [sortable]="true">
+                    <ng-template let-row="rowData" pTemplate="editor">
+
+                        <input class="form-control" type="text" name="{{ 'Cantidad' + row.Id }}" id="{{ 'Cantidad' + row.Id }}" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false, precision: 0 }" [(ngModel)]="row.Cantidad">
+                    </ng-template>
+
+                </p-column>
+                <!-- Column Observaciones-->
+                <p-column field="Observaciones" [editable]="true" header="Observaciones" [sortable]="true">
+                    <ng-template let-row="rowData" pTemplate="editor">
+
+                        <input class="form-control" type="text" name="{{ 'Observaciones' + row.Id }}" id="{{ 'Observaciones' + row.Id }}" ng-required="row.Adicional" [(ngModel)]="row.Observaciones" maxlength="2000">
+                    </ng-template>
+
+                </p-column>
+
+                <!-- Column Categoría -->
+                <p-column field="Categoria" [editable]="true" header="Categoría" [sortable]="true">
+
+                    <ng-template let-row="rowData" pTemplate="editor">
+                        <div [hidden]="!row.ConsecuenciaId">
+                            <categorias-combo [showAddButton]="false" name="{{ 'Categoria' + row.Id }}" id="{{'Categoria' + row.Id}}" [(ngModel)]="row.CategoriaId" [ConsecuenciaId]="row.ConsecuenciaId" [items]="row.Categorias" (ngModelChange)="OnCategoriasComboChanged($event, row)"
+                                emptyText="{{'Seleccione..'}}">
+                            </categorias-combo>
+                        </div>
+                    </ng-template>
+
+                    <ng-template let-row="rowData" pTemplate="body">
+                        <div>{{ row.CategoriaNombre }}</div>
+                    </ng-template>
+
+                </p-column>
+
+                <!-- Column Acciones -->
+                <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                    <ng-template let-col let-row="rowData" pTemplate type="body">
+                        <div *ngIf="allowAddSiniestroConsecuencia" class="dropdown">
+                            <a href="javascript:void(0);" (click)="OnConsecuenciasRowRemoved(row)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Eliminar">
+                                <i class="la la-trash"></i>
+                            </a>
+                        </div>
+                    </ng-template>
+                </p-column>
+            </p-dataTable>
+        </div>
+
+
+    </div>
+</div>
+
+
+<ng-template #createOrEditModal></ng-template>
+<!--<createOrEditCausasDtoModal #AgregarCausas></createOrEditCausasDtoModal>-->

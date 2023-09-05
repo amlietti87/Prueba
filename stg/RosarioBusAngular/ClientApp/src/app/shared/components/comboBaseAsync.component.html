@@ -1,0 +1,41 @@
+<div class="col-md-12" style="padding:0px; display:inline-flex">
+    <button *ngIf="showAddButton"
+            type="button"
+            class="smallesttext btn btn-primary blue"
+            (click)="onAddButtonClick()"
+            style="height:25px">
+        <i class="la la-plus"></i>
+    </button>
+    <mat-form-field [floatLabel]="floatLabel" class="comboasync">
+        <mat-label>{{emptyText}}</mat-label>
+        <mat-select #combobox
+                    [disabled]="IsDisabled || isLoading"
+                    [(ngModel)]="value"
+                    (selectionChange)="selectedItemChange.emit($event)"
+                    class="form-control" 
+                    style="height:2REM; padding-top:5px;"
+                    [required]="isRequired">
+
+            <ngx-mat-select-search *ngIf="livesearch==true" [formControl]="searchFilterCtrl" [placeholderLabel]="placeholder"></ngx-mat-select-search>
+
+            <mat-option *ngIf="allowNullable==true">{{emptyText}}</mat-option>
+            <!--<mat-option *ngFor="let item of items" [value]="item.Id">{{item.Description}}</mat-option>-->
+
+            <mat-option *ngFor="let item of Items | async" [value]="item.Id">
+                {{item.Description}}
+            </mat-option>
+
+        </mat-select>
+        <mat-hint align="start" *ngIf="hint">
+            <strong>{{hint}}</strong>
+        </mat-hint>
+        <mat-error>
+            {{placeholder}} es
+            <strong>requerida</strong>
+        </mat-error>
+        <!--<mat-spinner class="spinner spinner-combo" [diameter]="18" [hidden]="!isLoading"></mat-spinner>-->
+        <div *ngIf="isLoading" class="m-loader m-loader--brand" style="position: initial !important;">
+
+        </div>
+    </mat-form-field>
+</div>

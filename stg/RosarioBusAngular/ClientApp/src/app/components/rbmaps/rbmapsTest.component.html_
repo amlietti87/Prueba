@@ -1,0 +1,161 @@
+<h2>Mapa</h2>
+
+<table class="width-100 text-center">
+  <tr>
+    <td style="text-align: -webkit-center;">
+      <table class="width-100" style="width:50vw;padding: 15px;margin-bottom: 10px;">
+        <tr>
+          <td colspan="2" style="text-align:center;">
+              <div class="input-group mb-3">
+                  <input type="text" class="form-control" [(ngModel)]="busqueda" placeholder="address..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                  <div class="input-group-append">
+                    <button (click)="buscar(busqueda)" class="btn btn-outline-secondary" type="button">Buscar</button>
+                  </div>
+              </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+              <span>
+                  <input type="checkbox" [(ngModel)]="edicion" (change)="onEdicionChanged()" /> Edicion
+              </span>
+          </td>
+          <td style="text-align:right">
+              <select id="selectGroup" [(ngModel)]="grupoSeleccionado" (change)="onGrupoSelected(grupoSeleccionado)">
+                  <option [value]="undefined">Seleccionar Grupo</option>
+                  <option *ngFor="let grupo of grupos" [value]="grupo.id">{{grupo.nombre}}</option>
+              </select>
+              
+              <select *ngIf="edicion" [(ngModel)]="lineaSeleccionada" (change)="onLineaSelected(lineaSeleccionada)">
+                  <option [value]="undefined">Seleccionar Linea</option>
+                  <option *ngFor="let linea of lineas | lineaPorGrupo: grupoSeleccionado" [value]="linea.id" >{{linea.nombre}}</option>
+              </select>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div id="map" style="height:50vh"></div>
+      <div>Distancia: {{dataRecorrido._distancia/1000}} kms</div>
+      <div>Tiempo: {{dataRecorrido._tiempo/60}} minutos</div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div *ngIf="edicion">
+          <table class="width-100 rosario-bus-bg">
+              <tr>
+                  <td>
+                      <div class="grupo">
+                          <button (click)="guardarLinea()" class="btn btn-success">Guardar</button>
+                          <button (click)="descartarCambios()" class="btn btn-secondary">Descartar cambios</button>
+                          <button (click)="eliminarNodos()" class="btn btn-secondary">Eliminar nodos</button>
+                          <button (click)="irInicio()" class="btn btn-secondary">Ir Inicio</button>
+                          <button (click)="irFin()" class="btn btn-secondary">Ir Fin</button>
+                      </div>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      <div class="grupo">
+                          <button (click)="onTimeAndDistanceClicked()" class="btn btn-secondary">Tiempo y Duracion</button>
+                          <input type="checkbox" [(ngModel)]="tiempoDuracionMostrarRuta" /> Mostrar Ruta
+                      </div>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      <div class="grupo">
+                          <button (click)="modalGrupo(contentgrupo)" class="btn btn-secondary">Nuevo Grupo</button>
+                          <button (click)="modalLinea(contentlinea)" class="btn btn-secondary">Nueva Linea</button>
+                      </div>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      <div class="grupo">
+                          <button class="btn btn-info" (click)="onUploadKmlFile()">Subir KML</button>
+                          <input id="kmlFile" type="file" accept="text/kml" class="form-control width-20 inline" (change)="loadKml($event)" />
+                      </div>
+                  </td>
+              </tr>
+              <tr>
+                  <td>
+                      <div class="grupo">
+                          <button class="btn btn-info" (click)="onUploadKmlFile(true)">Armar ruta desde KML</button>
+                          <input id="kmlFile" type="file" accept="text/kml" class="form-control width-20 inline" (change)="loadKml($event)" />
+                      </div>
+                  </td>
+              </tr>
+          </table>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<ng-template #contentgrupo let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Grupo</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body container">
+    <form (ngSubmit)="onSubmitGrupo(grupoForm)"  #grupoForm="ngForm">
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input type="text" [(ngModel)]="grupoNuevo.nombre" class="form-control" name="nombre" required>
+      </div>
+
+      <button type="submit" class="btn btn-success">Guardar</button>
+
+    </form>  
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.hide()">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #contentlinea let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Linea</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body container">
+      <form (ngSubmit)="onSubmitLinea(lineaForm)"  #lineaForm="ngForm">
+        <div class="form-group">
+            <label for="grupoId">Grupo</label>
+            <select [(ngModel)]="lineaNueva.grupoId" name="grupoId" required>
+                <option [value]="undefined">Seleccionar Grupo</option>
+                <option *ngFor="let grupo of grupos" [value]="grupo.id">{{grupo.nombre}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" [(ngModel)]="lineaNueva.nombre" class="form-control" name="nombre" required>
+        </div>
+        <div class="form-group">
+            <label for="color">Color</label>
+            <input type="color" [(ngModel)]="lineaNueva.color" class="form-control" name="color" style="padding:0" required>
+        </div>
+        <div class="form-group">
+            <label for="diametro">Diametro</label>
+            <input type="number" [(ngModel)]="lineaNueva.diametro" class="form-control" name="diametro" required>
+        </div>
+  
+        <button type="submit" class="btn btn-success">Guardar</button>
+  
+      </form>  
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.hide()">Close</button>
+    </div>
+</ng-template>
+
+<ng-template #popContent>
+  Hello, <b>{{name}}</b>!
+</ng-template>

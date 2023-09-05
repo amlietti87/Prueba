@@ -1,0 +1,7 @@
+{
+  "name": "inspectores-app",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

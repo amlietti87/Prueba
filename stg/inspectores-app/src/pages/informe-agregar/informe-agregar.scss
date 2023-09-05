@@ -1,0 +1,68 @@
+page-informe-agregar {
+
+  .input-fecha{
+    font-weight: bold;
+  }
+
+  .label-informe {
+    color: #2874A6 !important;
+  }
+
+  .informe-button {
+    margin-top: 50px;
+  }
+
+  .item-searcheable {
+    padding: 0;
+    .item-md.item-block .item-inner {
+      padding: 0;
+    }
+  }
+
+  .item-datos-conductor {
+    border-bottom: 1px solid #dedede;
+  }
+
+  .item-form {
+    padding-left: 0px;
+  }
+  .select-motivo {
+    font-size: 12px;
+  }
+
+  .item-input-has-focus .label-md[floating], .input-has-focus .label-md[floating], .item-input-has-value .label-md[floating], .input-has-value .label-md[floating] {
+    padding-top: 20px;
+  }
+
+  .alert-head {
+    background-color: #1ABC9C;
+  }
+
+  .item:not(.item-label-stacked):not(.item-label-floating) .ionic-selectable-md .ionic-selectable-value {
+    padding-left: 0px;
+  }
+
+  .item-notificado {
+    padding-top: 10px;
+  }
+
+  .alert-message{
+
+    .alert-guardar-informe{
+      font-style: italic;
+    }
+
+  }
+
+  .btn-search {
+    margin-left: 8px !important;
+    font-size: 15px !important;
+  }
+
+  .btn-add {
+    padding-left: 12px !important;
+    font-size: 15px !important;
+  }
+
+}
+

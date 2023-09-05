@@ -1,0 +1,347 @@
+﻿<form novalidate class="smallsize" [formGroup]="mainForm" autocomplete="off">
+
+    <div [hidden]="!active" class="m-portlet m-portlet--mobile m-portlet--acce m-portlet--head-sm" id="m_portlet_detail" m-portlet="true">
+
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <span class="m-portlet__head-icon">
+                        <i class="{{icon}}"></i>
+                    </span>
+                    <h3 class="m-portlet__head-text">
+                        <!--<span *ngIf="detail.Id">Editar {{title}}: {{detail.Nombre}}</span>
+                        <span *ngIf="!detail.Id">Crear {{title}}</span>-->
+                    </h3>
+                </div>
+            </div>
+
+
+
+            <div class="m-portlet__head-tools">
+
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item">
+                        <a href="#" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-angle-down"></i>
+                        </a>
+                    </li>
+                    <li class="m-portlet__nav-item" style="display: none">
+                        <a href="#" id="fullscreentools" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-expand"></i>
+                        </a>
+                    </li>
+                    <li class="m-portlet__nav-item">
+                        <a href="#" (click)="close()" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-close"></i>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--right m-tabs-line-danger" role="tablist" style="padding-right:50px">
+                    <li class="nav-item m-tabs__item" [hidden]="!viewMainTab">
+                        <a class="nav-link m-tabs__link active" data-toggle="tab" id="m_heder_portlet_tab_Linea" href="#m_portlet_tab_Linea" style="background: unset !important;" role="tab">
+                            Siniestro
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="m-portlet__body" id="porletSiniestro">
+
+            <tabset #tabSet class="tab-container tabbable-line">
+
+                <!-- Tab Datos -->
+                <tab heading="{{'Datos'}}" customClass="m-tabs__item">
+
+                    <!-- Datos Generales -->
+                    <mat-expansion-panel class="hideHeder" #myPanel [expanded]="true">
+
+                        <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+                            <mat-panel-title>Datos Generales</mat-panel-title>
+                            <mat-panel-description></mat-panel-description>
+                        </mat-expansion-panel-header>
+
+                        <div class="row">
+
+                            <!-- Nro. Siniestro-->
+                            <div class="form-group col-md-2 col-md-10p" [ngClass]="{'has-danger': mainForm.controls.Id.invalid && (mainForm.controls.Id.dirty || mainForm.controls.Id.touched)}">
+                                <label><b>Nro. Siniestro</b></label>
+                                <input style="font-weight:bold;" disabled formControlName="Id" class="form-control" type="text" name="Id" [(ngModel)]="detail.NroSiniestro">
+                            </div>
+
+                            <!-- Unidad de Negocio -->
+                            <div class="form-group col-md-2 col-md-10p" [ngClass]="{'has-danger': mainForm.controls.SucursalId.invalid && (mainForm.controls.SucursalId.dirty || mainForm.controls.SucursalId.touched)}">
+                                <label class="campoRequerido"><b>Unidad de Negocio</b></label>
+                                <sucursal-combo name="SucursalId" formControlName="SucursalId" #SucursalCombo [(ngModel)]="detail.SucursalId" emptyText="{{'Unidad de Negocio...'}}">
+                                </sucursal-combo>
+                                <div *ngIf="mainForm.controls.SucursalId.invalid && (mainForm.controls.SucursalId.dirty || mainForm.controls.SucursalId.touched)" class="form-control-feedback text-sm">
+                                    <div *ngIf="mainForm.controls.SucursalId.errors.required">
+                                        Unidad de Negocio requerida.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Empresa -->
+                            <div class="form-group col-md-2 col-md-10p" [ngClass]="{'has-danger': mainForm.controls.EmpresaId.invalid && (mainForm.controls.EmpresaId.dirty || mainForm.controls.EmpresaId.touched)}">
+                                <label class="campoRequerido"><b>Empresa</b></label>
+                                <empresa-combo name="EmpresaId" formControlName="EmpresaId" #EmpresaCombo [(ngModel)]="detail.EmpresaId" emptyText="{{'Empresa...'}}">
+                                </empresa-combo>
+                                <div *ngIf="mainForm.controls.EmpresaId.invalid && (mainForm.controls.EmpresaId.dirty || mainForm.controls.EmpresaId.touched)" class="form-control-feedback">
+
+                                    <div *ngIf="mainForm.controls.EmpresaId.errors.required">
+                                        Empresa requerida.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fecha Siniestro -->
+                            <div class="form-group col-md-2 col-md-10p" style="max-width: 21%" [ngClass]="{'has-danger': mainForm.controls.Fecha.invalid && (mainForm.controls.Fecha.dirty || mainForm.controls.Fecha.touched)}">
+                                <label class="campoRequerido" style="width: 100%"><b>Fecha Siniestro</b></label>
+
+                                <mat-form-field class="mat-form-field-mat-datepicker" style="width: 40% !important;">
+                                    <input matInput [(ngModel)]="detail.Fecha" name="Fecha" formControlName="Fecha" [matDatepicker]="Fecha" (dateChange)="addEvent('change', $event)">
+                                    <mat-datepicker-toggle matSuffix [for]="Fecha"></mat-datepicker-toggle>
+                                    <mat-datepicker #Fecha (selectedChanged)="onDate($event)"></mat-datepicker>
+                                </mat-form-field>
+                                <span>Dia: <b>{{detail.Dia}}</b></span>
+                                <div *ngIf="mainForm.controls.Fecha.invalid && (mainForm.controls.Fecha.dirty || mainForm.controls.Fecha.touched)" class="form-control-feedback">
+
+                                    <div *ngIf="mainForm.controls.Fecha.errors.required">
+                                        Fecha requerida.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Hora Siniestro -->
+                            <div class="form-group col-md-2 col-md-10p" style="max-width: 10%" [ngClass]="{'has-danger': mainForm.controls.HoraSiniestro.invalid && (mainForm.controls.HoraSiniestro.dirty || mainForm.controls.HoraSiniestro.touched)}">
+                                <label class="campoRequerido"><b>Hora Siniestro</b></label>
+                                <ngb-timepicker formControlName="HoraSiniestro" [(ngModel)]="HoraSiniestro" name="Hora" [spinners]="false" (ngModelChange)="fireOnChange($event)"></ngb-timepicker>
+                                <div *ngIf="mainForm.controls.HoraSiniestro.invalid && (mainForm.controls.HoraSiniestro.dirty || mainForm.controls.HoraSiniestro.touched)" class="form-control-feedback">
+
+                                    <div *ngIf="mainForm.controls.HoraSiniestro.errors.required">
+                                        Hora del siniestro requerida.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fecha Denuncia -->
+                            <div *ngIf="viewMode == 2" class="form-group col-md-2 col-md-10p" style="max-width: 13%">
+                                <label>Fecha Denuncia</label><br />
+                                <span>
+                                    {{detail.FechaDenuncia | date: 'dd/MM/yyyy HH:mm' }}
+                                </span>
+                            </div>
+                        </div>
+
+
+
+
+                    </mat-expansion-panel>
+
+                    <!-- Conductor -->
+                    <mat-expansion-panel class="hideHeder" #panelConductor [expanded]="true">
+                        <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+                            <mat-panel-title>
+                                Conductor / Practicante
+                            </mat-panel-title>
+                            <mat-panel-description>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <conductor #conductores [detail]="detail" [ViewMode]="viewMode" [allowAddPracticante]="allowAddPracticante"></conductor>
+                    </mat-expansion-panel>
+
+                    <!-- Coche -->
+                    <mat-expansion-panel class="hideHeder" [expanded]="true" #panelCoche>
+                        <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+                            <mat-panel-title>
+                                Coche
+                            </mat-panel-title>
+                            <mat-panel-description>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <coche #cochedanio [detail]="detail" [ViewMode]="viewMode"></coche>
+                    </mat-expansion-panel>
+
+                    <!-- Datos del Lugar -->
+                    <mat-expansion-panel class="hideHeder" [expanded]="true" #panelDatosLugar>
+                        <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+                            <mat-panel-title>
+                                Datos del Lugar
+                            </mat-panel-title>
+                            <mat-panel-description>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <datoslugar-acc [detail]="detail" #DatosLugares></datoslugar-acc>
+                    </mat-expansion-panel>
+
+                    <!-- Detalle Siniestro -->
+                    <mat-expansion-panel class="hideHeder" [expanded]="true" #panelDetalles>
+                        <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+                            <mat-panel-title>
+                                Detalle siniestro
+                            </mat-panel-title>
+                            <mat-panel-description>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <detalle-siniestro [detail]="detail" #detalle [SiniestroConsecuencias]="detail.SiniestrosConsecuencias"></detalle-siniestro>
+
+                    </mat-expansion-panel>
+
+                    <div class="m-portlet__foot">
+                        <div class="row align-items-center">
+
+                            <div class="col-lg-3 m--valign-left" *ngIf="viewMode == 2">
+                                <p>Insertó Usuario: <span>{{detail.CreatedUserName}}</span></p>
+                            </div>
+                            <div class="col-lg-3 m--valign-middle">
+
+                            </div>
+                            <div class="col-lg-6 m--align-right">
+                                <div>
+                                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
+                                        Cancelar
+                                    </button>
+
+                                    <button type="submit" *ngIf="(viewMode == 1 && allowAdd) || (viewMode == 2 && allowModify)" class="btn btn-primary" [buttonBusy]="saving" (click)="save()" [busyText]="'Guardando..'">
+                                        <i class="fa fa-save"></i>
+                                        <span>Guardar</span>
+                                    </button>
+
+                                    <button type="submit" *ngIf="detail.Id && detail.Id != 0 && allowDelete" class="btn btn-primary" [buttonBusy]="removing" (click)="delete(detail.Id)" [busyText]="'Borrando...'">
+                                        <i class="fa fa-trash"></i>
+                                        <span>Borrar</span>
+                                    </button>
+
+                                    <button *ngIf="allowImprimirSiniestro && detail.Id && detail.Id != 0" type="button" class="btn btn-default" (click)="onPrint(detail)">
+                                        Imprimir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </tab>
+
+                <!-- Tab Involucrados -->
+                <tab heading="{{'Involucrados'}}" customClass="m-tabs__item">
+                    <div [hidden]="!detail.Id || detail.Id == 0">
+                        <involucrados [detail]="detail" #involucradosC></involucrados>
+                        <div class="m-portlet__foot">
+                            <div class="row align-items-center">
+
+                                <div class="col-lg-3 m--valign-left">
+                                </div>
+                                <div class="col-lg-3 m--valign-middle">
+
+                                </div>
+                                <div class="col-lg-6 m--align-right">
+                                    <div>
+                                        <button *ngIf="allowImprimirSiniestro && detail.Id && detail.Id != 0" type="button" class="btn btn-default" (click)="onPrint(detail)">
+                                            Imprimir Siniestro
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div [hidden]="!(!detail.Id || detail.Id == 0)">
+                        Debe guardar el siniestro para poder agregar involucrados
+                    </div>
+                </tab>
+
+
+                <!-- Tab Croquis -->
+                <tab heading="{{'Croquis'}}" customClass="m-tabs__item">
+                    <div [hidden]="!detail.Id || detail.Id == 0">
+                        <app-croqui #Croqui [allowAdd]="allowAdd" [allowModify]="allowModify" [detailSiniestro]="detail">Croquis</app-croqui>
+                        <div class="m-portlet__foot">
+                            <div class="row align-items-center">
+
+                                <div class="col-lg-3 m--valign-left">
+                                </div>
+                                <div class="col-lg-3 m--valign-middle">
+
+                                </div>
+                                <div class="col-lg-6 m--align-right">
+                                    <div>
+                                        <button *ngIf="allowImprimirSiniestro && detail.Id && detail.Id != 0" type="button" class="btn btn-default" (click)="onPrint(detail)">
+                                            Imprimir Siniestro
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div [hidden]="!(!detail.Id || detail.Id == 0)">
+                        Debe guardar el siniestro para poder crear el croqui
+                    </div>
+                </tab>
+
+                <!-- Tab Reclamos -->
+                <tab heading="{{'Reclamos/Recuperos'}}" customClass="m-tabs__item">
+                    <div [hidden]="!detail.Id || detail.Id == 0">
+                        <reclamos-component [detailSiniestro]="detail" [siniestro]="true" #ReclamosC></reclamos-component>
+                        <div class="m-portlet__foot">
+                            <div class="row align-items-center">
+
+                                <div class="col-lg-3 m--valign-left">
+                                </div>
+                                <div class="col-lg-3 m--valign-middle">
+
+                                </div>
+                                <div class="col-lg-6 m--align-right">
+                                    <div>
+                                        <button *ngIf="allowImprimirSiniestro && detail.Id && detail.Id != 0" type="button" class="btn btn-default" (click)="onPrint(detail)">
+                                            Imprimir Siniestro
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div [hidden]="!(!detail.Id || detail.Id == 0)">
+                        Debe guardar el siniestro para poder agregar reclamos
+                    </div>
+                </tab>
+
+                <!-- Tab Adjuntos -->
+                <tab heading="{{'Adjuntos'}}" customClass="m-tabs__item">
+                    <div [hidden]="!detail.Id || detail.Id == 0">
+                        <adjuntos [AllowUploadFiles]="allowModify" #SiniestroAdjuntose [Parent]="detail.Id" [appGetAllFileByParent]="GetAdjuntosSiniestros" [appUploadUrl]="appUploadFiles + detail.Id" [appRemoveFileUrl]="appDeleteFileById">
+
+                        </adjuntos>
+                        <div class="m-portlet__foot">
+                            <div class="row align-items-center">
+
+                                <div class="col-lg-3 m--valign-left">
+                                </div>
+                                <div class="col-lg-3 m--valign-middle">
+
+                                </div>
+                                <div class="col-lg-6 m--align-right">
+                                    <div>
+                                        <button *ngIf="allowImprimirSiniestro && detail.Id && detail.Id != 0" type="button" class="btn btn-default" (click)="onPrint(detail)">
+                                            Imprimir Siniestro
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div [hidden]="!(!detail.Id || detail.Id == 0)">
+                        Debe guardar el siniestro para poder adjuntar archivos
+                    </div>
+                </tab>
+
+            </tabset>
+            <!--<div class="modal-footer">
+                <button type="button" class="btn btn-primary blue"
+                        (click)="CheckDatos(detailForm)">
+                    <i class="fa fa-save"></i> <span>Guardar</span>
+                </button>
+            </div>-->
+        </div>
+    </div>
+</form>

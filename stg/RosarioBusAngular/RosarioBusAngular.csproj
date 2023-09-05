@@ -1,0 +1,162 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <Configurations>Debug;Release;Int</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>ClientApp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+
+    <!-- Set this to true if you enable server-side prerendering -->
+    <BuildServerSideRenderer>false</BuildServerSideRenderer>
+    <TypeScriptExperimentalDecorators>true</TypeScriptExperimentalDecorators>
+    <TypeScriptEmitDecoratorMetadata>true</TypeScriptEmitDecoratorMetadata>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\dist\**" />
+    <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\dist\**" />
+    <Content Include="**\*.ts" Exclude="$(GlobalExclude)" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="ClientApp\node_modules\**" />
+    <EmbeddedResource Remove="ClientApp\dist\**" />
+    <None Remove="ClientApp\dist\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\main.051092d3bfd12ec05d9d.bundle.js" />
+    <None Remove="ClientApp\main.051092d3bfd12ec05d9d.bundle.js" />
+    <None Remove="ClientApp\src\app\auth\token.interceptor.ts" />
+    <None Remove="ClientApp\src\app\shared\helpers\CustomDatepickerI18n.ts" />
+    <None Remove="ClientApp\src\app\shared\helpers\PrimengDatatableHelper.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\art\model\HistorialDenuncias.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\art\model\HistorialEstados.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\art\model\HistorialReclamosEmpleado.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\admin\talleresivu\create-or-edit-talleresivu-modal.component.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\default\index\component\dashboardCalendarComponent.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\default\index\component\dashboardComponent.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\default\index\component\dashboardDirective.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\default\index\component\managmentComponent.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\default\index\model\dashboardItem.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\inspectores\create-or-edit-inspectores-modal.component.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\inspectores\diagramasinspectores\create-or-edit-diagramasinspectores-modal.component.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\inspectores\diagramasinspectores\templates\template-franco.component.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\inspectores\diagramasinspectores\templates\template-jornada-trabajada.component.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\inspectores\diagramasinspectores\templates\template-novedad.component.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\inspectores\diagramasinspectores\templates\template-vacio.component.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\planificacion\HChoxser\hChoxser.service.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\planificacion\model\hChoxser.model.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\planificacion\shared\hservicio-combo.component.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\siniestros\localidades\create-or-edit-localidades-modal.component.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\siniestros\provincias\provincias.service.ts" />
+    <None Remove="ClientApp\src\app\theme\pages\siniestros\shared\provincias-combo.component.ts" />
+    <None Remove="ClientApp\src\app\theme\shared.module.ts" />
+    <None Remove="ClientApp\src\assets\classList.min.js" />
+    <None Remove="ClientApp\src\assets\web-animations.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\auth\token.interceptor.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\CustomDatepickerI18n.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\helpers\PrimengDatatableHelper.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\shared.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\default\index\component\dashboardCalendarComponent.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\default\index\component\managmentComponent.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\default\index\component\dashboardComponent.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\default\index\component\dashboardDirective.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\default\index\model\dashboardItem.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\inspectores\diagramasinspectores\create-or-edit-diagramasinspectores-modal.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\inspectores\diagramasinspectores\templates\template-vacio.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\inspectores\diagramasinspectores\templates\template-novedad.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\inspectores\diagramasinspectores\templates\template-franco.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\inspectores\diagramasinspectores\templates\template-jornada-trabajada.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\inspectores\gruposinspectores\create-or-edit-gruposinspectores-modal.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\planificacion\HChoxser\hChoxser.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\planificacion\model\hChoxser.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\planificacion\shared\hservicio-combo.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\admin\localidades\create-or-edit-localidades-modal.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\siniestros\provincias\create-or-edit-provincias-modal.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\siniestros\provincias\provincias.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\theme\pages\siniestros\shared\provincias-combo.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ClientApp\src\app\theme\pages\inspectores\diagramasinspectores\templates\template-vacio.component.js">
+      <DependentUpon>template-vacio.component.ts</DependentUpon>
+    </None>
+    <None Update="ClientApp\src\app\theme\pages\inspectores\diagramasinspectores\templates\template-novedad.component.js">
+      <DependentUpon>template-novedad.component.ts</DependentUpon>
+    </None>
+    <None Update="ClientApp\src\app\theme\pages\inspectores\gruposinspectores\grupoinspectoresturno.service.js">
+      <DependentUpon>grupoinspectoresturno.service.ts</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <!--  <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />-->
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->	
+    <!--<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build-int" />-->    
+
+    <!-- Include the newly-built files in the publish output -->
+    <!--<ItemGroup>
+      <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
+      <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>-->
+  </Target>
+
+  <ProjectExtensions><VisualStudio><UserProperties ClientApp_4_1angular-cli_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Int'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptModuleKind></TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
+
+</Project>

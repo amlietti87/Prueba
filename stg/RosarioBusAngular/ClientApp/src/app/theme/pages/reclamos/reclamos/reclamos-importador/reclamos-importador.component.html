@@ -1,0 +1,254 @@
+﻿<div class="m-portlet m-portlet--mobile">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon">
+                    <i class="la la-clock-o"></i>
+                </span>
+                <h3 class="m-portlet__head-text">
+                    <span>Importar Reclamos desde Excel</span>
+                </h3>
+            </div>
+        </div>
+        <div class="m-portlet__head-tools">
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item">
+                    <a href="#"
+                       m-portlet-tool="toggle"
+                       class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-angle-down"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item">
+                    <a href="#"
+                       m-portlet-tool="fullscreen"
+                       class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-expand"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item">
+                    <a href="#"
+                       (click)="close()"
+                       class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-close"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="m-portlet__body">
+        <div class="row m--padding-10">
+            <div class="col-md-6">
+                <button type="button"
+                        [hidden]="fileUpload"
+                        (click)="onSeleccionarArchivoExcelClick()"
+                        class="btn btn-outline-info btn-sm">
+                    <i class="la la-search"></i>Selecionar Archivo Excel
+                </button>
+
+                <label>{{fileUpload != null ? fileUpload.name : ''}}</label>
+                <input #fileInput
+                       style="display:none"
+                       type="file"
+                       name="fileInput"
+                       id="fileInput"
+                       class="form-control form-control-file"
+                       (change)="onFileInputChange($event)"
+                       accept=".xlsx"
+                       [formControl]="myControl" />
+
+                <button type="button"
+                        [hidden]="!fileUpload"
+                        (click)="onBorrarClick($event)"
+                        class="btn btn-outline-danger btn-sm"
+                        [buttonBusy]="isLoading">
+                    <i class="la la-times "></i>Borrar
+                </button>
+                <button type="button"
+                        [hidden]="!isFileSelected"
+                        (click)="onImportarClick()"
+                        [buttonBusy]="isLoading"
+                        class="btn btn-outline-success btn-sm">
+                    <i class="la la-upload"></i>Importar
+                </button>
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            <div class="col-md-12 pTableSectores" [busyIf]="isLoading">
+                <p-table [value]="items" [scrollable]="true" scrollHeight="300px" frozenWidth="140px">
+
+                    <ng-template pTemplate="frozenheader">
+                        <tr>
+                            <th style="width:20px">
+                            <th class="thReclamosImportador">
+                                <span style="white-space:nowrap" title="TipoReclamo">TipoReclamo</span>
+                            </th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="frozenbody" let-row>
+                        <tr [ngClass]="{'rowHasError': !row.IsValid}">
+                            <td style="width:20px">
+                                <span *ngIf="!row.IsValid" class="m-input-icon__icon m-input-icon__icon--right"
+                                      data-toggle="m-tooltip" data-placement="top" title="{{row.Errors.join(',')}}">
+                                    <span>
+                                        <i class="la la-info m--font-danger" style="font-size:14px"></i>
+                                    </span>
+                                </span>
+                            </td>
+                            <td class="tdReclamosImportador">{{row.TipoReclamo}}</td>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Estado">Estado</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="SubEstado">SubEstado</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="UnidadNegocio">UnidadNegocio</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Empresa">Empresa</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Fecha Reclamo">F. Reclamo</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Nro. Denuncia">NroDenuncia</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="EmpleadoDNI">EmpleadoDNI</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="EmpleadoCUIL">EmpleadoCUIL</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="MontoDemandado">MontoDemandado</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="FechaOfrecimiento">FechaOfrecimiento</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="MontoOfrecido">MontoOfrecido</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="MontoReconsideracion">MontoReconsideracion</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="CausaReclamo">CausaReclamo</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Hechos">Hechos</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="FechaPago">FechaPago</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="MontoPagado">MontoPagado</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="MontoPagado">MontoFranquicia</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Abogado">Abogado</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="HonorariosAbogadoActor">HonorariosAbogadoActor</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="HonorariosMediador">HonorariosMediador</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="HonorariosPerito">HonorariosPerito</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="JuntaMedica">JuntaMedica</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="PorcIncapacidad">PorcIncapacidad</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="TipoAcuerdo">TipoAcuerdo</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="RubroSalarial">RubroSalarial</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="MontoTasasJudicialesExcel">MontoTasasJudicialesExcel</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Observaciones">Observaciones</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="ObsConvExtrajudicial">ObsConvExtrajudicial</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Autos">Autos</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="NroExpediente">NroExpediente</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="Juzgado">Juzgado</span>
+                            </th>
+                            <th class="thReclamosImportador" style="width:150px !important; min-width: 150px !important;">
+                                <span style="white-space:nowrap" title="AbogadoEmpresa">AbogadoEmpresa</span>
+                            </th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-row>
+                        <tr [ngClass]="{'rowHasError': !row.IsValid}">
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.Estado}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.SubEstado}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.UnidadNegocio}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.Empresa}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.FechaReclamoExcel}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.NroDenuncia}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.EmpleadoDNI}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.EmpleadoCUIL}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.MontoDemandadoExcel}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.FechaOfrecimientoExcel}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.MontoOfrecidoExcel}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.MontoReconsideracionExcel}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.CausaReclamo}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.Hechos}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.FechaPagoExcel}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.MontoPagadoExcel}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.MontoFranquiciaExcel}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.Abogado}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.HonorariosAbogadoActorExcel}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.HonorariosMediadorExcel}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.HonorariosPeritoExcel}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.JuntaMedicaExcel}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.PorcIncapacidad}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.TipoAcuerdo}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.RubroSalarial}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.MontoTasasJudicialesExcel}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.Observaciones}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.ObsConvExtrajudicial}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.Autos}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.NroExpediente}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.Juzgado}}</td>
+                            <td class="tdReclamosImportador" style="width:150px !important; min-width: 150px !important;">{{row.AbogadoEmpresa}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary blue" [buttonBusy]="isLoading" [disabled]="anyErrores" (click)="onProcesarClick()">
+                    <i class="fa fa-save"></i> <span>Guardar</span>
+                </button>
+            </div>
+    </div>
+</div>

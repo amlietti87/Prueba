@@ -1,0 +1,42 @@
+﻿<form #detailForm="ngForm"
+      novalidate
+      autocomplete="off" 
+      (ngSubmit)="detailForm.form.valid && save(detailForm)">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span>
+                Rechazar
+            </span>
+        </h4>
+        <div class="m-portlet__nav-item">
+            <a href="#"
+               (click)="close()"
+               class="m-portlet__nav-link m-portlet__nav-link--icon">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+    <div class="modal-body">
+
+        <div class="form-group col-md-10" [ngClass]="{'has-danger': Motivo.invalid && (Motivo.dirty || Motivo.touched || detailForm.submitted)}">
+            <label>Motivo Rechazo</label>
+            <textarea #Motivo="ngModel" class="form-control"
+                      type="text" name="Motivo" [(ngModel)]="detail.Motivo" required maxlength="500"></textarea>
+
+            <div *ngIf="Motivo.invalid && (Motivo.dirty || Motivo.touched || detailForm.submitted)"
+                 class=" form-control-feedback">
+                <div *ngIf="Motivo.errors.required">
+                    El Motivo de Rechazo es Requerido
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue">
+            <i class="fa fa-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+</form>
+

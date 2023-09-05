@@ -1,0 +1,187 @@
+﻿    <div [hidden]="!active" style="padding:0px !important" class="m-portlet m-portlet--mobile m-portlet--acce m-portlet--head-sm" id="m_portlet_detail" m-portlet="true" [busyText]="diagramacionBusyText" [busyIf]="loading">
+
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon">
+                    <i class="{{icon}}"></i>
+                </span>
+                <h3 class="m-portlet__head-text">
+                    <b class="header-diag-label">Mes: </b> <span class="header-diag-info">{{listaDiagramacion.Mes}}</span>
+                    <b class="header-diag-label">Año:</b> <span class="header-diag-info">{{listaDiagramacion.Anio}}</span>
+                    <b class="header-diag-label">Grupo de Inspectores: </b><span class="header-diag-info">{{listaDiagramacion.GrupoInspectores}}</span>
+                    <b class="header-diag-label">Estado:</b> <span class="header-diag-info">{{listaDiagramacion.Estado}}</span>
+                </h3>
+            </div>
+        </div>
+
+
+        <div class="m-portlet__head-tools">
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item">
+                    <a href="#" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-angle-down"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item" style="display:none">
+                    <a id="fullscreentools" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-expand"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item">
+                    <a href="#" (click)="close()" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-close"></i>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--right m-tabs-line-danger" role="tablist" style="padding-right:50px">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" data-toggle="tab" id="m_heder_portlet_tab_Linea" href="#m_portlet_tab_Linea" style="background: unset !important;" role="tab">
+                        Diagramación
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+    <div class="m-portlet__body" id="porletDiagramacion" style="overflow:auto">
+        
+        <p-table #dataTable [columns]="columns" [value]="listModel" [paginator]="false" [frozenColumns]="[{}]" [scrollable]="true"  [scrollHeight]="'calc(100vh - 145px)'" frozenWidth="100px"  >
+            
+            <ng-template pTemplate="colgroup" let-columns>
+                <colgroup>
+                    <col *ngFor="let col of columns" style="width:100px">
+                </colgroup>
+            </ng-template>
+            
+            <ng-template pTemplate="frozenheader">
+                <tr style="height: 60px;">
+                    <th style="width:70px !important; min-width: 50px !important;">
+                        <span title="Inspector"></span>
+                    </th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="frozenbody" let-row>
+                <tr style="min-height: 54px !important; height:54px !important;text-align:center; border-right: lightgray solid;">
+                    <td [ngStyle]="{'background':getColor(row.NumeroDia)}" class="tdInspectores" >
+
+                        <span style="font-size: x-small; font-weight:bold;">{{row.NombreDia}}</span>
+                        <br />
+                        <span style="font-size: 18px; font-weight:bold;">{{row.NumeroDia}}</span>
+                        <!--<br />
+                        <span style="font-size: 18px">{{row.EsFeriado}}</span>-->
+
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="header">
+
+                <tr style="width:65px !important">
+
+                    <ng-container *ngFor="let insp of columns; let i = index">
+                        <th [attr.colspan]="insp.ColSpan" *ngIf="insp.ColSpan > 0" style="width:100px !important; min-width: 70px !important;padding:0px !important; text-align:center">
+                            <div [ngStyle]="{'background':getColorInsp(insp.InspColor)}">
+                                <p title="{{insp.InspTurno}}" class="text-truncate m--marginless" style="font-size: 10.4px !important;">{{insp.InspTurno}}</p>
+                            </div>
+                        </th>
+                    </ng-container>
+                </tr>
+
+                <tr style="width:65px !important">
+                    <th style="width:100px !important; min-width: 70px !important;padding:0px !important; text-align:center" *ngFor="let insp of columns; let i = index">
+                        <div [ngStyle]="{'background':getColorInsp(insp.InspColor)}">
+                            <p title="{{insp.DescripcionInspector}}" class="text-truncate m--marginless align-content-center" style="font-size: 10.4px !important;">{{insp.DescripcionInspector}}</p>
+                            <p title="{{insp.Legajo}}" class="text-truncate m--marginless" style="font-size: 10.4px !important;">{{insp.Legajo}}</p>
+                            <p title="Cantidad de Francos" class="text-truncate m--marginless" style="font-size: 10.4px !important;">{{insp.CantFrancos}}</p>
+                            <span *ngIf="insp && insp.validations && insp.validations.length > 0" class="fa fa-info informacion" title="{{getErrorMessage(insp)}}"></span>
+                        </div>
+                    </th>
+                </tr>
+
+            </ng-template>
+
+            <ng-template pTemplate="body" let-row>
+                <tr style="min-height: 45px !important; height:54px !important; width:100px !important">
+
+
+                    <td [ngStyle]="{'background':getColor(row.NumeroDia), 'text-align':'center'}" class="tdInspectores center" *ngFor="let insp of columns; let i = index">
+
+                        <div *ngIf="row.Inspectores[i].EsJornada || row.Inspectores[i].EsFrancoTrabajado ">
+
+                            <template-jornada-trabajada [legajo]="row.Inspectores[i].Legajo"
+                                                        [diaMes]="row"
+                                                        [BlockDate]="listaDiagramacion.BlockDate"
+                                                        (setloading) ="onsetloading($event)"
+                                                        [zonasItems]="zonasItems"
+                                                        [listModel]="listModel"
+                                                        [diasMesAP]="diasMesAP"
+                                                        [columns]="columns">
+                            </template-jornada-trabajada>
+                        </div>
+
+                        <div *ngIf="row.Inspectores[i].EsFranco || (row.Inspectores[i].EsFranco && row.Inspectores[i].FrancoNovedad)">
+                            <template-franco [legajo]="row.Inspectores[i].Legajo"
+                                             [diaMes]="row"
+                                             (setloading) ="onsetloading($event)"
+                                             [zonasItems]="zonasItems"
+                                             [BlockDate]="listaDiagramacion.BlockDate"
+                                             [rangoshorariosItems]="rangoshorariosItems"
+                                             [listModel]="listModel"
+                                             [diasMesAP]="diasMesAP"
+                                             [columns]="columns">
+                            </template-franco>
+                        </div>
+
+                        <div *ngIf="row.Inspectores[i].EsNovedad || (row.Inspectores[i].EsNovedad && row.Inspectores[i].FrancoNovedad)">
+                            <template-novedad [legajo]="row.Inspectores[i].Legajo"
+                                              [diaMes]="row"
+                                              [listModel]="listModel"
+                                              [rangoshorariosItems]="rangoshorariosItems"
+                                              [columns]="columns">
+                            </template-novedad>
+                        </div>
+
+                        <div *ngIf="!row.Inspectores[i].EsJornada && !row.Inspectores[i].EsFranco && !row.Inspectores[i].EsNovedad && !row.Inspectores[i].EsFrancoTrabajado">
+
+                            <template-vacio [legajo]="row.Inspectores[i].Legajo"
+                                            [diaMes]="row"
+                                            [zonasItems]="zonasItems"
+                                            [rangohorariosItemsSinFT]="rangohorariosItemsSinFT"
+                                            [listModel]="listModel"
+                                            [diasMesAP]="diasMesAP"
+                                            [columns]="columns">
+                            </template-vacio>
+                        </div>
+                    </td>
+
+                </tr>
+            </ng-template>
+
+        </p-table>
+
+    </div>
+
+    <div class="m-portlet__head m-portlet__foot-diagramacion">
+        <div class="row align-items-center">
+            <div class="col-lg-6 m--valign-middle">
+
+            </div>
+            <div class="col-lg-6 m--align-right">
+                <div>
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                    <button type="button" [hidden] ="!allowmodificarDiagramacion" (click)="guardarDiagramacion()" class="btn btn-primary" [buttonBusy]="saving" [busyText]="'Guardando..'">
+                        <i class="fa fa-save"></i> <span>Guardar</span>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

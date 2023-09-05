@@ -1,0 +1,63 @@
+<div class="m-content">
+    <div class="m-portlet m-portlet--mobile">
+        <div class="modal-header" >
+            <h4 class="modal-title">
+                Historial de Certificados: {{data[0].UsuarioNombre}}
+            </h4>
+            <button type="button" class="close" (click)="close()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="m-portlet__body">
+            <div class="row align-items-center">
+                <!--<Primeng-Datatable-Start>-->
+                <div class="primeng-datatable-container"
+                     [busyIf]="primengDatatableHelper.isLoading">
+
+                    <p-dataTable #dataTable
+                                 [value]="primengDatatableHelper.records"
+                                 [paginator]="false"
+                                 emptyMessage="No Data"
+                                 scrollable="true"
+                                 ScrollWidth="100%"
+                                 responsive="primengDatatableHelper.isResponsive">
+                        <p-column field="ArchivoId" header="Certificado">
+                            <ng-template let-col let-row="rowData" pTemplate type="body">
+                                {{row.ArchivoNombre}}
+                            </ng-template>
+                        </p-column>
+
+                        <p-column field="FechaActivacion" header="Fecha Vigencia">
+                            <ng-template  let-col let-row="rowData" pTemplate type="body">
+                                {{row.FechaActivacion | date: 'dd-MM-yyyy  HH:mm:ss'}}
+                            </ng-template>
+                        </p-column>
+
+                        <p-column field="Activo" header="Activo" [sortable]="true" styleClass="col-primeng-small">
+                            <ng-template let-col let-row="rowData" pTemplate type="body">
+                                <div style="text-align:center">
+                                    <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': row.Activo}">
+                                        <input [(ngModel)]="row.Activo" type="checkbox" disabled><span></span>
+                                    </label>
+                                </div>
+                            </ng-template>
+                        </p-column>
+
+                        <p-column field="FechaRevocacion" header="Fecha Revocación">
+                            <ng-template let-col let-row="rowData" pTemplate type="body">
+                                {{row.FechaRevocacion | date: 'dd-MM-yyyy  HH:mm:ss'}}
+                            </ng-template>
+                        </p-column>
+
+                    </p-dataTable>
+                    <div class="modal-footer">
+                            <!-- Guardar Button -->
+                        <button type="button" class="btn btn-primary blue" (click)="close()">Aceptar</button>
+                    </div> 
+                </div>
+                <!--<Primeng-Datatable-End>-->
+ 
+            </div>
+        </div>
+    </div>
+</div>

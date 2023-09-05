@@ -1,0 +1,48 @@
+page-sector {
+
+    ion-item.item.item-block.item-md.item-input.item-ionic-selectable.item-input-has-value.ng-valid.ng-dirty.ng-touched {
+        border-bottom-color: transparent;
+        -webkit-box-shadow: inset 0 -1px 0 0 transparent;
+        box-shadow: inset 0 0px 0 0 #dedede;
+    }
+
+    ion-item.item.item-block.item-md.item-input.item-ionic-selectable {
+        border-bottom-color: transparent;
+        -webkit-box-shadow: inset 0 -1px 0 0 transparent;
+        box-shadow: inset 0 0px 0 0 #dedede;
+    }
+
+    .item-inner {
+        border-bottom-color: #dedede !important;
+        -webkit-box-shadow: inset 0 -1px 0 0 transparent;
+        box-shadow: inset 0 0px 0 0 #dedede;
+    }
+
+    .sector-button {
+        margin-top: 50px;
+        margin-bottom: 100px;
+    }
+
+    .icon-trash {
+        font-size: 30px;
+        margin-left: 8px !important;
+        
+    }
+
+    .button-trash {
+        margin-right: 0px !important;
+    }
+
+    .label-sector {
+        color: #2874A6 !important;
+    }
+
+    .input-fecha{
+        font-weight: bold;
+    }
+
+    .has-refresher  .scroll-content {
+        border-top: 0 !important;
+    }
+
+}

@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Tareas</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="form">
+    <ion-list>
+      <!-- Calendar -->
+      <ion-item class="item-form">
+        <ion-label class="label-form">Fecha</ion-label>
+        <ion-input value="{{entity.FechaString}}" formControlName="FechaString"
+                   class="input-fecha" [disabled]="true"></ion-input>
+        <button ion-button icon-only item-end clear="true" (click)="seleccionarFecha()">
+          <ion-icon class="icon-calendar" name="md-calendar"></ion-icon>
+        </button>
+      </ion-item>
+      <!-- Tarea -->
+      <ion-item>
+        <ion-label class="label-form" floating>Tarea</ion-label>
+        <ion-select class="select-form" formControlName="TareaId" (ionChange)="onTareachanged()" interface="popover">
+          <ion-option value="{{item.Id}}" *ngFor="let item of tareas">{{item.Description}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+    <!-- Controles Dinamicos -->
+    <dynamic-component [hidden]="true"></dynamic-component>
+    <tareas-realizadas-base *ngFor="let item of elements">
+      <ng-container *view="item.view"></ng-container>
+    </tareas-realizadas-base>
+  </ion-list>
+    <button *ngIf="tareaId"  class="informe-button" ion-button round outline block color="primary" (click)="GuardarTareas()" [disabled]="!form.valid">Guardar</button>
+  </form>
+  
+  <ion-list class="sin-consultas" *ngIf="!tareaId">
+    <ion-item class="item-icon-not-search" no-lines>
+        <ion-label class="label-info">No hay tarea seleccionada</ion-label>  
+    </ion-item>
+    <ion-item class="item-icon-not-search" no-lines>      
+      <ion-icon class="icon-not-search" name="ios-attach-outline"></ion-icon>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,70 @@
+<div class="m-portlet__body">
+  <!--<Primeng-Datatable-Start>-->
+  <div
+    class="primeng-datatable-container primeng-small"
+    style="overflow:auto; "
+    [busyIf]="loadingroutes"
+  >
+    <h4>Seleccionar Recorrido <strong>{{filter.BanderaDetalle}}</strong></h4>
+    <p-table
+      [value]="routes"
+      [scrollable]="true"
+      scrollHeight="200px"
+      [style]="{ height: '340px' }"
+    >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th style="width:50px; max-width: 50px;">
+            Descripcion
+          </th>
+          <th style="width:50px; max-width: 50px;">
+            Fecha Desde
+          </th>
+          <th style="width:50px; max-width: 50px;">
+            Fecha Hasta
+          </th>
+          <th style="width:10px; max-width: 10px;">
+            Seleccionar
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData>
+        <tr>
+          <td style="width:50px; max-width: 50px; text-align: left">
+            {{ rowData.Description }} 
+          </td>
+          <td
+            style="width:50px; max-width: 50px; text-align: left; height:48px !important;"
+          >
+            {{ rowData.FechaVigenciaDesde | date: "dd/MM/yyyy" }}
+          </td>
+          <td
+            style="width:50px; max-width: 50px; text-align: left; height:48px !important;"
+          >
+            {{ rowData.FechaVigenciaHasta | date: "dd/MM/yyyy" }}
+          </td>
+          <td
+            style="width:10px; max-width: 10px; text-align: left; height:48px !important;"
+          >
+          <p-radioButton (click)="RutaSeleccionada(rowData)" value="{{rowData}}"></p-radioButton>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-default"
+    (click)="close()"
+  >
+    Cancelar
+  </button>
+  <button
+    (click)="save()"
+    class="btn btn-primary blue"
+  >
+    <i class="fa fa-save"></i> <span>Guardar</span>
+  </button>
+</div>

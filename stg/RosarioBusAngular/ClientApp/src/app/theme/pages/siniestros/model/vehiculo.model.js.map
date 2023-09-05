@@ -1,0 +1,1 @@
+{"version":3,"file":"vehiculo.model.js","sourceRoot":"","sources":["vehiculo.model.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;AAAA,kEAAqE;AAKrE;IAAiC,+BAAW;IAA5C;;IASA,CAAC;IARG,oCAAc,GAAd;QACI,OAAO,IAAI,CAAC,KAAK,GAAG,GAAG,GAAG,IAAI,CAAC,MAAM,GAAG,GAAG,GAAG,IAAI,CAAC,OAAO,CAAC;IAC/D,CAAC;IAML,kBAAC;AAAD,CAAC,AATD,CAAiC,gBAAG,GASnC;AATY,kCAAW"}

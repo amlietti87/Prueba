@@ -1,0 +1,1 @@
+{"version":3,"file":"seguros.model.js","sourceRoot":"","sources":["seguros.model.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;AAAA,kEAA4F;AAK5F;IAAmC,iCAAW;IAA9C;;IAaA,CAAC;IAZG,sCAAc,GAAd;QACI,OAAO,IAAI,CAAC,WAAW,CAAC;IAC5B,CAAC;IAUL,oBAAC;AAAD,CAAC,AAbD,CAAmC,gBAAG,GAarC;AAbY,sCAAa;AAgB1B;IAAsC,oCAAS;IAA/C;;IAQA,CAAC;IAAD,uBAAC;AAAD,CAAC,AARD,CAAsC,sBAAS,GAQ9C;AARY,4CAAgB"}

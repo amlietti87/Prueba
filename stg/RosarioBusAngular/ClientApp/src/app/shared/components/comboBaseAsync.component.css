@@ -1,0 +1,37 @@
+﻿.comboasync mat-select {
+    height: 2.60REM !important;
+    padding-top: 0.75rem !important;
+}
+
+.smallsize mat-select {
+    height: 2rem !important;
+    padding-top: 5px !important;
+}
+
+mat-form-field.comboasync {
+    width: 100% !important;
+}
+
+
+.comboasync .combos-denuncia .mat-form-field {
+    width: 100% !important;
+}
+
+.comboasync .mat-form-field-wrapper {
+    padding-bottom: 1.75em !important;
+}
+
+.comboasync .mat-form-field-infix {
+    border-top: 0 !important;
+    padding: 0 !important;
+}
+
+.comboasync .mat-form-field-label-wrapper {
+    left: 10% !important;
+    padding-bottom: 0rem !important;
+    top: -0.4rem !important;
+}
+
+.comboasync .mat-input-underline{
+    display: none;
+}

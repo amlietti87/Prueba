@@ -1,0 +1,39 @@
+<form #exporExcelForm="ngForm" novalidate (ngSubmit)="export()" autocomplete="off" [busyIf]="isExporting">
+    <div class="modal-header" >
+        <h4 class="modal-title">
+            Exportar Excel
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div>
+        <!-- Portlet body -->
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label>Tipo de Dia</label>
+                <tipoDia-combo #codTipoDiaCombo [(ngModel)]="filter.CodTdia" livesearch="{{false}}" emptyText="{{'Seleccione..'}}" style="width: calc(100% - 48px);" name="FilterCodTdia" id="FilterCodTdia" #FilterCodTdia="ngModel" placeHolder="Tipo de dia">
+                </tipoDia-combo>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label>Bandera</label>
+                <bandera-combo #banderaComboMinutos [(ngModel)]="filter.CodBan" emptyText="{{'Seleccione..'}}" name="FilterCodBanMinutos" style="width: calc(100% - 48px);" #FilterCodBanMinutos="ngModel" id="FilterCodBanMinutos" placeHolder="Bandera">
+                </bandera-combo>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label>Tipo de Hora</label>
+                <p-dropdown [options]="htposhorasSelectItem" [(ngModel)]="filter.TipoDeHora" dropdownIcon="fa fa-fw fa-angle-down " filter="true" #tipoHoraCombo #TipoHoraFiltro="ngModel" name="TipoHoraFiltro" id="TipoHoraFiltro" [style]="{'width':'100%'}">
+                </p-dropdown>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" style="padding-top: 12em">
+        <!-- Guardar Button -->
+        <button type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue">
+                <i class="fa fa-file-excel-o"></i> <span>Exportar</span>
+        </button>
+    </div>
+</form>

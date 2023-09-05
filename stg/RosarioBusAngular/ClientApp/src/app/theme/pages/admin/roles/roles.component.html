@@ -1,0 +1,133 @@
+﻿
+
+
+<div>
+
+    <div class="m-subheader">
+        <div style="text-align: right;">
+            <button (click)="onCreate()" *ngIf="allowAdd" class="btn btn-primary blue"><i class="fa fa-plus"></i> Crear Rol</button>
+        </div>
+    </div>
+
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form class="horizontal-form filters" autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+
+                                        <input [(ngModel)]="filter.FilterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="'Buscar...'" type="text">
+                                        <span class="input-group-append">
+                                            <button (click)="onSearch()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container"
+                         [busyIf]="primengDatatableHelper.isLoading">
+
+                        <p-dataTable #dataTable
+                                     [lazy]="true"
+                                     (onLazyLoad)="onSearch($event)"
+                                     [value]="primengDatatableHelper.records"
+                                     [paginator]="false"
+                                     emptyMessage="{{l('Sin Datos')}}"
+                                     scrollable="true"
+                                     ScrollWidth="100%"
+                                     responsive="primengDatatableHelper.isResponsive">
+                            <p-column field="Name" header="Código" [sortable]="true"></p-column>
+                            <p-column field="DisplayName" header="Nombre" [sortable]="true"></p-column>
+
+                            <p-column field="IsDefault" header="Caracteristica" [sortable]="false">
+                                <ng-template let-record="rowData" pTemplate="body">
+                                    <span>
+                                        <span *ngIf="record.IsDefault"
+                                              class="m-badge m-badge--metal m-badge--wide"
+                                              data-toggle="tooltip"
+                                              title="Es rol por defecto al agregar un usuario nuevo"
+                                              data-placement="top">
+                                            Por Defecto
+                                        </span>
+
+
+                                        <span *ngIf="record.IsStatic"
+                                              class="m-badge m-badge--brand m-badge--wide"
+                                              data-toggle="tooltip"
+                                              title="Este role es de sistema y no se puede eliminar o modificar. solo se podra administrar los permisos"
+                                              data-placement="top">
+                                            Es de sistema
+                                        </span>
+
+                                        <span *ngIf="record.CaducarSesionInactividad"
+                                                class="m-badge m-badge--metal m-badge--wide"
+                                                data-toggle="tooltip"
+                                                title="Caduca la sesión al pasar determinado tiempo de inactividad"
+                                                data-placement="top">
+                                            Caduca sesión por inactividad
+                                        </span>
+                                    </span>
+                                </ng-template>
+                            </p-column>
+
+                            <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div class="dropdown">
+                                        <a href="javascript:void(0);" *ngIf="allowModify" (click)="onEdit(row)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Editar">
+                                            <i class="la la-edit"></i>
+                                        </a>
+                                        <button type="button" href="javascript:void(0);" [disabled]="row.IsStatic" *ngIf="allowDelete" (click)="onDelete(row)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Eliminar">
+                                            <i class="la la-trash"></i>
+                                        </button>
+
+                                        <a href="#" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown">
+                                            <i class="la la-ellipsis-h"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a href="javascript:void(0);" *ngIf="allowEditPermisos" class="dropdown-item" (click)="onEditUserPermissions(row)"><i class="la la-beer"></i>Permisos</a>
+
+                                        </div>
+                                    </div>
+
+                                </ng-template>
+                            </p-column>
+
+                        </p-dataTable>
+
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                                         #paginator
+                                         (onPageChange)="onSearch($event)"
+                                         [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                Registros totales:  {{ primengDatatableHelper.totalRecordsCount}}
+                            </span>
+                        </div>
+
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <ng-template #createOrEdit></ng-template>
+
+    <editRolPermissionsModal #editRolPermissionsModal></editRolPermissionsModal>
+
+</div>
+
+

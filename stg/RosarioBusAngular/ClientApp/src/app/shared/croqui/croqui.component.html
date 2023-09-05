@@ -1,0 +1,82 @@
+<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+    <div class="row" style="margin-top: 2%;">
+        <div class="col-md-12">
+            <div class="col-md-2" style="float:left;">
+                <mat-accordion>
+                    <mat-expansion-panel *ngFor="let d of dataElementos" ngDefaultControl>
+
+                        <mat-expansion-panel-header>
+                            <b>{{ d.Nombre }}</b>
+                        </mat-expansion-panel-header>
+                        <mat-list>
+                            <mat-list-item (click)="agregarsvg(e)" *ngFor="let e of d.CroElemeneto">
+                                <img id="inputimagenAdd" src="{{appDownloadUrl + '\?id=' + e.Id + '&c=' + time }}" style="max-width: 50px; max-height: 50px;" />
+                                {{ e.Nombre }}
+
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-expansion-panel>
+                    <!--<div class="form-group">
+                        <input type="text" [(ngModel)]="textToAdd" name="textToAdd" maxlength="50">
+                        <button type="button" (click)="AgregarTexto()">
+                            Agrega Texto
+                        </button>
+                    </div>-->
+                    <div class="form-group">
+
+                         <button type="button" style="width: 100%"
+                                        class="btn btn-primary blue"
+                                        (click)="AgregarTexto()">
+                                    Agregar Texto
+                          </button>
+                          <input type="text" [(ngModel)]="textToAdd" name="textToAdd" style="width: 100%; height:35px" maxlength="50">
+
+                    </div>
+                </mat-accordion>
+            </div>
+            <div class="col-md-10" style="float:right;">
+                <div class="row">
+                    <div class="form-group col-xl-2">
+                        <label><b>Herramientas</b></label>
+                    </div>
+                    <div class="form-group col-xl-2">
+                        <input type="range" id="myRange" [(ngModel)]="value" name="value" max="400" min="50" [disabled]="!current">
+                        {{value}}
+                    </div>
+                    <div class="form-group col-xl-2">
+                        <input type="range" id="myRange2" [(ngModel)]="angulo" name="angulo" max="360" min="0" [disabled]="!current">
+                        {{angulo}}
+                    </div>
+                    <div class="form-group col-xl-1">
+                        <input type="checkbox" [(ngModel)]="isflip" name="isflip" [disabled]="!current" />
+                        <label>flip</label>
+                    </div>
+                    <div class="form-group col-xl-1" *ngIf="isText">
+                        <input type="color" name="colorText" [(ngModel)]="colorText" (ngModelChange)="ChangeColor($event)">
+                    </div>
+
+                    <div class="form-group col-xl-1">
+                        <button type="button" (click)="borrar()" [disabled]="!current">
+                            Eliminar
+                        </button>
+                    </div>
+                    <div class="form-group col-xl-1">
+                        <button type="button" class="btn btn-primary blue"
+                                (click)="GuardarCroqui()"
+                                *ngIf="(viewMode == 1 && allowAdd) || (viewMode == 2 && allowModify)"
+                                >
+                            <i class="fa fa-save"></i> <span>Guardar</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div style="border-bottom-color: black; border-bottom-width: 2px" #dataContainer>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+
+

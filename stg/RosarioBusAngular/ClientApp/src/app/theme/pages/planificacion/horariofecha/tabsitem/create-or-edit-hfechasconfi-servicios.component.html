@@ -1,0 +1,327 @@
+﻿<div class="row">
+    <div class="form-group col-md-4">
+        <label>Sub Galpon</label>
+        <subgalpon-combo #CodSubg
+                         #CodSubgModel="ngModel"
+                         [(ngModel)]="filter.CodSubg"
+                         (itemstChange)="subgalponitemstChange($event)"
+                         (selectedItemChange)="selectedItemChangesubgalpon($event)"
+                         livesearch="{{false}}" emptyText="{{'Seleccione..'}}"
+                         name="CodSubg" id="CodSubg" placeHolder="Sub galpon">
+        </subgalpon-combo>
+    </div>
+    <div class="form-group col-md-3">
+        <label>Tipo de Dia</label>
+        <tipoDia-combo #CodTdia
+                       #FilterCodTdia="ngModel"
+                       [(ngModel)]="filter.CodTdia"
+                       (itemstChange)="tipoDiaitemstChange($event)"
+                       (selectedItemChange)="selectedItemChangeCodTdia($event)"
+                       livesearch="{{false}}"
+                       emptyText="{{'Seleccione..'}}"
+                       name="FilterCodTdia" id="FilterCodTdia" placeHolder="Tipo de dia">
+        </tipoDia-combo>
+    </div>
+    <div class="form-group col-md-5" style="padding-top: 2rem;" *ngIf="filter.CodSubg && filter.CodSubg != null && filter.CodTdia && filter.CodTdia != null">
+        <button class="btn btn-metal" *ngIf="PDFPuntaPunta"
+                (click)="GetReportePuntaPunta()">
+            <i class="la la-file-pdf-o"></i> Punta y Punta
+        </button>
+        <button class="btn btn-metal" *ngIf="PDFRelevo"
+                (click)="GetReporteRelevo()">
+            <i class="la la-file-pdf-o"></i> Relevo
+        </button>
+        <button class="btn btn-metal" *ngIf="allowExportarExcel"
+                (click)="onExportarExcel()">
+                <i class="la la-file-excel-o"></i> Exportar
+        </button>    
+    </div>
+
+
+
+</div>
+<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+
+    <div class="row">
+
+        <div class="col-md-auto" [busyIf]="isLoading">
+            <table class="m-list-badge m-list-badge--light-bg list-initial">
+                <thead class="m-list-badge__label m--font-info">
+                    <tr>
+                        <th>
+                            Servicios
+                            <button type="button" style="padding: 1px;"
+                                    class="smallesttext btn btn-primary btn-sm"
+                                    title="Agregar Servicio" *ngIf="allowAltaServicio"
+                                    (click)="addServicio()">
+                                <i class="la la-plus"></i>
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="Serve-Scroll" style="height: 430px;">
+                <table class="m-list-badge m-list-badge--light-bg list-initial" >
+                    <tbody>
+                        <tr class="m-list-badge__items" style="line-height: 20px" *ngFor="let c of servicios">
+                            <td>
+                                <a class="m-list-badge__item" (click)="OnServiceSelect(c)"
+                                   [ngClass]="{ 'm-list-badge__item--brand': c.IsSelected }">
+                                    <span>{{c.Description}}</span>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-8" [busyIf]="isLoadingMediaVueltas">
+
+
+            <p-table [value]="mediaVueltas" (onEditInit)="onCellEdit($event)" #mediaVueltaTable class="ui-edit-table" [scrollable]="true" scrollHeight="430px">
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 20px">
+
+                        </th>
+                        <th style="width: 75px">
+                            Sale
+                        </th>
+                        <th style="width: 75px">
+                            Llega
+                        </th>
+                        <th>
+                            Bandera
+                        </th>
+                        <th style="width: 75px">
+                            Duración
+                        </th>
+                        <th>
+                            Tpo. Hora
+                        </th>
+                        <th style="width: 30px">
+                            Dia
+                        </th>
+                        <th style="width: 125px;">
+                            Acciones
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row>
+                    <tr [ngClass]="{'rowHasChange': row.HasChange}">
+
+                        <td style="width: 20px">
+                            <span *ngIf="row.HasError" class="m-input-icon__icon m-input-icon__icon--right"
+                                  data-toggle="m-tooltip" data-placement="top" title="{{row.ErrorMessages.join(',')}}">
+                                <span>
+                                    <i class="la la-info m--font-danger"></i>
+                                </span>
+                            </span>
+                        </td>
+
+                        <td  [pEditableColumn]="row" [pEditableColumnField]="'Sale'"  id="Sale_{{row.Orden}}" [ngClass]="{'ColumnWarning': row.HasErrorSale}" style="width: 75px" >
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <div class="m-input-icon m-input-icon--right" (keydown)="UpDownFocus(row, $event, 'Sale')">
+                                        <p-calendar [(ngModel)]="row.Sale"
+                                                    appendTo="body"
+                                                    required="true"
+                                                    #Sale="ngModel"
+                                                    hourFormat="24"
+                                                    (onInput)="CalcularDiferencia(row)"
+                                                    (onSelect)="CalcularDiferencia(row)"
+                                                    [inputStyle]="{'width':'100%'}"
+                                                    [showOnFocus]="false"
+                                                    name="Sale_{{row.Id}}" id="Sale_{{row.Id}}" [timeOnly]="true">
+                                        </p-calendar>
+                                        <span *ngIf="Sale && Sale.invalid && (Sale.dirty || Sale.touched) && Sale.errors.required" class="m-input-icon__icon m-input-icon__icon--right"
+                                              data-toggle="m-tooltip" data-placement="top" title="Es Requerido">
+                                            <span>
+                                                <i class="la la-info m--font-danger"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{row.Sale | date: 'HH:mm'}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td [pEditableColumn]="row" [pEditableColumnField]="'Llega'" id="Llega_{{row.Orden}}" [ngClass]="{'ColumnWarning': row.HasErrorLlega}" style="width: 75px">
+
+                            <p-cellEditor>
+                                <ng-template pTemplate="input" >
+                                    <div class="m-input-icon m-input-icon--right" (keydown)="UpDownFocus(row, $event, 'Llega')">
+                                        <p-calendar [(ngModel)]="row.Llega"
+                                                    appendTo="body"
+                                                    required="true"
+                                                    hourFormat="24"
+                                                    (onInput)="CalcularDiferencia(row)"
+                                                    (onSelect)="CalcularDiferencia(row)"
+                                                    #Llega="ngModel"
+                                                    [inputStyle]="{'width':'100%'}"
+                                                    [showOnFocus]="false"
+                                                    name="Llega_{{row.Id}}" id="Llega_{{row.Id}}" [timeOnly]="true" [style]="{'width':'100%'}"></p-calendar>
+                                        <span *ngIf="Llega && Llega.invalid && (Llega.dirty || Llega.touched) && Llega.errors.required" class="m-input-icon__icon m-input-icon__icon--right"
+                                              data-toggle="m-tooltip" data-placement="top" title="Es Requerido">
+                                            <span>
+                                                <i class="la la-info m--font-danger"></i>
+                                            </span>
+                                        </span>
+
+                                    </div>
+
+
+
+
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{row.Llega | date: 'HH:mm'}}
+                                </ng-template>
+                            </p-cellEditor>
+
+                        </td>
+
+
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+
+                                    <p-dropdown [options]="banderasDtoSelectItem"
+                                                (onChange)="selectedItemChangeBandera($event,row)"
+                                                filter="true"
+                                                autoDisplayFirst="false"
+                                                autofocus="true"
+                                                required="true"
+                                                appendTo="body"
+                                                #CodTpoHora="ngModel" name="CodBan_{{row.Id}}" id="CodBan_{{row.Id}}" [(ngModel)]="row.CodBan" [style]="{'width':'100%'}"></p-dropdown>
+
+
+
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{row.DescripcionBandera}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+
+                        <td style="width: 75px">{{row.DifMin}}</td>
+
+
+                        <td pEditableColumn>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <p-dropdown [options]="htposhorasSelectItem"
+                                                appendTo="body"
+                                                required="true"
+                                                (onChange)="selectedItemChangeTpoHora($event,row)"
+                                                filter="true" #CodTpoHora="ngModel" name="TipoHora_{{row.Id}}" id="TipoHora_{{row.Id}}"
+                                                [(ngModel)]="row.CodTpoHora"
+                                                [style]="{'width':'100%'}"></p-dropdown>
+
+
+
+                                    <div *ngIf="CodTpoHora.invalid && (CodTpoHora.dirty || CodTpoHora.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="CodTpoHora.errors.required" class="has-required">
+                                            El campo es requerido
+                                        </div>
+                                    </div>
+
+
+
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    <div class="clickable">{{row.DescripcionTpoHora}}</div>
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+
+
+                        <td style="width: 30px">{{row.Dia}}</td>
+
+                        <td style="width: 125px;">
+                            <div class="dropdown">
+                                <a href="javascript:void(0);" *ngIf="!allowDelete" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" (click)="onRemoveRow(row)"><i class="la la-trash"></i></a>
+                                <a href="javascript:void(0);" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill fa-rotate-180" (click)="onAddNewRow(row)"><i class="fa fa-share "></i></a>
+                                <a href="javascript:void(0);" *ngIf="currentService && currentService.Id > 0 && row.Orden == 1" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" (click)="onAddFirstNewRow()"><i class="fa fa-level-up"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+
+            </p-table>
+
+
+
+
+
+
+
+
+        </div>
+        <div class="col-md-2 smallsize" style="height: 430px;">
+            <!-- <button type="button" *ngIf="currentService && currentService.Id > 0"
+                    class="btn btn-primary btn-sm " style="margin:5px" title="Agregar Media Vuelta"
+                    (click)="onAddFirstNewRow()">
+                <i class="la la-plus"></i>
+            </button> -->
+
+            <button type="button" [hidden]="!currentService"
+                    class="btn btn-primary btn-sm " style="margin:5px" title="Renombrar Servicio"
+                    (click)="RenombrarServicio()">
+                <span>Renombrar Servicio</span>
+            </button>
+
+            <!-- <div class="form-group">
+                <label>Cantidad de Coches estimados</label>
+                <input #CantCoches="ngModel" class="form-control" type="text" name="CantCoches" [(ngModel)]="hHorariosConfiDto.CantCoches"
+                       currencyMask min="0" max="500000"
+                       [options]="{ allowNegative: false, precision : 0,  prefix: '', thousands: '', decimal: ',' }">
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-danger': CantConductores.invalid && (CantConductores.dirty || CantConductores.touched || detailForm.submitted)}">
+                <label>Cantidad de Conductores estimados</label>
+                <input #CantConductores="ngModel" class="form-control" type="text" name="CantConductores" [(ngModel)]="hHorariosConfiDto.CantConductores"
+                       currencyMask min="0" max="500000"
+                       [options]="{ allowNegative: false, precision : 0,  prefix: '', thousands: '', decimal: ',' }">
+            </div> -->
+            
+            <button type="button" *ngIf="allowEliminarServicios && currentService && currentService.Id > 0"
+                    class="btn btn-danger btn-sm " style="margin:5px" title="Borrar Servicio {{currentService.NumSer}}"
+                    (click)="onServicioDelete()">
+                <i class="la la-trash">
+                </i>{{currentService.NumSer}}
+            </button>
+
+            <button type="button" *ngIf="allowEliminarDuracion && currentService && currentService.Id > 0"
+                    class="btn btn-danger btn-sm " style="margin:5px" title="Borrar Duraciones {{currentService.NumSer}}"
+                    (click)="onDeletePlanificacion()">
+                <i class="la la-trash">
+                </i>Borrar Duraciones
+            </button>
+            <div class="form-group">
+                <label>Cant. Coches: <b>{{hHorariosConfiDto.CantidadCochesReal}}</b> </label>
+
+            </div>
+
+            <div class="form-group">
+                <label>Cant. Conductores: <b>{{hHorariosConfiDto.CantidadConductoresReal}}</b> </label>
+            </div>
+            <!--[hidden]="!currentService"-->
+        </div>
+    </div>
+
+    <div class="modal-footer">
+
+        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue"
+                [disabled]="!detailForm.form.valid || !allowsave"
+                [buttonBusy]="saving" [busyText]="'Guardando..'" [hidden]="!(allowGuardarServicios && detail.BeforeMigration == false)">
+            <i class="fa fa-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+
+</form>

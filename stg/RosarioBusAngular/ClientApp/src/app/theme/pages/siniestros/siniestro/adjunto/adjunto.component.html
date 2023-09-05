@@ -1,0 +1,67 @@
+﻿<div [busyIf]="isLoading" 
+     class="AdjuntoContainer">
+    <div class="modal-header" 
+         *ngIf="allowClose">
+        <h4 class="modal-title">
+            <span >{{"Adjuntos"}}</span>
+        </h4>
+        <div class="m-portlet__nav-item">
+            <a href="#"
+               (click)="OnClose()"
+               class="m-portlet__nav-link m-portlet__nav-link--icon">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+    <p-fileUpload name="files[]" 
+                  url="{{appUploadUrl}}" 
+                  (onUpload)="onUpload($event)" 
+                  chooseLabel="Seleccionar" 
+                  uploadLabel="Subir" 
+                  cancelLabel="Cancelar"  
+                  (onError)="onError($event)" 
+                  (onBeforeSend)="onBeforeSend($event)"
+                  multiple="multiple" 
+                  [accept]="accept" 
+                  [maxFileSize]="maxFileSize" >
+
+        <ng-template pTemplate="content">
+            <!--<ul *ngIf="uploadedFiles.length">
+                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+            </ul>-->
+            <table *ngIf="adjuntosDto.length">
+                 <tr *ngFor="let file of adjuntosDto">
+                     <td width="100%">
+                         <a [attr.href]="appDownloadUrl + '\?id=' + file.Id" 
+                            target="_blank" 
+                            download>{{file.Nombre}}
+                         </a>
+                     </td>
+                     <td>
+                        <div class="m-portlet__nav-item">
+                            <a href="#"
+                               (click)="OnRemoveFile(file)"
+                               class="m-portlet__nav-link m-portlet__nav-link--icon">
+                                <i class="la la-close"></i>
+                            </a>
+                        </div>
+                     </td>
+                 </tr>
+            </table>
+
+            <!--<ul *ngIf="adjuntosDto.length">
+                <li *ngFor="let file of adjuntosDto">
+                    <a [attr.href]="appDownloadUrl + '\?id=' + file.Id" target="_blank" download>{{file.Nombre}} </a>
+
+
+                    <button icon="fa-close" (click)="OnRemoveFile(file)" pbutton="" type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                        <span class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span>
+                        <span class="ui-button-text ui-clickable">ui-btn</span>
+                    </button>
+
+                </li>
+            </ul>-->
+        </ng-template>
+    </p-fileUpload>
+     
+</div>

@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Turnos</h2>
+<mat-dialog-content class="mat-typography">
+    <form #editDiagramacionForm="ngForm" novalidate autocomplete="off">
+       
+        <div style="min-height:300px" >
+            <div class=" col-md-12 modal-turno-diag">
+                <p-multiSelect name="Turnos" id="Turnos"
+                               [options]="itemsTurnos" [(ngModel)]="selectedTurnos" optionLabel="DscTurno" defaultLabel="{{'Seleccione...'}}" selectedItemsLabel="{0} Turnos Seleccionados" maxSelectedLabels="1">
+                </p-multiSelect>
+            </div>
+        </div>
+       
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+    <button type="button" class="btn btn-primary blue" (click)="OnAceptar()" [disabled]="selectedTurnos.length == 0">
+        <i class="fa fa-file-save"></i> <span>Aceptar</span>
+    </button>
+</mat-dialog-actions>

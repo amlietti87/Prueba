@@ -1,0 +1,136 @@
+﻿
+
+
+<div>
+
+    <div class="m-subheader">
+        <div style="text-align: right;">
+            <div class="text-right">
+                <button (click)="onCreate()" *ngIf="allowAdd || allowSelect" class="btn btn-primary blue"><i class="fa fa-plus"></i> Crear {{title}}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form #filterForm="ngForm" class="horizontal-form" autocomplete="off">
+
+
+
+
+                    <div class="row">
+
+                        <div class="form-group col-md-2">
+                            <input #Calle1filter="ngModel" class="form-control" placeholder="Calle 1"
+                                   type="text" name="Calle1" id="Calle1" [(ngModel)]="filter.Calle1" maxlength="5">
+                        </div>
+
+
+                        <div class="form-group col-md-2">
+                            <input #Calle2filter="ngModel" class="form-control" placeholder="Calle 2"
+                                   type="text" name="Calle2filter" [(ngModel)]="filter.Calle2" maxlength="5">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <input class="form-control" placeholder="Descripcion Calle 1"
+                                   type="text" name="DescripcionCalle1filter" [(ngModel)]="filter.DescripcionCalle1" maxlength="300">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <input class="form-control" placeholder="Descripcion Calle 2"
+                                   type="text" name="DescripcionCalle2filter" [(ngModel)]="filter.DescripcionCalle2" maxlength="300">
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <button (click)="onSearch()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                        </div>
+
+                        <div [hidden]="showAnulado" class="form-group col-lg-2">
+                            <label>Anulado</label>
+                            <yesnoall-combo #ComboAnulado
+                                            name="ComboAnulado"
+                                            id="ComboAnulado"
+                                            #Anulado="ngModel"
+                                            [(ngModel)]="filter.AnuladoCombo"
+                                            emptyText="{{'Todos'}}">
+                            </yesnoall-combo>
+                        </div>
+                    </div>
+
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container primeng-small"
+                         [busyIf]="primengDatatableHelper.isLoading">
+
+                        <p-dataTable #dataTable
+                                     [lazy]="true"
+                                     (onLazyLoad)="onSearch($event)"
+                                     [value]="primengDatatableHelper.records"
+                                     [paginator]="false"
+                                     emptyMessage="{{l('Sin Datos')}}"
+                                     scrollable="true"
+                                     ScrollWidth="100%"
+                                     scrollHeight="300px"
+                                     responsive="primengDatatableHelper.isResponsive">
+                            <p-column field="Calle1" header="Calle 1" [sortable]="true"></p-column>
+                            <p-column field="Calle2" header="Calle 2" [sortable]="true"></p-column>
+                            <p-column field="DescripcionCalle1" header="Des. Calle 1" [sortable]="true"></p-column>
+                            <p-column field="DescripcionCalle2" header="Des. Calle 2" [sortable]="true"></p-column>
+                            <p-column field="Descripcion" header="Descripcion" [sortable]="false"></p-column>
+                            <p-column field="Localidad" header="Localidad" [sortable]="false"></p-column>
+                            <p-column field="Anulado" header="Anulado" [sortable]="true" styleClass="col-primeng-small">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div style="text-align:center">
+                                        <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': row.Anulado}">
+                                            <input [(ngModel)]="row.Anulado" type="checkbox" disabled><span></span>
+                                        </label>
+                                    </div>
+                                </ng-template>
+                            </p-column>
+                            <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div class="dropdown">
+                                        <a href="javascript:void(0);" (click)="onEdit(row)" *ngIf="allowModify" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Editar">
+                                            <i class="la la-edit"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" *ngIf="allowDelete" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" (click)="onDelete(row)"><i class="la la-trash"></i></a>
+                                    </div>
+
+                                    <a href="javascript:void(0);" (click)="onSelect(row)" *ngIf="allowSelect" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Seleccionar">
+                                        <i class="la la-hand-pointer-o"></i>
+                                    </a>
+                                </ng-template>
+                            </p-column>
+
+                        </p-dataTable>
+
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                                         #paginator
+                                         (onPageChange)="onSearch($event)"
+                                         [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                Registros totales:  {{ primengDatatableHelper.totalRecordsCount}}
+                            </span>
+                        </div>
+
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+
+                </div>
+            </div>
+        </div>
+
+        <!--<createOrEditEmpresaDtoModal #createOrEdit></createOrEditEmpresaDtoModal>-->
+    </div>
+
+    <ng-template #createOrEdit></ng-template>
+
+
+</div>
+
+

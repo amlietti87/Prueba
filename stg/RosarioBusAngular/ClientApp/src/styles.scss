@@ -1,0 +1,516 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+
+@import "../node_modules/primeng/resources/primeng.css"; 
+@import url('../node_modules/primeng/resources/themes/bootstrap/theme.css');
+
+/*@import url('../node_modules/primeng/resources/themes/bootstrap/theme.css');*/
+/*@import url('../node_modules/primeng/resources/themes/lightness /theme.css');*/
+/*@import url('../node_modules/primeng/resources/themes/cupertino/theme.css');*/
+@import "assets/vendors/custom/primeng/datatable/css/primeng.datatable.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+ 
+ 
+.has-required {
+    color: #f4516c;
+}
+
+
+flaticon-avatar:before {
+    content: "\f10e"
+}
+ 
+.m-list-badge__item_extra {
+ 
+}
+
+.m-list-badge.m-list-badge--light-bg .m-list-badge__items .m-list-badge__item {
+    border: 1px solid #716aca;
+    display: inline-block;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    margin-bottom: 5px;
+}
+
+.filters {
+    margin-bottom:20px;
+}
+
+.m-list-timeline__items .m-list-timeline__item .m-list-timeline__time {
+    width: 120px;
+}
+
+p-datatable:not([scrollheight]) .ui-datatable-scrollable-body {
+    overflow: visible;
+}
+
+.col-actions {
+    overflow: visible;
+    width:130px;
+
+}
+
+.border-left-flat-radius {
+    border-top-left-radius: 0px 0px;
+    border-bottom-left-radius: 0px 0px;
+}
+/*.ui-datatable-scrollable-body {
+    min-height:150px;
+}*/
+  
+.primeng-small .ui-datatable table thead tr th {
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.primeng-small .ui-datatable td {
+    padding: 2px 10px !important;
+    font-size: 12px;
+}
+
+
+.col-primeng-small {
+    overflow: visible;
+    width: 110px;
+}
+
+.col-primeng-medium {
+    overflow: visible;
+    width: 120px;
+}
+
+.col-primeng-medium2 {
+    overflow: visible;
+    width: 150px;
+}
+
+.bold {
+    font-weight: bold !important;
+}
+
+.col-primeng-large {
+    overflow: visible;
+    width: 200px;
+}
+
+.col-primeng-extralarge {
+    overflow: visible;
+    width: 300px;
+    min-width: 300px;
+}
+
+
+
+.col-primeng-center {
+    text-align: center !important;    
+}
+
+
+
+
+.primeng-medium .ui-datatable table thead tr th {
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.primeng-medium .ui-datatable td {
+    padding: 2px 10px !important;
+    font-size: 12px;
+}
+
+
+
+.ui-chkbox-label {
+    margin-bottom: 0px;
+}
+
+.m-accordion__item-head-small {
+    padding: 0.6rem 2rem !important;
+}
+
+
+.list-initial {
+    display: table;
+}
+
+
+.list-initial .m-list-badge__items {
+    display: table-row;
+}
+
+.list-initial  .m-list-badge__label {
+    display: initial !important;
+}
+
+body .ui-accordion .ui-accordion-header.ui-state-active {
+    background-color: #d9dadf;
+    color: #ffffff;
+}
+
+body .ui-accordion .ui-accordion-header.ui-state-active a {
+    
+    color: #393940;
+}
+
+body .ui-widget-content {
+    border: 1px solid #c7c7c7;
+    border-radius: 0px 0px 5px 5px;
+}
+body .ui-accordion .ui-accordion-header a {
+    color: #393940;
+}
+
+.m-card-user .m-card-user__details {
+    word-break: break-word;
+}
+
+.m-nav__link{
+    cursor:pointer;
+}
+
+
+
+.m-switch--nodisable.m-switch input:empty ~ span:after {
+    background-color: #8f8acc !important;
+}
+
+.m-switch--nodisable.m-switch input:checked ~ span:after {
+    background-color: #716aca !important;
+}
+
+
+.ui-edit-table .ui-editing-cell {
+    padding: 0px !important;
+}
+
+
+.ui-table .ui-table-tbody > tr:nth-child(even):not(.ui-state-highlight) {
+    background-color: #f4f3fb !important;
+}
+
+.ui-table .ui-table-tbody > tr.rowHasChange:nth-child(even) {
+    background-color: #d0fcd1 !important;
+}
+
+.rowHasChange {
+    background-color: #d0fcd1 ;
+}
+
+
+.ui-table .ui-table-tbody > tr.rowHasError:nth-child(even) {
+    background-color: lightcoral !important;
+    color:white
+}
+
+.rowHasError {
+    background-color: lightcoral;
+    color: white
+}
+
+.ColumnWarning {
+    background-color: lightcoral;
+    color: white
+}
+
+
+//El multiselect ocupara el 100% de la columna
+div.ui-multiselect.ui-widget {
+    width: 100%;
+    height: 38px;
+}
+// El texto quedaba desalineado con la height de 38px para el multiselect
+div.ui-multiselect-label-container label.ui-multiselect-label {
+    padding: .2em 2em 0em 0em;
+}
+
+
+.ui-table .ui-table-frozen-view .ui-table-tbody > tr > td,
+.ui-table .ui-table-unfrozen-view .ui-table-tbody > tr > td {
+    height: 27px !important;
+}
+
+.pTableSectores .ui-table-thead > tr > th {
+    height: 50px !important;
+}
+
+
+
+.pTableSectores .ui-table-tbody td {
+    border: none !important;
+    border-right: 1px solid #ececec !important;
+}
+
+.pTableSectores .ui-table-scrollable-body {
+    max-height: 300px !important;
+}
+
+.pTableSectores .ui-table-scrollable-body {
+    border-left: 1px solid #ececec !important;
+}
+
+
+.pTableSectores .ui-table .ui-table-thead > tr > th,
+.pTableSectores ui-table .ui-table-tfoot > tr > td {
+    background: #e6e6e6 !important; 
+}
+
+.pTableSiniestros .ui-table-scrollable-body {
+    max-height: 500px !important;
+}
+
+.eye-showPass{
+    border-radius: 40px;
+    margin-top: 1.5rem;
+    background:#24143f;
+    color: #c7c7c7;
+}
+
+/*831 R�tulos Fijos Associate
+    .mat-dialog-container .mr-auto {
+    margin-top: 0px !important;
+}
+
+breadcrumbs-nav .m-subheader .text-right {
+    right: 30px;
+    position: absolute;
+}
+
+.mat-dialog-container breadcrumbs-nav .m-subheader .text-right {
+    right: 103px !important;
+    position: absolute;
+}
+
+.m-portlet--fullscreen .mr-auto {
+    display:none;
+}*/
+
+/* Init Small Size */
+.smallsize .m-tabs__link span {
+    font-size: 1.15rem !important;
+}
+
+.smallsize .active .m-tabs__link {
+    background: #ef5353 !important;
+    font-weight: bold;
+}
+.smallsize .m-tabs__link {
+    background: #ffcccc !important;
+}
+.smallsize input.form-control {
+    font-size: 0.8rem !important;
+    padding: 5px;
+    line-height: 1;
+}
+
+.smallsize p-multiSelect.form-control {
+    font-size: 0.8rem !important;
+    padding: 5px;
+    line-height: 1;
+}
+
+.smallsize p {
+    font-size: 0.8rem !important;
+}
+.smallsize label {
+    font-size: 0.8rem !important;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+.smallsize textarea {
+    font-size: 0.8rem !important;
+    padding: 3px;
+}
+.smallsize input {
+    font-size: 0.8rem !important;
+}
+.smallsize p-multiSelect {
+    font-size: 0.8rem !important;
+}
+.smallsize input.lauraFecha {
+    font-size: 0.9rem !important;
+}
+.smallsize input {
+    font-size: 0.8rem !important;
+}
+.smallsize button {
+    font-size: 0.8rem !important;
+}
+.smallsize button.smallesttext {
+    font-size: 0.1rem !important;
+    padding: 5px;
+}
+.smallsize button.btn.dropdown-toggle {
+    font-size: 0.8rem !important;
+    padding: 5px;
+}
+.smallsize .mat-form-field-infix {
+    border-top: initial;
+    padding: 0px;
+}
+.smallsize span {
+    font-size: 0.8rem !important;
+}
+.smallsize .m-portlet.m-portlet--fullscreen.m-portlet--head-sm > .m-portlet__body {
+    padding: 0px 15px;
+}
+.smallsize .nav.nav-tabs.m-tabs-line {
+    line-height: 3px;
+}
+
+.smallsize .mat-expansion-panel-body {
+    line-height: 13px;
+}
+.smallsize .m-checkbox > span, .m-radio > span {
+    height: 11px;
+    width: 11px;
+}
+.smallsize .m-checkbox {
+    padding-left: 12px;
+}
+.smallsize .col-md-10p {
+    padding-left: 3px !important;
+    padding-right: 3px !important;
+    max-width: 14.285714%;
+    margin-bottom: 0px;
+}
+.smallsize .smallpadding {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+}
+.smallsize .smallmargin {
+    margin-bottom: 2px !important;
+}
+.smallsize .smallpadding.smallCenteredVertically {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+    padding-top: 15px !important;
+}
+.smallsize button.smallCenteredVertically {
+    position: absolute;
+    right: 100px;
+    margin-top: 15px !important;
+}
+.smallsize .smallHeight {
+    height: 40px;
+}
+.smallsize .m-portlet .m-portlet__foot:not(.m-portlet__no-border) {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.smallsize .m-portlet.m-portlet--head-sm .m-portlet__head {
+    height: 2.7rem;
+}
+.smallsize .m-portlet.m-portlet--fullscreen.m-portlet--head-sm > .m-portlet__body {
+    top: 2.7rem;
+}
+.psmallpadding p {
+    margin-bottom: 0px;
+}
+.smallSizeFont {
+    font-size: 14px;
+}
+.primeng-small.primeng-small-buttons-small div.dropdown a {
+    width: 20px;
+    height: 20px;
+}
+.smallsize div {
+    font-size: 0.8rem;
+}
+
+.smallsize div.ui-multiselect.ui-widget {
+    width: 100% !important;
+    height: 25px !important;
+}
+
+.smallsize div.ui-multiselect-label-container label.ui-multiselect-label {
+    padding: .1em 2em 0em 0em;
+}
+
+.smallsize .bootstrap-select .dropdown-menu.inner > li > a {
+    font-size: 0.8rem !important;
+    padding: 5px;
+}
+.smallsize .bs-searchbox .form-control {
+    font-size: 0.8rem !important;
+    padding: 5px;
+}
+.smallsize div.bs-searchbox {
+    font-size: 0.7rem !important;
+    padding: 5px;
+}
+.smallsize div.form-group.margin-top-10less {
+    margin-top: -10px;
+}
+.smallsize h3 {
+    font-size: 1rem;
+}
+.smallsize .mat-form-field-prefix .mat-datepicker-toggle-default-icon, .mat-form-field-suffix .mat-datepicker-toggle-default-icon {
+    width: 1.5em;
+}
+.smallsize .mat-form-field-wrapper {
+    padding-bottom: 1.8em;
+}
+
+
+/* End Small Size */
+
+@media(min-width: 1025px) {
+    .m-header-menu {
+        margin-right: 165px;
+    }
+
+    .m-topbar.m-stack.m-stack--ver.m-stack--general {
+        position: absolute;
+        right: 0px;
+    }
+
+    .d-flex .mr-auto {
+        display: inline-flex;
+    }
+
+    .m-stack.m-stack--ver.m-stack--desktop {
+        background-color: white;
+    }
+
+    .mr-auto h3 {
+        max-height: 40px;
+    }
+}
+
+
+.rc-anchor-dark.rc-anchor-normal {
+    border: none;
+}
+
+.rc-anchor-dark {
+    background: transparent;
+}
+
+
+
+.medium-size .m-checkbox > span, .m-radio > span {
+    height: 18px;
+    width: 18px; 
+}
+.medium-size .m-checkbox {
+    margin-bottom: 10px;
+}
+
+
+.p-table-small .ui-table-thead tr th {    
+    font-size: 11px;
+}
+
+.p-table-small .ui-table-tbody td {
+    font-size: 11px;
+}
+.modal-turno-diag {
+    .ui-multiselect-panel .ui-multiselect-items-wrapper {
+        height: 180px !important;
+    }
+}
+
+
+

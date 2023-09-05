@@ -1,0 +1,78 @@
+page-login {
+
+    .login-background{
+        background-image: url("/assets/imgs/bg-2.jpg");
+        // .scroll-content{
+        //     overflow-x: inherit !important;
+        //     overflow-y: inherit !important;
+        // }
+    }
+
+    .item-usr{
+        padding-bottom: 50px;
+    }
+
+    .content-login {
+        margin-top: 20%;
+    }
+
+    .content-login-isLandscape {
+        margin-top: 2%;
+
+        .img-logo{
+            padding-bottom: 5%;
+            text-align: center;
+        }
+    }
+
+    .color-login{
+        color: #9816f4;
+    }
+
+    .img-logo{
+        padding-bottom: 10%;
+        text-align: center;
+    }
+
+    .item-login {
+        border-radius: 8px !important;
+        padding-left: 8px !important;
+        font-size: 0.9em;
+        margin-bottom: 10px;
+        border: 1px solid #ffffff;
+        border-bottom: 0px !important;
+        box-shadow: none !important;
+    }
+
+    .item-login{
+        background-color: rgba(255, 255, 255, 0.800);
+        margin-bottom: 20px;
+        .label {
+          width: 10%;
+          color: rgba(0, 0, 0, 0.6);
+          font-size: 1.2em;
+        }
+    }
+
+    .recaptcha{
+        text-align: -webkit-center;
+    }
+
+    .item-recordar{
+        background-color: transparent; 
+        color: #ffffff;
+        font-family: 'Lucida Sans';
+    }
+
+    .label-recordar{
+        font-size: 15px;   
+    }
+
+    .check-remember{
+        margin-right: 20px !important;
+    }
+
+    .eye{
+        font-size: 25px;
+    }
+}

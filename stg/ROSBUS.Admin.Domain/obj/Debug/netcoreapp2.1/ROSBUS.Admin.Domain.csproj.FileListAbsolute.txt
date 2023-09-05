@@ -1,0 +1,13 @@
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain\bin\Debug\netcoreapp2.1\ROSBUS.Admin.Domain.deps.json
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain\bin\Debug\netcoreapp2.1\ROSBUS.Admin.Domain.dll
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain\bin\Debug\netcoreapp2.1\ROSBUS.Admin.Domain.pdb
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain\bin\Debug\netcoreapp2.1\TECSO.FWK.dll
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain\bin\Debug\netcoreapp2.1\TECSO.FWK.Domain.dll
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain\bin\Debug\netcoreapp2.1\TECSO.FWK.Domain.pdb
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain\bin\Debug\netcoreapp2.1\TECSO.FWK.pdb
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain\obj\Debug\netcoreapp2.1\ROSBUS.Admin.Domain.csprojAssemblyReference.cache
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain\obj\Debug\netcoreapp2.1\ROSBUS.Admin.Domain.AssemblyInfoInputs.cache
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain\obj\Debug\netcoreapp2.1\ROSBUS.Admin.Domain.AssemblyInfo.cs
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain\obj\Debug\netcoreapp2.1\ROSBUS.Admin.Domain.csproj.CopyComplete
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain\obj\Debug\netcoreapp2.1\ROSBUS.Admin.Domain.dll
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain\obj\Debug\netcoreapp2.1\ROSBUS.Admin.Domain.pdb

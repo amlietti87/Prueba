@@ -1,0 +1,95 @@
+﻿<!--<div class="m-content">
+    <div [hidden]="!active" class="m-portlet m-portlet--mobile">-->
+<div class="m-portlet__body">
+
+
+
+    <div class="row align-items-center">
+        <form #userForm="ngForm" novalidate (ngSubmit)="save()">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>
+                        M. Vueltas que faltan cargar minutos:                         
+                    </span>
+                </h4>
+                <button type="button" class="close" (click)="close()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="col-md-12">
+                    <p-table [value]="items" [scrollable]="true" scrollHeight="300px">
+
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>
+                                    Nro Servicio
+                                </th>
+                                <th>
+                                    Sale
+                                </th>
+                                <th>
+                                    Llega
+                                </th>
+                                <th>
+                                    <b>DifMin</b>
+                                </th>
+                                <th>
+                                    Bandera
+                                </th>
+                                <th>
+                                    T. Hora
+                                </th>
+                                <th>
+                                    Sub. Galpon
+                                </th>
+                                <th>
+                                    Acciones
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-row>
+                            <tr>
+                                <td>{{row.NumServicio}}</td>
+                                <td>{{row.Sale| date: 'HH:mm'}}</td>
+                                <td>{{row.Llega| date: 'HH:mm'}}</td>
+                                <td><b>{{row.DifMin}}</b></td>
+                                <td>{{row.DescripcionBandera}}</td>
+                                <td>{{row.DescripcionTpoHora}}</td>
+                                <td>{{row.DescripcionSubGalpon}}</td>
+
+                                <td>
+                                    <a href="javascript:void(0);" (click)="OnMinutosPorSector(row)" 
+                                       class="m-portlet__nav-link btn m-btn m-btn--hover-success m-btn--icon m-btn--icon-only m-btn--pill" 
+                                       title="Cargar Minutos Por sector">
+                                        <i class="la la-eye"></i>
+                                    </a>
+                                </td>
+
+                              
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                <button type="button" class="btn btn-primary blue" (click)="save()"><i class="fa fa-save"></i> <span>Recrear sabana completa</span></button>
+            </div>
+        </form>
+
+
+
+    </div>
+
+    
+
+
+
+
+</div>
+ 

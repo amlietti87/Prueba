@@ -1,0 +1,8 @@
+D:\RBus\RBusRepo\stg\TECSO.FWK\bin\Debug\netcoreapp2.1\TECSO.FWK.deps.json
+D:\RBus\RBusRepo\stg\TECSO.FWK\bin\Debug\netcoreapp2.1\TECSO.FWK.dll
+D:\RBus\RBusRepo\stg\TECSO.FWK\bin\Debug\netcoreapp2.1\TECSO.FWK.pdb
+D:\RBus\RBusRepo\stg\TECSO.FWK\obj\Debug\netcoreapp2.1\TECSO.FWK.csprojAssemblyReference.cache
+D:\RBus\RBusRepo\stg\TECSO.FWK\obj\Debug\netcoreapp2.1\TECSO.FWK.AssemblyInfoInputs.cache
+D:\RBus\RBusRepo\stg\TECSO.FWK\obj\Debug\netcoreapp2.1\TECSO.FWK.AssemblyInfo.cs
+D:\RBus\RBusRepo\stg\TECSO.FWK\obj\Debug\netcoreapp2.1\TECSO.FWK.dll
+D:\RBus\RBusRepo\stg\TECSO.FWK\obj\Debug\netcoreapp2.1\TECSO.FWK.pdb

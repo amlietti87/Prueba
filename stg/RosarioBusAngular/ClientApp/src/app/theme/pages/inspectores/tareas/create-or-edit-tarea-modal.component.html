@@ -1,0 +1,117 @@
+﻿<form  #detailForm="ngForm" novalidate  (ngSubmit)="detailForm.form.valid && save(detailForm)"  autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span *ngIf="detail.Id">{{"Editar Tarea"}}</span>
+            <span *ngIf="!detail.Id">{{"Crear Tarea"}}</span>
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group col-lg-12" [ngClass]="{'has-danger': Descripcion.invalid && (Descripcion.dirty || Descripcion.touched)}">
+            <label>Descripción</label>
+            <input #Descripcion="ngModel" class="form-control" type="text" name="Descripcion" [(ngModel)]="detail.Descripcion" required>
+            <div *ngIf="Descripcion.invalid && (Descripcion.dirty || Descripcion.touched)" class="form-control-feedback">
+                <div *ngIf="Descripcion.errors['required']">
+                    La descripción es Requerida
+                </div>
+            </div>
+        </div>
+        <div class="francos-turno m-checkbox-list row">
+            <div class="col-lg-4">
+                <label class="m-checkbox">
+                    <input type="checkbox" name="Anulado" [(ngModel)]="detail.Anulado">
+                    Anulado
+                    <span></span>
+                </label>
+            </div>    
+        </div>                   
+    </div>
+
+    <div class="form-group" style="padding-left: 0px;">
+        <button class="btn btn-primary blue" type="button" (click)="onCampoAdded()">
+            <i class="fa fa-plus"></i> <span>Añadir Campo</span>
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="primeng-datatable-container primeng-small primeng-small-buttons-small" style="padding-bottom: 6px;">
+                <p-dataTable [value]="detail.TareasCampos" scrollable="true" scrollHeight="100px" [editable]="true" responsive="false" emptyMessage="">
+                    <p-column field="Descripcion" header="Descripción" [editable]="true" [sortable]="true">
+                        <ng-template let-row="rowData" pTemplate="editor">
+                            <div>
+                                <tareas-campos-config-combo 
+                                    name="{{'tareaConfig' + row.Id}}" 
+                                    id="{{'tareaConfig' + row.Id}}" 
+                                    [(ngModel)]="row.TareaCampoConfigId" 
+                                    (ngModelChange)="onComboChanged($event, row)"
+                                    emptyText="{{'Seleccione..'}}">
+                                </tareas-campos-config-combo>
+                            </div>
+                        </ng-template>
+                        <ng-template let-row="rowData" pTemplate="body">
+                            <div><span style="color: blue;">{{ row.NombreTareaCampo }}</span></div>
+                        </ng-template>
+                    </p-column>
+
+                    <p-column field="Etiqueta" header="Etiqueta" [editable]="true" [sortable]="true">
+                        <ng-template let-row="rowData" pTemplate="editor" let-rowIndex="rowIndex">
+                            <div>
+                                <input type="text" name="{{'Etiqueta' + rowIndex}}" [(ngModel)]="row.Etiqueta"/>
+                            </div>
+                        </ng-template>
+                        <ng-template let-row="rowData" pTemplate="body">
+                            <div><span style="color: blue;">{{ row.Etiqueta }}</span></div>
+                        </ng-template>
+                    </p-column>
+
+                    <p-column field="Requerido" header="Requerido" [editable]="true" [sortable]="true">
+                        <ng-template let-row="rowData" let-rowIndex="rowIndex" pTemplate="editor">
+                            <div>
+                                <input type="checkbox" name="{{'Requerido_' + rowIndex}}" (click)="onRequeridoChanges(row)" [(ngModel)]="row.Requerido"/>
+                            </div>
+                        </ng-template>   
+                        <ng-template let-row="rowData" pTemplate="body" let-rowIndex="rowIndex">
+                            <input type="checkbox" name="{{'Requerido_' + rowIndex}}" [(ngModel)]="row.Requerido"/>
+                        </ng-template>                     
+                    </p-column>
+
+                    <p-column field="Orden" header="Orden" [editable]="true" [sortable]="true">
+                        <ng-template let-row="rowData" pTemplate="editor" let-rowIndex="rowIndex">
+                            <div>
+                                <input type="number" name="{{'Orden' + rowIndex}}" [(ngModel)]="row.Orden"/>
+                            </div>
+                        </ng-template>
+                        <ng-template let-row="rowData" pTemplate="body">
+                            <div><span style="color: blue;">{{ row.Orden }}</span></div>
+                        </ng-template>
+                    </p-column>
+                    <p-column header="Acciones" [sortable]="false"  styleClass="col-actions">
+                        <ng-template let-col let-row="rowData" let-rowIndex="rowIndex" pTemplate type="body">
+                            <div class="dropdown">
+                                <a href="javascript:void(0);" (click)="OnItemRemoved(rowIndex)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Eliminar">
+                                    <i class="la la-trash"></i>
+                                </a>
+                            </div>
+                        </ng-template>
+                    </p-column>
+                </p-dataTable>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue"
+                [buttonBusy]="saving" [busyText]="'Guardando..'"
+                [disabled]="!detailForm.form.valid"
+                [hidden]="!allowModificar && detail.Id">
+            <i class="fa fa-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+
+    
+</form>
+

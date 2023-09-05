@@ -1,0 +1,106 @@
+﻿ <div>
+    <div class="m-subheader" [hidden]="!active">
+        <div style="text-align: right;">
+            <!--<button (click)="onCreate()" *ngIf="allowAdd" class="btn btn-primary blue"><i class="fa fa-plus"></i> Copiar Fecha Horaria</button>-->
+            <div class="btn-group">
+                <button type="button" *ngIf="allowCopy" (click)="onCopy()" class="btn btn-primary blue">Copiar Fecha Horaria</button>
+                <button type="button" *ngIf="allowCopy" class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">Copiar Fecha Horaria</span>
+                </button>
+                <div class="dropdown-menu"  *ngIf="allowAdd" (click)="onCreate()" x-placement="bottom-start">
+                    <a class="dropdown-item" href="#">Agregar</a>
+                </div>
+            </div> 
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div [hidden]="!active" class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <h4>Linea: {{linea.DesLin}}</h4>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container"
+                         [busyIf]="primengDatatableHelper.isLoading">
+
+                        <p-dataTable #dataTable
+                                     [lazy]="true"
+                                     (onLazyLoad)="onSearch($event)"
+                                     [value]="primengDatatableHelper.records"
+                                     [paginator]="false"
+                                     emptyMessage="No Data"
+                                     scrollable="true"
+                                     ScrollWidth="100%"
+                                     responsive="primengDatatableHelper.isResponsive">
+                            <p-column field="FecDesde" header="Fecha Desde" [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    {{row.FechaDesde | date: 'dd-MM-yyyy'}}
+                                </ng-template>
+                            </p-column>
+
+                            <p-column field="FecHasta" header="Fecha Hasta" [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    {{row.FechaHasta | date: 'dd-MM-yyyy'}}
+                                </ng-template>
+                            </p-column>
+
+                            
+                            <p-column field="DescripcionEstado" header="Estado">
+                            </p-column>
+
+                            <p-column field="TiposDeDias" header="Tipos De Dias">
+                            </p-column>
+
+                            <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div class="dropdown">
+                                        <a href="javascript:void(0);" (click)="onEdit(row)" *ngIf="allowModify" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Editar">
+                                            <i class="la la-edit"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" *ngIf="allowDelete && row.BeforeMigration == false" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" (click)="onDelete(row)"><i class="la la-trash"></i></a>
+
+
+                                        <a href="javascript:void(0);" (click)="onShowServicio(row)" title="Fecha horario" 
+                                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill fa-rotate-270">
+                                            <i class="la la-download"></i>
+                                        </a>
+
+
+                                    </div>
+
+                                </ng-template>
+                            </p-column>
+
+                        </p-dataTable>
+
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                                         #paginator
+                                         (onPageChange)="onSearch($event)"
+                                         [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                Registros totales:  {{ primengDatatableHelper.totalRecordsCount}}
+                            </span>
+                        </div>
+
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+
+                </div>
+            </div>
+        </div>
+
+        <ng-template #createOrEdit></ng-template>
+
+
+        <tabsdetalle-horariofecha #tabsdetail></tabsdetalle-horariofecha>
+
+    </div>
+
+
+</div>
+
+

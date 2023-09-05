@@ -1,0 +1,72 @@
+﻿<form #detailForm="ngForm"
+      novalidate
+      autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span *ngIf="archivosUrl">
+                {{archivosUrl[currentIndex].Fecha}} - {{archivosUrl[currentIndex].TipoDocumento}} - {{archivosUrl[currentIndex].NombreEmpleado}}
+            </span>
+        </h4>
+        <div class="m-portlet__nav-item">
+            <a href="#"
+               (click)="close()"
+               class="m-portlet__nav-link m-portlet__nav-link--icon">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+    <div class="modal-body" style="overflow-y:auto">
+        <div class="row">
+            <div style="width:20%">
+                <a href="#" [hidden]="!showPrevious" style="float:left"
+                   (click)="PreviousFile()">
+                    <i class="fa fa-arrow-left visor"></i>
+                </a>
+            </div>
+            <div style="width:60%"></div>
+            <div style="width:20%">
+                <a href="#" [hidden]="!showNext" style="float:right"
+                   (click)="NextFile()">
+                    <i class="fa fa-arrow-right visor"></i>
+                </a>
+            </div>
+        </div>
+        <div class="row" style="height:500px">
+            <div style="width:100%">
+                <div class="hiddenButton"></div>
+
+                <iframe [src]="currentSrc"
+                        style="width:100%; height:500px;"
+                        frameborder="0">
+                </iframe>
+            </div>
+            
+        </div>
+
+        <!--<div class="row">
+            <div class="col-md-12">
+                <a href="#" [hidden]="!showPrevious" style="float:left"
+                   (click)="PreviousFile()">
+                    <i class="fa fa-arrow-left visor"></i>
+                </a>
+                <a href="#" [hidden]="!showNext" style="float:right"
+                   (click)="NextFile()">
+                    <i class="fa fa-arrow-right visor"></i>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+
+                <pdf-viewer [src]="currentSrc"
+                            [original-size]="true"
+                            [fit-to-page]="false"
+                            (on-progress)="onProgress($event)"
+                            (after-load-complete)="callBackFn($event)"
+                            style="max-height:500px; display:block; overflow-y:scroll;">
+                </pdf-viewer>
+            </div>
+        </div>-->
+    </div>
+</form>
+

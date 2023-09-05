@@ -1,0 +1,118 @@
+﻿<form #detailForm="ngForm"
+      novalidate 
+      (ngSubmit)="detailForm.form.valid && save(detailForm)" 
+      autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span>Cambio de Estado</span>
+        </h4>
+        <div class="m-portlet__nav-item">
+            <a href="#"
+               (click)="close()"
+               class="m-portlet__nav-link m-portlet__nav-link--icon">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="modal-body">
+
+                <div class="row" *ngIf="cargado">
+
+                    <!-- Estado Actual -->
+                    <div class="form-group col-lg-3">
+                        <label>Estado Actual</label>
+                        <estados-combo name="EstadoId"
+                                       id="EstadoId"
+                                       #EstadoId="ngModel"
+                                       #EstadosCombo
+                                       [disabled]="true"
+                                       [EstadoId]="detailTablaReclamos.EstadoId"
+                                       [(ngModel)]="detailTablaReclamos.EstadoId"
+                                       (ngOnChanges)="EstadosComboChange($event)"
+                                       required>
+                        </estados-combo>
+                    </div>
+
+                    <!-- Sub-Estado Actual -->
+                    <div class="form-group col-lg-3">
+                        <label>Sub-Estado Actual</label>
+                        <subestado-combo name="SubEstadoId"
+                                         id="SubEstadoId"
+                                         #SubEstadoId="ngModel"
+                                         #SubEstadosCombo
+                                         [Cierre]="true"
+                                         [EstadoId]="detailTablaReclamos.EstadoId"
+                                         [(ngModel)]="detailTablaReclamos.SubEstadoId"
+                                         emptyText="Seleccione..."
+                                         required>
+                        </subestado-combo>
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="detailTablaReclamos && detailTablaReclamos.Estado">
+
+                    <!-- Estado Nuevo -->
+                    <div class="form-group col-lg-3">
+                        <label>Estado Nuevo</label>
+                        <estados-combo name="EstadoIdNuevo"
+                                       id="EstadoIdNuevo"
+                                       #EstadoIdNuevo="ngModel"
+                                       #EstadosComboNuevo
+                                       [(ngModel)]="detail.EstadoId"
+                                       [OrdenCambioEstado]="detailTablaReclamos.Estado.OrdenCambioEstado"
+                                         emptyText="Seleccione..."
+                                       required>
+                        </estados-combo>
+                    </div>
+
+                    <!-- Sub-Estado Nuevo -->
+                    <div class="form-group col-lg-3"
+                         *ngIf="detail.EstadoId">
+                        <label>Sub-Estado Nuevo</label>
+                        <subestado-combo name="SubEstadoIdNuevo"
+                                         id="SubEstadoIdNuevo"
+                                         #SubEstadoIdNuevo="ngModel"
+                                         #SubEstadosComboNuevo
+                                         [EstadoId]="detail.EstadoId"
+                                         [(ngModel)]="detail.SubEstadoId"
+                                         emptyText="Seleccione..."
+                                         required>
+                        </subestado-combo>
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        <label>Fecha</label><br />
+                        
+                        <mat-form-field>
+                            <input matInput
+                                   [(ngModel)]="detailTablaReclamos.Fecha"
+                                   name="Fecha"
+                                   [matDatepicker]="Fecha"
+                                   required>
+                            <mat-datepicker-toggle matSuffix [for]="Fecha"></mat-datepicker-toggle>
+                            <mat-datepicker #Fecha></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button [disabled]="saving" 
+                type="button" 
+                class="btn btn-default" 
+                (click)="close()">Cancelar</button>
+        <button type="submit" 
+                class="btn btn-primary blue"
+                [buttonBusy]="saving" 
+                [busyText]="'Guardando..'"
+                [disabled]="!detailForm.form.valid">
+            <i class="fa fa-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+</form>
+

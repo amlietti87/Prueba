@@ -1,0 +1,71 @@
+<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save()" autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            {{IsInCopyMode ? 'Copiar' : 'Crear'}} Fecha
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" [busyIf]="isLoading">
+
+        <div class="row">
+            <div class="form-group col-md-6 col-lg-6">
+
+                <mat-form-field class="fix-mat-form-field">
+                    <input #inputFechaDesde="ngModel" matInput required [(ngModel)]="fec_desde"
+                           placeholder="Fecha Desde"
+                           name="FechaDesde" [matDatepicker]="FechaDesde">
+                    <mat-datepicker-toggle matSuffix [for]="FechaDesde"></mat-datepicker-toggle>
+                    <mat-datepicker #FechaDesde></mat-datepicker>
+                </mat-form-field>
+
+            </div>
+
+            <div class="form-group col-md-6 col-lg-6" *ngIf="IsInCopyMode" [ngClass]="{'has-danger': cod_hfecha_input.invalid && (cod_hfecha_input.dirty || cod_hfecha_input.touched || detailForm.submitted)}">
+
+                <label>Copiar Desde</label>
+                <hfechasconfi-combo #cod_hfecha_input="ngModel"
+                                    [(ngModel)]="cod_hfecha"
+                                    name="cod_hfecha"
+                                    [LineaId]="LineaId"
+                                    required></hfechasconfi-combo>
+
+                <div *ngIf="cod_hfecha_input.invalid && (cod_hfecha_input.dirty || cod_hfecha_input.touched  || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="cod_hfecha_input.errors.required">
+                        La fecha a copiar es requerida
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group col-md-3" *ngIf="IsInCopyMode">
+                <div class="m-checkbox-list">
+                    <label class="m-checkbox">
+                        <input #CopyConductoresInput="ngModel" id="CopyConductores" type="checkbox" name="CopyConductores" [(ngModel)]="CopyConductores">
+                        <em>Copiar conductores por servicio</em>
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button  type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue"
+                >
+            <i class="fa fa-save"></i> <span>Aceptar</span>
+        </button>
+    </div>
+</form>
+
+
+
+
+
+
+
+

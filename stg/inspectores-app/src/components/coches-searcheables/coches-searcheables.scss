@@ -1,0 +1,28 @@
+coches-searcheables {
+
+  .form-coches-searcheables{
+    ion-item{
+      border-bottom: none !important;
+      // border-bottom: 1px solid #dedede;
+    }
+  }
+
+  .label-coches {
+    color: #2874A6 !important;
+    padding-top: 12px;
+    // font-weight: bold;;   
+  }
+
+  .ionic-selectable-item {
+    .item-inner {
+      .input-wrapper {
+        .label .label-md {
+          .item-info-coche {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+
+}

@@ -1,0 +1,440 @@
+﻿<form #detailForm="ngForm" id="sidevar" novalidate (ngSubmit)="detailForm.form.valid && applyPunto()" autocomplete="off">
+    <div id="puntosDetailsidebar" class="m-quick-sidebar m-quick-sidebar--tabbed m-quick-sidebar--skin-light" appunwraptag="">
+        <div class="m-quick-sidebar__content puntosDetailsidebar_content  m--hide">
+            <span id="seba_close" class="m-quick-sidebar__close">
+                <i class="la la-close" (click)="close()"></i>
+            </span>
+
+
+            <ul id="puntosDetailsidebar_tabs" class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" [hidden]="isSectormode" data-toggle="tab" id="m_h_quick_sidebar_tabs_Puntos" href="#m_quick_sidebar_tabs_Puntos" role="tab">
+                        Puntos
+                    </a>
+                </li>
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link" data-toggle="tab" [hidden]="!isSectormode" href="#m_quick_sidebar_tabs_Sector" id="m_h_quick_sidebar_tabs_Sector" role="tab">
+                        Sectores
+                    </a>
+                </li>
+            </ul>
+
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="m_quick_sidebar_tabs_Puntos" role="tabpanel">
+                    <div class="m-list-settings">
+
+
+
+                        <div class="m-list-settings__group m-scrollable" data-scrollable="true" data-max-height="60vh">
+
+
+
+                            <!--<div class="m-list-settings__item">
+        <span class="m-list-settings__item-label">
+            Código
+        </span>
+        <span class="m-list-settings__item-control">
+            <input type="text" class="form-control form-control-sm m-input"
+                   [required]="detail.EsCambioSector || detail.EsPuntoTermino || detail.EsPuntoInicio"
+                   name="CodigoNombre" #CodigoNombre="ngModel" [(ngModel)]="detail.CodigoNombre">
+            <div *ngIf="CodigoNombre.invalid && (CodigoNombre.dirty || CodigoNombre.touched || detailForm.submitted)"
+                 class="form-control-feedback">
+                <div *ngIf="CodigoNombre.errors.required">
+                    El  Código es Requerido
+                </div>
+            </div>
+        </span>
+
+
+
+    </div>
+
+    <div class="m-list-settings__item">
+        <span class="m-list-settings__item-label">
+            Número externo
+        </span>
+        <span class="m-list-settings__item-control">
+            <input type="text" class="form-control form-control-sm m-input" name="NumeroExterno" #NumeroExterno="ngModel" [(ngModel)]="detail.NumeroExterno">
+        </span>
+    </div>
+
+    <div class="m-list-settings__item">
+        <span class="m-list-settings__item-label">
+            Abreviación
+        </span>
+        <span class="m-list-settings__item-control">
+            <input type="text"
+                   [required]="detail.EsCambioSector || detail.EsPuntoTermino || detail.EsPuntoInicio"
+                   class="form-control form-control-sm m-input" name="Abreviacion" #Abreviacion="ngModel" [(ngModel)]="detail.Abreviacion">
+
+            <div *ngIf="Abreviacion.invalid && (Abreviacion.dirty || Abreviacion.touched || detailForm.submitted)"
+                 class="form-control-feedback">
+                <div *ngIf="Abreviacion.errors.required">
+                    Abreviación es Requerido
+                </div>
+            </div>
+        </span>
+    </div>-->
+                            <!-- Punto de Inicio -->
+                            <div class="m-list-settings__item" *ngIf="detail.EsPuntoInicio">
+                                <span class="m-list-settings__item-label">
+                                    Es punto de inicio
+                                </span>
+                                <span class="m-list-settings__item-control">
+                                    <span class="m-switch m-switch--outline m-switch--icon-check m-switch--brand">
+                                        <label>
+                                            <input type="checkbox" disabled checked="checked" class="form-control form-control-sm m-input" name="EsPuntoInicio" #EsPuntoInicio="ngModel" [(ngModel)]="detail.EsPuntoInicio">
+                                            <span></span>
+                                </label>
+                                </span>
+                                </span>
+                            </div>
+
+                            <!-- Punto de Termino -->
+                            <div class="m-list-settings__item" *ngIf="detail.EsPuntoTermino">
+                                <span class="m-list-settings__item-label">
+                                    Es punto de termino
+                                </span>
+                                <span class="m-list-settings__item-control">
+                                    <span class="m-switch m-switch--outline m-switch--icon-check m-switch--brand">
+                                        <label>
+                                            <input type="checkbox" disabled class="form-control form-control-sm m-input" name="EsPuntoTermino" #EsPuntoTermino="ngModel" [(ngModel)]="detail.EsPuntoTermino">
+                                            <span></span>
+                                </label>
+                                </span>
+                                </span>
+                            </div>
+
+                            <!-- Es cambio de sector -->
+                            <div class="m-list-settings__item" *ngIf="!(detail.EsPuntoTermino || detail.EsPuntoInicio)">
+                                <span class="m-list-settings__item-label">
+                                    Es cambio de sector
+                                </span>
+                                <span class="m-list-settings__item-control">
+                                    <span class="m-switch m-switch--outline m-switch--icon-check m-switch--brand">
+                                        <label>
+                                            <input type="checkbox" [disabled]="(detail.EsPuntoTermino || detail.EsPuntoInicio)"
+                                                   class="form-control form-control-sm m-input" name="EsCambioSector" #EsCambioSector="ngModel" [(ngModel)]="detail.EsCambioSector">
+                                            <span></span>
+                                </label>
+                                </span>
+                                </span>
+                            </div>
+
+                            <!-- Cambio de Sector tarifario -->
+                            <div class="m-list-settings__item" *ngIf="(detail.EsPuntoInicio || detail.EsPuntoTermino || detail.EsCambioSector) && detail.TipoBanderaId == 1">
+                                <span class="m-list-settings__item-label">
+                                    Es cambio de sector tarifario
+                                </span>
+                                <span class="m-list-settings__item-control">
+                                    <span class="m-switch m-switch--outline m-switch--icon-check m-switch--brand">
+                                        <label>
+                                            <input type="checkbox" [disabled]="detail.EsPuntoInicio"
+                                                   class="form-control form-control-sm m-input" name="EsCambioSectorTarifario" #EsCambioSectorTarifario="ngModel" [(ngModel)]="detail.EsCambioSectorTarifario">
+                                            <span></span>
+                                </label>
+                                </span>
+                                </span>
+                            </div>
+
+                            <!-- Sectores tarifarios -->
+                            <div class="m-list-settings__item" *ngIf="(detail.EsCambioSectorTarifario && detail.TipoBanderaId == 1)">
+                                <span class="m-list-settings__item-label">
+                                    Sectores Tarifarios
+                                </span>
+                                <span class="m-list-settings__item-control">
+
+                                    <span class="ui-fluid">
+                                        <div>
+                                            <sectoresTarifarios-autocomplete #CodSectorTarifario="ngModel"
+                                                                             [required]="(detail.EsCambioSectorTarifario)"
+                                                                             id="CodSectorTarifario"
+                                                                             name="CodSectorTarifario"
+                                                                             [(ngModel)]="detail.SectoresTarifariosItem">
+                                            </sectoresTarifarios-autocomplete>
+                                            <span style="padding-top: 6px;" *ngIf="CodSectorTarifario.invalid && (CodSectorTarifario.dirty || CodSectorTarifario.touched || detailForm.submitted)" class="m-input-icon__icon m-input-icon__icon--right"
+                                                  data-toggle="m-tooltip" data-placement="top" title="Es Requerido">
+                                                <span>
+                                                    <i class="la la-info m--font-danger"></i>
+                                                </span>
+                                </span>
+                            </div>
+                            </span>
+                            </span>
+                        </div>
+
+                        <!-- Abreviacion -->
+                        <div class="m-list-settings__item" *ngIf="(detail.EsCambioSector || detail.EsPuntoTermino || detail.EsPuntoInicio)">
+                            <span class="m-list-settings__item-label">
+                                    <!--Pidieron cambiar el label por Abreviacion-->
+                                    Abreviación
+                                </span>
+                            <span class="m-list-settings__item-control">
+
+                                    <span class="ui-fluid">
+                                        <div class="ui-inputgroup">
+                                            <coordenada-autocomplete #PlaCoordenadaId="ngModel"
+                                                                     [required]="(detail.EsCambioSector || detail.EsPuntoTermino || detail.EsPuntoInicio)"
+                                                                     id="PlaCoordenadaId"
+                                                                     name="PlaCoordenadaId"
+                                                                     (ngModelChange)="OnChangeAbreviacion($event)"
+                                                                     [(ngModel)]="detail.PlaCoordenadaItem">
+                                            </coordenada-autocomplete>
+                                            <button style="padding: 0px;" pButton type="button" icon="fa-search" class="ui-button" (click)="openSearchDialog()"></button>
+
+                                            <span style="padding-top: 6px;" *ngIf="PlaCoordenadaId.invalid && (PlaCoordenadaId.dirty || PlaCoordenadaId.touched || detailForm.submitted)" class="m-input-icon__icon m-input-icon__icon--right"
+                                                  data-toggle="m-tooltip" data-placement="top" title="Es Requerido">
+                                                <span>
+                                                    <i class="la la-info m--font-danger"></i>
+                                                </span>
+                                            </span>
+                                            <span style="padding-top: 6px;" *ngIf="detail.PlaCoordenadaAnulada" class="m-input-icon__icon m-input-icon__icon--right"
+                                                  data-toggle="m-tooltip" data-placement="top" title="Coordenada Anulada">
+                                                <span>
+                                                    <i class="la la-info m--font-danger"></i>
+                                                </span>
+                                            </span>
+                                        </div>
+                        </span>
+                        </span>
+                    </div>
+
+                    <!-- Mostrar en Reporte -->
+                    <div class="m-list-settings__item" *ngIf="detail.TipoBanderaId == 1">
+                        <span class="m-list-settings__item-label">
+                                    Mostrar en reporte
+                                </span>
+                        <span class="m-list-settings__item-control">
+                                    <span class="m-switch m-switch--outline m-switch--icon-check m-switch--brand">
+                                        <label>
+                                            <input type="checkbox"
+                                                   class="form-control form-control-sm m-input" name="MostrarEnReporte" #MostrarEnReporte="ngModel" [(ngModel)]="detail.MostrarEnReporte">
+                                            <span></span>
+                        </label>
+                        </span>
+                        </span>
+                    </div>
+
+                    <!-- Punto de Relevo -->
+                    <div class="m-list-settings__item" *ngIf="detail.TipoBanderaId == 1">
+                        <span class="m-list-settings__item-label">
+                                    Es punto de relevo
+                                </span>
+                        <span class="m-list-settings__item-control">
+                                    <span class="m-switch m-switch--outline m-switch--icon-check m-switch--brand">
+                                        <label>
+                                            <input type="checkbox" disabled
+                                                   class="form-control form-control-sm m-input" name="EsPuntoRelevo" #EsPuntoRelevo="ngModel" [(ngModel)]="detail.EsPuntoRelevo">
+                                            <span></span>
+                        </label>
+                        </span>
+                        </span>
+                    </div>
+
+                    <!-- Número externo -->
+                    <div class="m-list-settings__item" *ngIf="detail.TipoBanderaId == 1">
+                        <span class="m-list-settings__item-label">
+                                    Número Externo (IVU)
+                                </span>
+                        <span class="m-list-settings__item-control">
+                                    <input type="text" disabled class="form-control form-control-sm m-input" name="NumeroExterno" #NumeroExterno="ngModel" [(ngModel)]="detail.NumeroExterno">
+                                </span>
+                    </div>
+
+                    <!-- Parada -->
+                    <div class="m-list-settings__item" *ngIf="detail.TipoBanderaId == 1">
+                        <span class="m-list-settings__item-label">
+                                    Es parada
+                                </span>
+                        <span class="m-list-settings__item-control">
+                                    <span class="m-switch m-switch--outline m-switch--icon-check m-switch--brand">
+                                        <label>
+                                            <input type="checkbox" class="form-control form-control-sm m-input" name="EsParada" #EsParada="ngModel" [(ngModel)]="detail.EsParada">
+                                            <span></span>
+                        </label>
+                        </span>
+                        </span>
+                    </div>
+
+                    <!-- Tipo de Parada-->
+                    <div class="m-list-settings__item" *ngIf="detail.EsParada">
+                        <span class="m-list-settings__item-label">
+                                    Tipo de parada
+                                </span>
+                        <span class="m-list-settings__item-control">
+                                    <tipoParada-combo #TipoParadaId="ngModel"
+                                                      [ItemsModel]="TiposParadas"
+                                                      id="TipoParadaId"
+                                                      name="TipoParadaId"
+                                                      allowNullable="{{true}}"
+                                                      livesearch="{{false}}"
+                                                      [(ngModel)]="detail.TipoParadaId">
+                                    </tipoParada-combo>
+                                </span>
+                    </div>
+
+                    <div class="m-list-settings__item" *ngIf="detail.EsParada">
+                        <span class="m-list-settings__item-label">
+                                    Parada
+                                </span>
+                        <span class="m-list-settings__item-control">
+
+                                    <span class="ui-fluid">
+                                        <div class="ui-inputgroup">
+                                            <parada-autocomplete #PlaParadaId="ngModel"
+                                                                 [required]="detail.EsParada"
+                                                                 id="PlaParadaId"
+                                                                 [Lat]="detail.Lat"
+                                                                 [Long]="detail.Long"
+                                                                 name="PlaParadaId"
+                                                                 [(ngModel)]="detail.PlaParadaItem">
+                                            </parada-autocomplete>
+                                            <button style="padding: 0px;" pButton type="button" icon="fa-search" class="ui-button" (click)="openSearchDialogParada()"></button>
+
+                                            <span style="padding-top: 6px;" *ngIf="PlaParadaId.invalid && (PlaParadaId.dirty || PlaParadaId.touched || detailForm.submitted)" class="m-input-icon__icon m-input-icon__icon--right"
+                                                  data-toggle="m-tooltip" data-placement="top" title="Es Requerido">
+                                                <span>
+                                                    <i class="la la-info m--font-danger"></i>
+                                                </span>
+                        </span>
+                    </div>
+                    </span>
+                    </span>
+                </div>
+
+
+
+                <!-- Latitud / Longitud -->
+                <div class="m-list-settings__item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <span class="m-list-settings__item-label" style="vertical-align:top">
+                                            Latitud
+                                        </span>
+                            <span class="m-list-settings__item-control">
+                                            {{detail.Lat}}
+                                        </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="m-list-settings__item-label" style="vertical-align:top">
+                                            Longitud
+                                        </span>
+                            <span class="m-list-settings__item-control">
+                                            {{detail.Long}}
+                                        </span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Color -->
+                <div class="m-list-settings__item">
+                    <span class="m-list-settings__item-label">
+                                    Color
+                                </span>
+                    <span class="m-list-settings__item-control">
+                                    <input type="color" name="colorPicker_punto" [(ngModel)]="detail.Color" />
+                                </span>
+                </div>
+
+                <!-- Descripcion -->
+                <!--<div class="m-list-settings__item">
+                                <span class="m-list-settings__item-label" style="vertical-align:top">
+                                    Descripción
+                                </span>
+                                <span class="m-list-settings__item-control">
+                                    <textarea type="text" disabled class="form-control form-control-sm m-input" name="Descripcion" #Descripcion="ngModel" [(ngModel)]="detail.Descripcion"></textarea>
+                                </span>
+                            </div>-->
+
+                <!-- TipoViaje Combo -->
+                <div class="m-list-settings__item">
+                    <span class="m-list-settings__item-label">
+                                    Tipo de ruta
+                    </span>
+                    <span class="m-list-settings__item-control">
+                        <tipoviaje-combo #PlaTipoViajeId="ngModel" 
+                                            id="PlaTipoViajeId"
+                                            name="PlaTipoViajeId"                                          
+                                            required
+                                            allowNullable="{{false}}"
+                                            livesearch="{{false}}"
+                                            [(ngModel)]="detail.PlaTipoViajeId">
+                        </tipoviaje-combo>
+                        <span style="padding-top: 6px;" *ngIf="PlaTipoViajeId.invalid && (PlaTipoViajeId.dirty || PlaTipoViajeId.touched || detailForm.submitted)" class="m-input-icon__icon m-input-icon__icon--right" data-toggle="m-tooltip" data-placement="top" title="Es Requerido">    
+                            <i class="la la-info m--font-danger"></i>                           
+                        </span>
+                    </span>
+                </div>
+
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="m--align-right">
+            <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+            <button [hidden]="!estadoEnabled" type="submit" class="btn  btn-outline-primary" [buttonBusy]="saving" [busyText]="'Guardando..'">
+                            <i class="fa fa-check"></i> <span>Aplicar</span>
+                        </button>
+
+
+            <!--<div class="btn-group dropup">
+                            <button type="submit" class="btn  btn-outline-primary"
+                                    [buttonBusy]="saving" [busyText]="'Guardando..'">
+                                <i class="fa fa-check"></i> <span>Aplicar</span>
+                            </button>
+                            <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">
+                                    +
+                                </span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a (click)="detailForm.form.valid && saveRuta(detailForm)" class="dropdown-item" href="#"
+                                   [buttonBusy]="saving" [busyText]="'Guardando..'">
+                                    <i class="fa fa-save"></i> <span>save Ruta Completa</span>
+                                </a>
+
+                            </div>
+                        </div>-->
+        </div>
+
+
+    </div>
+    <div class="tab-pane " id="m_quick_sidebar_tabs_Sector" role="tabpanel">
+        <div class="m-list-timeline__group">
+            <div class="m-list-timeline m-list-timeline--skin-light">
+                <div class="m-list-timeline__items m-scrollable" data-scrollable="true" data-max-height="60vh">
+
+                    <div class="m-list-timeline__item" *ngFor="let s of sectoresdto">
+                        <span class="m-list-timeline__badge m-list-timeline__badge--state-info"></span>
+                        <a class="m-list-timeline__text" href="" ng-reflect-href="">
+                            <span>{{s.Descripcion}} </span> <br /><span style="font-weight:600;font-family: roboto;">( {{s.DistanciaKm  | number : '1.2-2'}} km -- {{s.Duration | number : '1.2-2'}} min )</span>
+                        </a>
+                        <span class="m-list-timeline__time">
+                                        <input type="color" name="colorPicker_{{s.PuntoInicioId}}" [(ngModel)]="s.Color" />
+                                    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="m--align-right">
+            <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+
+            <div class="btn-group dropup">
+                <button  type="button" (click)="applySectores()" class="btn  btn-primary" [buttonBusy]="saving" [busyText]="'Guardando..'">
+                                <i class="fa fa-check"></i> <span>Applicar</span>
+                            </button>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div *ngIf="active" class="m-quick-sidebar-overlay"></div>
+</form>

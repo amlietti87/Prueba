@@ -1,0 +1,10 @@
+<ion-item style="padding-top: 10px;">
+   <ion-label class="label-form">{{label}}</ion-label>
+  <ion-select [(ngModel)]="value" interface="popover">
+    <ion-option *ngFor="let opcion of informeOpciones" value="{{opcion.value}}">{{ opcion.label }}</ion-option>
+  </ion-select>  
+</ion-item>
+
+<ion-item *ngIf="showRequired" no-lines>
+  <p color="danger" ion-text >{{label}} es requerida</p>
+</ion-item> 

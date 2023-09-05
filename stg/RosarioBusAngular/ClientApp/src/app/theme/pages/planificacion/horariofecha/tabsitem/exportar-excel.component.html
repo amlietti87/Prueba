@@ -1,0 +1,53 @@
+﻿<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save()" autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            Exportar Excel
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" [busyIf]="isLoading">
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label>Sub Galpon</label>
+                <subgalpon-combo #CodSubg
+                                 #CodSubgModel="ngModel"
+                                 [(ngModel)]="detail.CodSubg"
+                                 livesearch="{{false}}" 
+                                 emptyText="{{'Todos..'}}"
+                                 name="CodSubg" id="CodSubg" placeHolder="Sub galpon">
+                </subgalpon-combo>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Tipo de Dia</label>
+                <tipoDia-combo #CodTdia
+                               #FilterCodTdia="ngModel"
+                               [(ngModel)]="detail.CodTdia"
+                               livesearch="{{false}}"
+                               emptyText="{{'Todos..'}}"
+                               name="FilterCodTdia" id="FilterCodTdia" placeHolder="Tipo de dia">
+                </tipoDia-combo>
+            </div>
+
+
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue">
+            <i class="fa fa-save"></i> <span>Aceptar</span>
+        </button>
+    </div>
+</form>
+
+
+
+
+
+
+
+

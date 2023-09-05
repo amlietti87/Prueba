@@ -1,0 +1,45 @@
+page-date-picker {
+  .icon-close-datePicker{
+    padding-left: 25px;
+    font-size: 30px;
+  }
+
+  .btn-close-datePicker{
+    font-size: 20px;
+  }
+
+  .card-fecha {
+    background-color: #1ABC9C;
+    margin-top: 40px;
+    margin-bottom: 35px;
+  }
+
+  .card-fecha-isLandscape{
+    background-color: #1ABC9C;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    .fecha {
+      font-size: 20px;
+      color: #fff;
+      text-align: center;
+    }
+    .content-fecha{
+      padding: 5px 8px 6px; 
+    }
+  }
+
+  .fecha{
+    font-size: 30px;
+    color: #fff;
+    text-align: center;
+  }
+
+  .content-landscape {
+    .scroll-content{
+      margin-bottom: 0px !important;
+    }
+  }
+
+
+}

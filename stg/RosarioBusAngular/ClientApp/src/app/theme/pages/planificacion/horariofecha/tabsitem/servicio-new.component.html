@@ -1,0 +1,45 @@
+<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save()" autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            {{title}}
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" [busyIf]="isLoading">
+
+        <div class="row">
+            <div class="form-group col-md-12 col-lg-12">
+
+                <div class="form-group" [ngClass]="{'has-danger': Nombre.invalid && (Nombre.dirty || Nombre.touched)}">
+                    <label>Nombre</label>
+                    <input #Nombre="ngModel" class="form-control"  mask="0000" type="text" name="Nombre" [(ngModel)]="detail.Description" required maxlength="5">
+
+                    <div *ngIf="Nombre.invalid && (Nombre.dirty || Nombre.touched)"
+                         class=" form-control-feedback">
+                        <div *ngIf="Nombre.errors.required">
+                            El nombre es Requerido
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue">
+            <i class="fa fa-save"></i> <span>Aceptar</span>
+        </button>
+    </div>
+</form>
+
+
+
+
+
+
+
+

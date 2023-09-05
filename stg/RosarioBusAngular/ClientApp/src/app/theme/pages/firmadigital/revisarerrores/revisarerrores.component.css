@@ -1,0 +1,12 @@
+﻿body .ui-state-highlight {
+    background-color: #ffffff !important;
+    color: #575962 !important;
+}
+
+.primeng-datatable-container .ui-datatable table thead tr th{
+    white-space: nowrap;
+}
+
+.primeng-datatable-container .ui-datatable table thead tr td {
+    white-space: nowrap;
+}

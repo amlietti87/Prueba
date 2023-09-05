@@ -1,0 +1,170 @@
+﻿<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span *ngIf="detail.Id">Editar {{title}}: {{detail.DesTdia}}</span>
+            <span *ngIf="!detail.Id">Crear {{title}}</span>
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <div>
+            <div class="form-group col-md-6">
+                <label>Abreviacion: </label>
+                <label><b>{{detail.Calle1}}-{{detail.Calle2}}</b></label>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="form-group col-md-6" [ngClass]="{'has-danger': Calle1.invalid && (Calle1.dirty || Calle1.touched || detailForm.submitted)}">
+                <label>Calle1</label>
+                <input #Calle1="ngModel" class="form-control"
+                       type="text" name="Calle1" [(ngModel)]="detail.Calle1" required maxlength="5">
+
+                <div *ngIf="Calle1.invalid && (Calle1.dirty || Calle1.touched || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="Calle1.errors.required">
+                        El Calle1 es Requerido
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group col-md-6" [ngClass]="{'has-danger': Calle2.invalid && (Calle2.dirty || Calle2.touched || detailForm.submitted)}">
+                <label>Calle2</label>
+                <input #Calle2="ngModel" class="form-control"
+                       type="text" name="Calle2" [(ngModel)]="detail.Calle2" required maxlength="5">
+
+                <div *ngIf="Calle2.invalid && (Calle2.dirty || Calle2.touched || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="Calle2.errors.required">
+                        El Calle2 es Requerido
+                    </div>
+                </div>
+            </div> 
+
+        </div>
+
+        <div class="row">
+
+            <div class="form-group col-md-6" [ngClass]="{'has-danger': DescripcionCalle1.invalid && (DescripcionCalle1.dirty || DescripcionCalle1.touched || detailForm.submitted)}">
+                <label>Descripción Calle 1</label>
+                <input #DescripcionCalle1="ngModel" class="form-control"
+                       type="text" name="DescripcionCalle1" [(ngModel)]="detail.DescripcionCalle1" required maxlength="300">
+
+                <div *ngIf="DescripcionCalle1.invalid && (DescripcionCalle1.dirty || DescripcionCalle1.touched || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="DescripcionCalle1.errors.required">
+                        El Descripcion Calle 1 es Requerido
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group col-md-6" [ngClass]="{'has-danger': DescripcionCalle2.invalid && (DescripcionCalle2.dirty || DescripcionCalle2.touched || detailForm.submitted)}">
+                <label>Descripción Calle 2</label>
+                <input #DescripcionCalle2="ngModel" class="form-control"
+                       type="text" name="DescripcionCalle2" [(ngModel)]="detail.DescripcionCalle2" required maxlength="300">
+
+                <div *ngIf="DescripcionCalle2.invalid && (DescripcionCalle2.dirty || DescripcionCalle2.touched || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="DescripcionCalle2.errors.required">
+                        El Descripcion Calle 2 es Requerido
+                    </div>
+                </div>
+
+            </div>             
+        </div>
+
+
+        <div class="row">
+
+
+
+            <div class="form-group col-md-6" [ngClass]="{'has-danger': Lat.invalid && (Lat.dirty || Lat.touched || detailForm.submitted)}">
+                <label>Lat</label>
+                <input #Lat="ngModel" class="form-control"
+                       type="number" name="Lat" [(ngModel)]="detail.Lat" required maxlength="15">
+
+                <div *ngIf="Lat.invalid && (Lat.dirty || Lat.touched || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="Lat.errors.required">
+                        El Lat es Requerido
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group col-md-6" [ngClass]="{'has-danger': Long.invalid && (Long.dirty || Long.touched || detailForm.submitted)}">
+                <label>long</label>
+                <input #Long="ngModel" class="form-control"
+                       type="number" name="Long" [(ngModel)]="detail.Long" required maxlength="15">
+
+                <div *ngIf="Long.invalid && (Long.dirty || Long.touched || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="Long.errors.required">
+                        El Long es Requerido
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-6" [ngClass]="{'has-danger': LocalidadId.invalid && (LocalidadId.dirty || LocalidadId.touched)}">
+                <label>Localidad</label><br />
+                <localidad-autocomplete #LocalidadId="ngModel"
+                                        [(ngModel)]="detail.selectLocalidades" name="LocalidadId" id="LocalidadId" placeHolder="Localidades">
+                </localidad-autocomplete>
+            </div>
+
+
+            <div class="form-group col-md-6">
+                <label>Número Externo (IVU)</label>
+                <input #NumeroExternoIVU="ngModel" class="form-control"
+                       type="text" name="NumeroExternoIVU" [(ngModel)]="detail.NumeroExternoIVU" maxlength="50">
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="form-group col-md-10" [ngClass]="{'has-danger': Descripcion.invalid && (Descripcion.dirty || Descripcion.touched || detailForm.submitted)}">
+                <label>Descripcion</label>
+                <textarea #Descripcion="ngModel" class="form-control"
+                          type="text" name="Descripcion" [(ngModel)]="detail.Descripcion" required maxlength="500"></textarea>
+
+                <div *ngIf="Descripcion.invalid && (Descripcion.dirty || Descripcion.touched || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="Descripcion.errors.required">
+                        El Descripcion es Requerido
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-2">
+                <div class="m-checkbox-list">
+                    <label class="m-checkbox">
+                        <input #Anulado="ngModel" id="Anulado" type="checkbox" name="Anulado" [(ngModel)]="detail.Anulado">
+                        <em>Anulado</em>
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+    </div>
+    <div class="modal-footer">
+        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue" 
+                [buttonBusy]="saving" [busyText]="'Guardando..'">
+            <i class="fa fa-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+</form>

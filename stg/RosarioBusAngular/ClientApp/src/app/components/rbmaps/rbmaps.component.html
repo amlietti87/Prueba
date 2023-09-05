@@ -1,0 +1,73 @@
+﻿
+<div class="m-stack m-stack--ver m-stack--general">
+    <div class="m-stack__item m-stack__item--left  m-stack__item--top text-left" style="margin-left:3px;">
+        <h3>Mapa</h3>
+
+        <div aria-label="First group" role="group">
+            <!--<button class="btn btn-outline-primary btn-sm" type="button" (click)="ImportarPuntos()">Importar puntos</button>-->
+            <button class="btn btn-outline-primary btn-sm" type="button" (click)="verSectores()">Ver sectores</button>
+            <button class="btn btn-outline-danger btn-sm" type="button" (click)="descartarCambios()">Descartar cambios</button>
+
+            <button [disabled]="!OriginalData || OriginalData.length <= 1" class="btn btn-outline-danger btn-sm" type="button" (click)="deshacerCambios()"><i class="la la-undo"></i></button>
+
+            <button [disabled]="!RedoData || RedoData.length <= 0" class="btn btn-outline-danger btn-sm" type="button" (click)="rehacerCambios()"><i class="la la-undo fa-flip-horizontal"></i></button>
+            <button class="btn btn-outline-info btn-sm" type="button" (click)="redibujarMapa()"><i class="la la-refresh fa-refresh"></i></button>
+
+
+
+        </div>
+
+
+        <!--<button class="btn btn-outline-primary btn-sm" type="button" (click)="calcularruta()">calcularruta</button>
+        <input value="{{tiempoc}}" />-->
+
+    </div>
+
+    <div class="m-stack__item m-stack__item--right  m-stack__item--top text-right">
+        <div class="alert alert-brand alert-brand fade show   m-alert m-alert--square m-alert--air" style="margin-bottom:3px;" role="alert">
+            <div><strong>Distancia:</strong>  {{dataRecorrido._distancia/1000  | number : '1.2-2'}} kms</div>
+            <div><strong>Tiempo:</strong> {{dataRecorrido._tiempo/60 | number : '1.2-2'}} "</div>
+        </div>
+
+    </div>
+</div>
+
+<div id="map" style="height:60vh"></div>
+
+<!--<div style="text-align:right; padding-top:25px" >
+    <button class="btn btn-outline-danger" type="button" (click)="descartarCambios()">Descartar cambios</button>
+    <button class="btn btn-outline-primary" type="button" (click)="verSectores()">Sectores</button>
+</div>-->
+<!--<button type="button" (click)="saveRuta()">Guardar</button>-->
+<createOrEditPuntoDtoModal #createOrEditPuntoDtoModal></createOrEditPuntoDtoModal>
+
+
+<!--{{paretId}}
+
+<div class="card card-block" *ngFor="let p of puntosdto">
+    <p>{{p.CodigoNombre}} --{{p.Id}} --{{p.Orden}} -- i {{p.EsPuntoInicio}}   -- f {{p.EsPuntoTermino}}  </p>
+</div>
+<div class="card card-block" *ngFor="let s of sectoresdto">
+    <p>{{s.Id}}--    {{s.Descripcion}}--    {{s.PuntoInicioId}}--    {{s.PuntoFinId}}--    {{s.Data}}</p>--
+    <p>{{s.DistanciaKm}} --     {{s.RutaId}} --     {{s.Color}} --     {{s.OrdenInicio}} --   {{s.OrdenFin}}</p> --
+</div>-->
+<!--<p *ngFor="let puntos of puntosdto">
+
+    <span *ngFor="let i of puntos.Instructions">
+        <span [innerHTML]="i.short_name"></span>
+    </span>
+
+</p>-->
+
+
+<!--<p>undo</p>
+
+<p *ngFor="let item of OriginalData;let i = index">
+    {{i}} {{item.action}}
+</p>
+<p>redo</p>
+
+<p *ngFor="let item of RedoData;let i = index">
+    {{i}} {{item.action}}
+</p>-->
+ 

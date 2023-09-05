@@ -1,0 +1,123 @@
+﻿<div bsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <form *ngIf="active" #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title"> 
+                        <span *ngIf="detail.Id">Editar Tipo de día: {{detail.DesTdia}}</span>
+                        <span *ngIf="!detail.Id">Crear Tipo de día</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" [ngClass]="{'has-danger': Nombre.invalid && (Nombre.dirty || Nombre.touched || detailForm.submitted)}">
+                        <label>Nombre</label>
+                        <input #Nombre="ngModel" class="form-control"
+                               type="text" name="Nombre" [(ngModel)]="detail.DesTdia" required maxlength="15">
+
+                        <div *ngIf="Nombre.invalid && (Nombre.dirty || Nombre.touched || detailForm.submitted)"
+                             class=" form-control-feedback">
+                            <div *ngIf="Nombre.errors.required">
+                                El nombre es Requerido
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-6 col-lg-6">
+                            <div class="m-checkbox-list">
+                                <label class="m-checkbox">
+                                    <input #Activo="ngModel" id="Activo" type="checkbox" name="Activo" [(ngModel)]="detail.Activo">
+                                    Activo
+                                    <span></span>
+                                </label>
+                            </div>
+
+                        </div>
+                        <div class="form-group col-md-6 col-lg-6">
+                            <div class="m-list-settings__item">
+                                <span class="m-list-settings__item-label">
+                                    Color
+                                </span>
+                                <span class="m-list-settings__item-control">
+                                    <input #Color="ngModel" type="color" name="colorPicker_tipoDia" [(ngModel)]="detail.Color" />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-9 col-lg-9">
+                            <label>Descripción</label>
+                            <span class="ui-fluid">
+                                <destdia-predictivo #Descripcion="ngModel"
+                                                    [(ngModel)]="detail.Descripcion"
+                                                    #predictivo
+                                                    [detailTipoDeDia]="detail"
+                                                    style="width:  100% !important;"
+                                                    name="Descripcion"
+                                                    id="Descripcion"
+                                                    placeHolder=""
+                                                    >
+                                </destdia-predictivo>
+                            </span>
+                        </div>
+                        <div class="form-group col-md-3 col-lg-3" [ngClass]="{'has-danger': Orden.invalid && (Orden.dirty || Orden.touched || detailForm.submitted)}">
+                            <label>Orden</label>
+
+
+               
+                            <input #Orden="ngModel" class="form-control"                                   
+                                   type="text"
+                                   currencyMask  min="1"
+                                   [options]="{ allowNegative: false, precision : 0,  prefix: '', thousands: '', decimal: ',' }"                                   
+                                   name="Orden" [(ngModel)]="detail.Orden">
+
+                            <div *ngIf="Orden.invalid && (Orden.dirty || Orden.touched || detailForm.submitted)"
+                                 class=" form-control-feedback">
+                                <div *ngIf="Orden.errors.required">
+                                    El Orden es Requerido
+                                </div>
+                                <div *ngIf="Orden.errors.min">
+                                    El Orden es menor a 1
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+
+
+
+                    <div class="form-group col-md-8 " *ngIf="viewMode == 1">
+
+                        <label>Copiar configuración de tiempos esperado de carga</label>
+
+                        <tipoDia-combo #CopiaTipoDiaId="ngModel"
+                                       id="CopiaTipoDiaId"
+                                       name="CopiaTipoDiaId"
+                                       allowNullable="{{true}}"
+                                       autoLoad="{{true}}"
+                                       [(ngModel)]="detail.CopiaTipoDiaId">
+                        </tipoDia-combo>
+
+
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary blue"
+                               [disabled]="!detailForm.form.valid"
+                            [buttonBusy]="saving" [busyText]="'Guardando..'">
+                        <i class="fa fa-save"></i> <span>Guardar</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,287 @@
+﻿
+<div [hidden]="!active" class="m-portlet m-portlet--mobile">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon">
+                    <i class="la la-clock-o"></i>
+                </span>
+                <h3 class="m-portlet__head-text">
+                    <span>Importar Horario</span>
+                </h3>
+            </div>
+        </div>
+        <div class="m-portlet__head-tools">
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item">
+                    <a href="#" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-angle-down"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item">
+                    <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-expand"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item">
+                    <a href="#" (click)="close()" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-close"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+
+
+    <div class="m-portlet__body" [busyIf]="isLoadingCarteles || isLoadingMediaVueltas">
+
+        <div *ngIf="nroStep==1">
+            <div class="row">
+                <h3>Nuevo Horario {{tipodia}}</h3>
+            </div>
+            <div class="row m--padding-10">
+                <div class="col-md-3">
+                    <button type="button" [hidden]="fileUpload" (click)="ElegirArchivo()" class="btn btn-outline-info btn-sm">
+                        <i class="la la-search"></i>Selecionar Archivo Excel
+                    </button>
+                    <label>{{fileUpload != null ? fileUpload.name : ''}}</label>
+                    <input #fileInput style="display:none" type="file" name="fileInput" id="fileInput" class="form-control form-control-file" (change)="upload($event)" accept=".xlsx" [formControl]="myControl" />
+                    <button type="button" [hidden]="!fileUpload" (click)="ClearFile()" class="btn btn-outline-danger  btn-sm" [buttonBusy]="isLoadingMediaVueltas">
+                        <i class="la la-times "></i>Borrar
+                    </button>
+                    <button type="button" [hidden]="!fileUpload" (click)="uploadPlanilla()" [buttonBusy]="isLoadingMediaVueltas" class="btn btn-outline-success btn-sm">
+                        <i class="la la-upload"></i>Importar
+                    </button>
+
+                </div>
+                <div class="col-md-3">
+                    <!--[hidden]="ivuUpload"-->
+                    <button type="button" (click)="ElegirArchivoIvu()" class="btn btn-outline-info btn-sm">
+                        <i class="la la-search"></i>Selecionar Carpeta Ivu
+                    </button>
+                    <label>{{ivuUpload != null ? ivuUpload.name : ''}}</label>
+                    <input #ivuInput style="display:none" type="file" name="ivuInput" id="ivuInput" class="form-control form-control-file" (change)="uploadIvu($event)" webkitdirectory directory multiple [formControl]="ivuControl" />
+                </div>
+
+                <div class="col-md-6 m--align-right">
+                    <label class="m-checkbox">
+                        <input id="ingresaRango" type="checkbox" name="ingresaRango" [(ngModel)]="ingresaRango">
+                        Filtrar servicios
+                        <span></span>
+                    </label>
+
+                    <input class="col-md-2 m--padding-right-5" type="text"
+                           currencyMask [options]="{ allowNegative: false, precision : 0,  prefix: '', thousands: '', decimal: ',' }"
+                           name="desde" [(ngModel)]="desde" [disabled]="!ingresaRango">
+                    <input class="col-md-2 m--padding-right-5" type="text"
+                           currencyMask [options]="{ allowNegative: false, precision : 0,  prefix: '', thousands: '', decimal: ',' }"
+                           name="hasta" [(ngModel)]="hasta" [disabled]="!ingresaRango">
+
+
+                </div>
+            </div>
+
+
+            <div class="col-md-12" >
+                <p-table [value]="items" [scrollable]="true" scrollHeight="300px">
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>
+                                Nro Servicio
+                            </th>
+                            <th>
+                                Sale
+                            </th>
+                            <th>
+                                Llega
+                            </th>
+
+                            <th>
+                                Bandera
+                            </th>
+                            <th>
+                                T. Hora
+                            </th>
+                            <th>
+                                Sub. Galpon
+                            </th>
+                            <th>
+                                Errores
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-row>
+                        <tr>
+                            <td>{{row.NumServicio}}</td>
+                            <td>{{row.Sale| date: 'HH:mm'}}</td>
+                            <td>{{row.Llega| date: 'HH:mm'}}</td>
+                            <td>{{row.DescripcionBandera}}</td>
+                            <td>{{row.DescripcionTpoHora}}</td>
+                            <td>{{row.DescripcionSubGalpon}}</td>
+
+                            <td>
+                                <span *ngIf="row.Errors.length > 0" class="m-input-icon__icon m-input-icon__icon--right"
+                                      data-toggle="m-tooltip" data-placement="top" title="{{row.Errors.join(',')}}">
+                                    <span>
+                                        <i class="la la-info m--font-danger"></i>
+                                    </span>
+                                </span>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+
+
+        <div *ngIf="nroStep==2">
+
+            
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>
+                        Banderas cargadas en el horario
+                    </h4>
+                </div>
+                <div class="col-md-6">
+                    <h5>
+                        Banderas Posicionamiento
+                    </h5>
+                </div>               
+            </div>
+
+             <div class="row">
+                <div class="col-md-6">
+                     <p>
+                        {{banderasCartel}}
+                    </p>
+                </div>
+                 <div class="col-md-6">
+                    <p>
+                        {{banderasPosicionamiento}}
+                    </p>
+                </div>
+               
+            </div>
+
+
+            <div class="row">
+                <h4>Secuencia de Carteles</h4>
+            </div>
+            <div class="col-md-12" >
+                <p-table [value]="banderaCartel.BolBanderasCartelDetalle" [scrollable]="true" scrollHeight="300px">
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>
+                                Nro
+                            </th>
+                            <th>
+                                Bandera
+                            </th>
+                            <th>
+                                Texto Bandera
+                            </th>
+
+                            <th>
+                                Movible
+                            </th>
+                            <th>
+                                Observaciones
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowCartel>
+                        <tr *ngIf="rowCartel.EsPosicionamiento==false">
+
+                            <td pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input type="text"
+                                                currencyMask [options]="{ allowNegative: false, precision : 0,  prefix: '', thousands: '.', decimal: ',' }" 
+                                               oninput="this.value=this.value.replace(/[^0-9]/g,'');" 
+                                               #NroSecuencia="ngModel" required [(ngModel)]="rowCartel.NroSecuencia" name="{{rowCartel.NroSecuencia}}_{{i}}">
+
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowCartel.NroSecuencia}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+
+                            <td>{{rowCartel.AbrBan}}</td>
+
+                            <td pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input type="text" #TextoBandera="ngModel" required [(ngModel)]="rowCartel.TextoBandera" name="{{rowCartel.TextoBandera}}_{{i}}">
+
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowCartel.TextoBandera}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            
+
+                            <td pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <p-dropdown [options]="mobile" #Movible="ngModel"  [(ngModel)]="rowCartel.Movible" [style]="{'width':'100%'}"></p-dropdown>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowCartel.Movible == 'N' ? 'NO' :  rowCartel.Movible == 'S' ? 'SI' : '' }}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+
+
+
+                            <td pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input type="text" #ObsBandera="ngModel" required [(ngModel)]="rowCartel.ObsBandera" name="{{rowCartel.ObsBandera}}_{{i}}">
+
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowCartel.ObsBandera}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+
+
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+        <div class="modal-footer" >
+
+            <button [disabled]="nroStep==1" type="button" class="btn btn-primary blue" (click)="PreviousStep()">
+                <i class="fa fa-save"></i> <span>Anterior</span>
+            </button>
+            <button [disabled]="nroStep==2 || PlanillaId==undefined" type="button" class="btn btn-primary blue" (click)="NextStep()">
+                <i class="fa fa-save"></i> <span>Siguiente</span>
+            </button>
+
+            <button *ngIf="nroStep==2" type="button" class="btn btn-primary blue" (click)="Procesar()">
+                <i class="fa fa-save"></i> <span>Guardar</span>
+            </button>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,105 @@
+﻿
+
+
+<div>
+
+    <div class="m-subheader">
+        <div style="text-align: right;">
+            <div class="text-right">
+                <button (click)="onCreate()" *ngIf="allowAdd" class="btn btn-primary blue"><i class="fa fa-plus"></i> Crear Tipo de día</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form class="horizontal-form" autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center text-right">
+                                    <button (click)="onSearch()" class="btn btn-primary"><i class="flaticon-refresh"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container"
+                         [busyIf]="primengDatatableHelper.isLoading">
+
+                        <p-dataTable #dataTable
+                                     [lazy]="true"
+                                     (onLazyLoad)="onSearch($event)"
+                                     [value]="primengDatatableHelper.records"
+                                     [paginator]="false"
+                                     emptyMessage="{{l('Sin Datos')}}"
+                                     scrollable="true"
+                                     ScrollWidth="100%"
+                                     responsive="primengDatatableHelper.isResponsive">
+                            <p-column field="DesTdia" header="Nombre" [sortable]="true"></p-column>
+
+
+                            <p-column field="Orden" header="Orden" [sortable]="true"></p-column>
+
+                            <p-column field="Descripcion" header="Descripción" [sortable]="true"></p-column>
+
+ 
+
+
+                            <p-column field="Activo" header="Activo" [sortable]="true" styleClass="col-primeng-small">
+                                >
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div style="text-align:center">
+                                        <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': row.Activo}">
+                                            <input [(ngModel)]="row.Activo" type="checkbox" disabled><span></span>
+                                        </label>
+                                    </div>
+                                </ng-template>
+                            </p-column>
+
+                            <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div class="dropdown">
+                                        <a href="javascript:void(0);" (click)="onEdit(row)" *ngIf="allowModify" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Editar">
+                                            <i class="la la-edit"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" *ngIf="allowDelete" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" (click)="onDelete(row)"><i class="la la-trash"></i></a>
+                                    </div>
+
+                                </ng-template>
+                            </p-column>
+
+                        </p-dataTable>
+
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                                         #paginator
+                                         (onPageChange)="onSearch($event)"
+                                         [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                Registros totales:  {{ primengDatatableHelper.totalRecordsCount}}
+                            </span>
+                        </div>
+
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+
+                </div>
+            </div>
+        </div>
+
+        <!--<createOrEditEmpresaDtoModal #createOrEdit></createOrEditEmpresaDtoModal>-->
+    </div>
+
+    <ng-template #createOrEdit></ng-template>
+
+
+</div>
+
+

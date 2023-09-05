@@ -1,0 +1,40 @@
+﻿<form #detailForm="ngForm"
+      novalidate
+      autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span>
+                {{header}}
+            </span>
+        </h4>
+        <div class="m-portlet__nav-item">
+            <a href="#"
+               (click)="close()"
+               class="m-portlet__nav-link m-portlet__nav-link--icon">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <h5>
+                Ejecuta el archivo que se descargó.
+            </h5>
+
+        </div>
+        <div class="row">
+            <h6 (click)="Next()">
+                Recuerda que debe estar instalado JAVA 1.8+. <a href="https://www.java.com">https://www.java.com</a> 
+            </h6>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <mat-progress-bar mode="determinate"
+                                  [value]="progressValue">
+                </mat-progress-bar>
+            </div>
+        </div>
+    </div>
+</form>
+

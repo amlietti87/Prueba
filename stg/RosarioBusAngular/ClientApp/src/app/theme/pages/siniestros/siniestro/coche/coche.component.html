@@ -1,0 +1,115 @@
+﻿<form novalidate class="smallsize" [formGroup]="cocheForm" autocomplete="off">
+
+    <div class="row">
+
+        <!-- Coche -->
+        <div class="form-group col-md-2 smallpadding" [ngClass]="{'has-danger': cocheForm.controls.CocheId.invalid && (cocheForm.controls.CocheId.dirty || cocheForm.controls.CocheId.touched)}">
+
+            <label class="campoRequerido"><b>Coche</b></label><br />
+
+            <span class="ui-fluid">
+                <coches-autocomplete #autocompletecoche
+                                     formControlName="CocheId"
+                                     [(ngModel)]="selectCoches"
+                                     style="width:  100% !important;"
+                                     name="CocheId"
+                                     id="CocheId"
+                                     placeHolder="Coches">
+                </coches-autocomplete>
+            </span>
+
+            <div *ngIf="cocheForm.controls.CocheId.invalid && (cocheForm.controls.CocheId.dirty || cocheForm.controls.CocheId.touched)" class="form-control-feedback">
+
+                <div *ngIf="cocheForm.controls.CocheId.errors.required">
+                    Coche requerido.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Datos -->
+        <div class="col-md-2 smallpadding" style="max-width: 12%;">
+            <div *ngIf="CurrentCoche" class="psmallpadding smallSizeFont">
+
+                <p><b>Datos</b></p>
+
+                <p>Dominio: {{ CurrentCoche.Dominio }} </p>
+                <p>Interno: {{ CurrentCoche.Interno }}</p>
+                <p>Ficha: {{ CurrentCoche.Ficha }} </p>
+
+            </div>
+        </div>
+
+        <!-- Linea -->
+        <div class="form-group col-md-1 smallpadding" [ngClass]="{'has-danger': cocheForm.controls.CocheLineaId.invalid && (cocheForm.controls.CocheLineaId.dirty || cocheForm.controls.CocheLineaId.touched)}">
+
+            <label class="campoRequerido"><b>L&iacute;nea</b></label><br />
+
+            <span class="ui-fluid">
+                <linea-autocomplete formControlName="CocheLineaId"
+                                    [(ngModel)]="selectLineas"
+                                    style="width:  100% !important;"
+                                    name="CocheLineaId"
+                                    id="CocheLineaId"
+                                    placeHolder="Lineas">
+                </linea-autocomplete>
+            </span>
+
+            <div *ngIf="cocheForm.controls.CocheLineaId.invalid && (cocheForm.controls.CocheLineaId.dirty || cocheForm.controls.CocheLineaId.touched)" class="form-control-feedback">
+
+                <div *ngIf="cocheForm.controls.CocheLineaId.errors.required">
+                    L&iacute;nea requerida.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Tipo de Daño -->
+        <div class="form-group  col-md-2 smallpadding">
+            <label class="smallSizeFont">Tipo de Daño</label>
+
+            <tipodanio-combo [showAddButton]="allowAddTipoDanio" formControlName="TipoDanioId" name="TipoDanioId" [(ngModel)]="detail.TipoDanioId" emptyText="{{'Seleccione..'}}">
+            </tipodanio-combo>
+
+        </div>
+
+        <!-- Informa Taller -->
+        <div class="form-group  col-md-1" style="padding-top: 15px !important">
+            <div class="m-checkbox-list">
+                <label class="m-checkbox">
+                    <input formControlName="InformaTaller"
+                           id="InformaTaller"
+                           type="checkbox"
+                           name="InformaTaller"
+                           [(ngModel)]="detail.InformaTaller">
+                    <em style="font-style: unset;">Informa Taller</em>
+                    <span></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group  col-md-2" style="padding-left: 0px;">
+            <label class="cocheAndNroMuertos">C&iacute;a. Seguro</label>
+            <span class="ui-fluid">
+                <seguros-combo [showAddButton]="allowAddSeguro"
+                               formControlName="SeguroId"
+                               name="SeguroId"
+                               id="SeguroId"
+                               [SeguroId]="detail.SeguroId"
+                               [(ngModel)]="detail.SeguroId"
+                               emptyText="{{'Seleccione..'}}">
+                </seguros-combo>
+            </span>
+        </div>
+
+        <!-- Costo -->
+        <div class="form-group  col-md-1">
+            <label class="smallSizeFont">Costo de reparación</label>
+            <input currencyMask formControlName="CostoReparacion" [options]="{ prefix: '', thousands: '.', decimal: ',' }" class="form-control" type="text" name="CostoReparacion" [(ngModel)]="detail.CostoReparacion">
+        </div>
+
+    </div>
+
+
+
+</form>

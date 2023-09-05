@@ -1,0 +1,191 @@
+﻿
+
+
+<div>
+
+    <div class="m-subheader">
+        <div style="text-align: right;">
+            <div class="text-right">
+                <button (click)="onCreate()" *ngIf="allowAdd || allowSelect" class="btn btn-primary blue"><i class="fa fa-plus"></i> Crear {{title}}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form #filterForm="ngForm" class="horizontal-form" autocomplete="off">
+                     
+                    <div class="row">
+
+                        <div class="form-group col-md-2">
+                            <input #Calle1filter="ngModel" class="form-control" placeholder="Codigo"
+                                   type="text" name="fCodigo" id="Codigo" [(ngModel)]="filter.Codigo" maxlength="50">
+                        </div>
+
+
+                        <div class="form-group col-md-3">
+                            <input #Calle2filter="ngModel" class="form-control" placeholder="Calle"
+                                   type="text" name="fCalle" [(ngModel)]="filter.Calle" maxlength="50">
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <input #Crucefilter="ngModel" class="form-control" placeholder="Cruce"
+                                   type="text" name="fCruce" [(ngModel)]="filter.Cruce" maxlength="50">
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <input class="form-control" placeholder="Sentido"
+                                   type="text" name="fSentido" [(ngModel)]="filter.Sentido" maxlength="50">
+                        </div>
+
+
+                        <div class="form-group col-md-2">
+                            <localidad-autocomplete #LocalidadIdFiltro="ngModel"
+                                                    [(ngModel)]="filterselectLocalidades" name="LocalidadIdFiltro" id="LocalidadIdFiltro" placeHolder="Localidades">
+                            </localidad-autocomplete>
+                        </div>
+
+                        <div class="form-group col-md-1">
+                            <button (click)="onSearch()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                        </div>
+
+                    </div> 
+                    <div class="row" [hidden]="inMapa">
+                        <div class="form-group col-lg-2">
+                            <label>Anulado</label>
+                            <yesnoall-combo #ComboAnulado
+                                            name="ComboAnulado"
+                                            id="ComboAnulado"
+                                            #Anulado="ngModel"
+                                            [(ngModel)]="filter.AnuladoCombo"
+                                            emptyText="{{'Todos'}}">
+                            </yesnoall-combo>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="filter.Lat && filter.Long">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <span class="m-list-settings__item-label" style="vertical-align:top">
+                                    Latitud:
+                                </span>
+                                <span class="m-list-settings__item-control">
+                                    {{filter.Lat | number:'1.4'}}
+                                </span>
+                            </div> 
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <span class="m-list-settings__item-label" style="vertical-align:top">
+                                    Longitud:
+                                </span>
+                                <span class="m-list-settings__item-control">
+                                    {{filter.Long | number:'1.4'}}
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container primeng-small"
+                         [busyIf]="primengDatatableHelper.isLoading">
+ 
+                        <p-dataTable #dataTable
+                                     [lazy]="true"
+                                     (onLazyLoad)="onSearch($event)"
+                                     [value]="primengDatatableHelper.records"
+                                     [paginator]="false"
+                                     emptyMessage="{{l('Sin Datos')}}"
+                                     scrollable="true"
+                                     ScrollWidth="100%"
+                                     responsive="primengDatatableHelper.isResponsive">
+                            <p-column field="Codigo" header="Codigo" [sortable]="true"></p-column>
+                            <p-column field="Calle" header="Calle" [sortable]="true"></p-column> 
+                            <p-column field="Cruce" header="Cruce" [sortable]="true"></p-column>
+                            <p-column field="Sentido" header="Sentido" [sortable]="true"></p-column>
+                            <!-- <p-column field="parant_station" header="Estacion" [sortable]="true"></p-column>
+                            <p-column field="TipoParadaDesc" header="Tipo Parada" [sortable]="true"></p-column>  -->
+                            <p-column field="LocalidadId" header="Localidad">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <span> {{row.Localidad}}</span> 
+                                </ng-template> 
+                            </p-column>  
+                            <p-column field="Anulada" header="Anulada" [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div class="medium-size" style="text-align:center">
+                                        <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': row.Anulado}">
+                                            <input [(ngModel)]="row.Anulada" name="Anulada_{{row.Id}}" type="checkbox" disabled><span></span>
+                                        </label>
+                                    </div>
+                                </ng-template>
+                            </p-column>
+                            <!-- <p-column field="pick_up_type" header="Levantar Pas." [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div class="medium-size" style="text-align:center">
+                                        <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': row.pick_up_type}">
+                                            <input [(ngModel)]="row.pick_up_type" name="pick_up_type_{{row.Id}}" type="checkbox" disabled><span></span>
+                                        </label>
+                                    </div>
+                                </ng-template>
+                            </p-column>
+                            <p-column field="drop_off_type" header="Bajar Pas." [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div class="medium-size" style="text-align:center">
+                                        <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': row.drop_off_type}">
+                                            <input [(ngModel)]="row.drop_off_type" name="drop_off_type_{{row.Id}}" type="checkbox" disabled><span></span>
+                                        </label>
+                                    </div>
+                                </ng-template>
+                            </p-column> -->
+
+
+
+                            <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div class="dropdown">
+                                        <a href="javascript:void(0);" (click)="onEdit(row)" *ngIf="allowModify" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Editar">
+                                            <i class="la la-edit"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" *ngIf="allowDelete" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" (click)="onDelete(row)"><i class="la la-trash"></i></a>
+                                    </div>
+
+                                    <a href="javascript:void(0);" (click)="onSelect(row)" *ngIf="allowSelect" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Seleccionar">
+                                        <i class="la la-hand-pointer-o"></i>
+                                    </a>
+                                </ng-template>
+                            </p-column>
+
+                        </p-dataTable>
+
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                                         #paginator
+                                         (onPageChange)="onSearch($event)"
+                                         [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                Registros totales:  {{ primengDatatableHelper.totalRecordsCount}}
+                            </span>
+                        </div>
+
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+
+                </div>
+            </div>
+        </div>
+
+        <!--<createOrEditEmpresaDtoModal #createOrEdit></createOrEditEmpresaDtoModal>-->
+    </div>
+
+    <ng-template #createOrEdit></ng-template>
+
+
+</div>
+
+

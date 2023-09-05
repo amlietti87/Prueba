@@ -1,0 +1,74 @@
+﻿
+
+
+<div>
+    <div class="m-subheader">
+        <div style="text-align: right;">
+
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div [hidden]="!active" class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form class="horizontal-form" autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center text-right">
+                                    <button (click)="onSearch()" class="btn btn-primary"><i class="flaticon-refresh"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container"
+                         [busyIf]="primengDatatableHelper.isLoading">
+
+                        <p-dataTable #dataTable
+                                     [lazy]="true"
+                                     (onLazyLoad)="onSearch($event)"
+                                     [value]="primengDatatableHelper.records"
+                                     [paginator]="false"
+                                     emptyMessage="{{l('Sin Datos')}}"
+                                     scrollable="true"
+                                     ScrollWidth="100%"
+                                     responsive="primengDatatableHelper.isResponsive">
+                            <p-column field="DscSucursal" header="Nombre" [sortable]="true"></p-column>
+                            <p-column field="NomServidor" header="Nombre Servidor" [sortable]="true"></p-column>
+                            <p-column field="EntornoActivo" header="Entorno Activo" [sortable]="true"></p-column>
+
+
+                        </p-dataTable>
+
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                                         #paginator
+                                         (onPageChange)="onSearch($event)"
+                                         [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                Registros totales:  {{ primengDatatableHelper.totalRecordsCount}}
+                            </span>
+                        </div>
+
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+
+                </div>
+            </div>
+        </div>
+
+        
+        <!--<createOrEditUnidadDeNegocioDtoModal #createOrEdit></createOrEditUnidadDeNegocioDtoModal>-->
+    </div>
+
+
+    <ng-template #createOrEdit></ng-template>
+</div>
+
+

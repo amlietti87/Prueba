@@ -1,0 +1,88 @@
+<div class="m-portlet">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon m--hide">
+                    <i class="la la-gear"></i>
+                </span>
+                <h3 class="m-portlet__head-text">
+                    <span *ngIf="viewMode == 2">Editar informaci&oacute;n de la lesi&oacute;n</span>
+                    <span *ngIf="viewMode != 2">Crear informaci&oacute;n de la lesi&oacute;n</span>
+
+                </h3>
+            </div>
+        </div>
+    </div>
+    <div class="m-form m-form--fit m-form--label-align-right m-form--group-seperator-dashed">
+
+        <form #detailForm="ngForm" class="m-form m-form--group-seperator-dashed">
+
+            <div class="m-portlet__body">
+
+                <div class="m-section">
+
+                    <div class="m-section__content">
+
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label>Lugar de atenci&oacute;n</label>
+                                <input #LugarAtencion="ngModel" class="form-control" type="text" name="LugarAtencion" [(ngModel)]="detail.LugarAtencion">
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label>Fecha Factura</label>
+                                <mat-form-field class="mat-form-field-mat-datepicker mat-form-field-mat-datepicker-100p">
+                                    <input matInput [(ngModel)]="detail.FechaFactura"
+                                           name="FechaFactura" [matDatepicker]="FechaFactura">
+                                    <mat-datepicker-toggle matSuffix [for]="FechaFactura"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaFactura></mat-datepicker>
+                                </mat-form-field>
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label>Nro. Factura</label>
+                                <input #NroFactura="ngModel" class="form-control" type="text" name="NroFactura" [(ngModel)]="detail.NroFactura">
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label>Importe</label>
+                                <input currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',' }" #ImporteFactura="ngModel" class="form-control" type="text" name="ImporteFactura" [(ngModel)]="detail.ImporteFactura">
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label>Observaciones</label>
+                                <input #Observaciones="ngModel" class="form-control" type="text" name="Observaciones" [(ngModel)]="detail.Observaciones">
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit text-right">
+                <div class="m-form__actions m-form__actions--solid">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                    <button type="button" class="btn btn-primary blue"
+                            (click)="save(detailForm)"
+                            [disabled]="!detailForm.form.valid">
+                        <i class="fa fa-save"></i> <span>Aceptar</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+
+
+
+
+

@@ -1,0 +1,75 @@
+﻿<!--<div class="m-content">
+    <div [hidden]="!active" class="m-portlet m-portlet--mobile">-->
+<div class="m-portlet__body" [hidden]="!active">
+
+    <div class="row align-items-center">
+        <div class="row m--padding-10">
+            <div class="col-md-12 m--align-left">
+                <button type="button" (click)="onCreate()" *ngIf="allowAdd" class="btn btn-primary blue"><i class="fa fa-plus"></i> Nuevo </button>
+            </div>
+        </div>
+
+
+
+        <!--<Primeng-Datatable-Start>-->
+        <div class="primeng-datatable-container primeng-small" style="overflow:auto;  ">
+            <p-dataTable [value]="list" [rows]="10" [paginator]="true"
+                         scrollable="true"
+                         scrollHeight="300px"
+                         responsive="true"
+                         #dt
+                         emptyMessage="">
+
+                <p-column field="TipoDediaDescripcion" header="Tipo de dia" [sortable]="true"></p-column>
+                <p-column field="Motivo" header="Motivo" [sortable]="true"></p-column>
+                <p-column field="CantidadDeCochesEstimados" header="Cant de coches" [sortable]="true"></p-column>
+                <p-column field="CantidadDeConductoresEstimados" header="Cant de conductores" [sortable]="true"></p-column>
+                <p-column field="Estado" header="Estado M. Vueltas">
+                    <ng-template let-col let-row="rowData" pTemplate type="body">
+                        
+                        <!--Incompleta = 0-->
+                        <span *ngIf="row.Estado == 0 && row.Id > 0" data-toggle="tooltip" title="No tiene Medias Vueltas" class="m-badge m-badge--warning"></span>
+
+                        <!-- SinMinutos = 1 -->
+                        <a *ngIf="row.Estado == 1 && row.Id > 0" href="javascript:void(0);" (click)="LeerMediasVueltasIncompletas(row)" class="m-portlet__nav-link btn m-btn m-btn--hover-warning m-btn--icon m-btn--icon-only m-btn--pill"
+                           title="Ver Medias Vueltas Incompletas">
+                            <i class="la la-eye"></i>
+                        </a>
+                        <!--Valido = 2-->
+                        <span *ngIf="row.Estado == 2 && row.Id > 0" data-toggle="tooltip" title="Todas las Medias vueltas Completas" (click)="LeerMediasVueltasIncompletas(row)" style="cursor:pointer" class="m-badge m-badge--success"></span>
+                    </ng-template>
+                </p-column>
+
+                <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                    <ng-template let-col let-row="rowData" pTemplate type="body">
+
+                        <a href="javascript:void(0);" (click)="onEdit(row)" *ngIf="allowModify" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Editar">
+                            <i class="la la-edit"></i>
+                        </a>
+                        <a href="javascript:void(0);" *ngIf="allowDelete" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" (click)="onDelete(row)"><i class="la la-trash"></i></a>
+                        <a href="javascript:void(0);" [hidden]="!(allowImportarHorario && parentEntity.BeforeMigration == false)" (click)="onImportarServicio(row)" title="Importar Horario"
+                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill">
+                            <i class="la la-upload"></i>
+                        </a>
+
+                    </ng-template>
+                </p-column>
+            </p-dataTable>
+        </div>
+
+
+
+
+    </div>
+
+
+
+
+</div>
+
+
+
+
+<!--</div>
+        <ng-template #createOrEdit></ng-template>
+</div>-->

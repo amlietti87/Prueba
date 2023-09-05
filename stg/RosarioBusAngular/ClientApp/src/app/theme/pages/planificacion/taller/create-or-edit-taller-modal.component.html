@@ -1,0 +1,166 @@
+﻿
+<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && applyTaller()" autocomplete="off">
+    <div id="TallerDetailsidebar" class="m-quick-sidebar m-quick-sidebar--tabbed m-quick-sidebar--skin-light" appunwraptag="">
+        <div class="m-quick-sidebar__content TallerDetailsidebar_content  m--hide">
+            <span id="seba_close" class="m-quick-sidebar__close">
+                <i class="la la-close" *ngIf="!detail.isNew" (click)="close()"></i>
+            </span>
+
+
+            <ul id="TallerDetailsidebar_tabs" class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active" [hidden]="isSectormode" data-toggle="tab" id="m_h_quick_sidebar_tabs_Talleres" href="#m_quick_sidebar_tabs_Talleres" role="tab">
+                        Talleres
+                    </a>
+                </li>
+            </ul>
+
+            
+            <div class="tab-content">
+                <div class="tab-pane active" id="m_quick_sidebar_tabs_Talleres" role="tabpanel">
+                    <div class="m-list-settings">
+
+
+
+                        <div class="m-list-settings__group m-scrollable" data-scrollable="true" data-max-height="60vh">
+                           
+
+                            <div class="m-list-settings__item">
+                                <span class="m-list-settings__item-label">
+                                    Nombre
+                                </span>
+                                <div class="m-list-settings__item-control">
+                                    <input [disabled]="!detail.isNew" type="text"
+                                           class="form-control form-control-sm m-input" maxlength="25" required name="Nombre" #Nombre="ngModel" [(ngModel)]="detail.Nombre">
+                                    <div *ngIf="Nombre.invalid && (Nombre.dirty || Nombre.touched || detailForm.submitted)"
+                                         class="form-control-feedback">
+                                        <div *ngIf="Nombre.errors.required">
+                                            El  Nombre es Requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="m-list-settings__item">
+                                <span class="m-list-settings__item-label">
+                                    Código Postal
+                                </span>
+                                <span class="m-list-settings__item-control">
+                                    <input [disabled]="!detail.isNew" type="text"
+                                           class="form-control form-control-sm m-input" maxlength="4" required name="PosGal" #PosGal="ngModel" [(ngModel)]="detail.PosGal">
+                                    <div *ngIf="PosGal.invalid && (PosGal.dirty || PosGal.touched || detailForm.submitted)"
+                                         class="form-control-feedback">
+                                        <div *ngIf="PosGal.errors.required">
+                                            El  Código Postal es Requerido
+                                        </div>
+                                    </div>
+
+                                </span>
+                            </div>
+
+
+
+                        
+                            <p-accordion (onOpen)="onTabOpen($event)" *ngIf="!detail.isNew">
+
+
+                                <ng-template ngFor let-suc [ngForOf]="sucursales">
+
+                                    <p-accordionTab id="accordionTab_suc_{{suc.Id}}" header="{{suc.Description}}">
+
+                                        <div class="m-list-settings__item" *ngFor="let ruta of suc.Rutas ; let i=index;">
+                                            <span class="m-list-settings__item-control">
+                                                <span class="m-switch m-switch--outline m-switch--icon-check m-switch--brand">
+                                                    <label>
+                                                        <input type="checkbox" class="form-control form-control-sm m-input" id="select_{{suc.Id}}_{{i}}"
+                                                               name="select_{{suc.Id}}_{{i}}" [(ngModel)]="ruta.Selected" (change)="onSelectedMap(ruta)">
+                                                        <span></span>
+                                                    </label>
+                                                </span>
+                                            </span>
+                                            <div class="m-list-settings__item-label" style="width: 80%;">
+                                                <div class="input">
+                                                    <span class="" style="width: 100%;margin-bottom: 5px;">
+                                                        {{ruta.CodigoVarianteLinea}}
+                                                    </span>
+                                                    <input *ngIf="ruta.Selected" type="text" style="width:100%;padding-top:5px"
+                                                           class="form-control form-control-sm m-input" required name="BanderaNombre_{{suc.Id}}_{{i}}" id="BanderaNombre_{{suc.Id}}_{{i}}" #BanderaNombre="ngModel" [(ngModel)]="ruta.BanderaNombre" />
+
+                                                    <div class="form-control-feedback" *ngIf="ruta.Selected && (!ruta.BanderaNombre || ruta.BanderaNombre.length == 0)">
+                                                        <div class="">
+                                                            El campo es requerido
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+
+                                    </p-accordionTab>
+                                </ng-template>
+
+
+
+                            </p-accordion>
+
+
+
+
+
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div *ngIf="detail.isNew">
+                        <span>Para poder asignarle una ruta debe guardar los talleres</span>
+                    </div>
+
+                    <div class="m--align-right m--margin-10">
+                        <button [disabled]="saving"
+                                type="button"
+                                class="btn btn-default"
+                                (click)="cancelar()">
+                            Cancelar
+                        </button>
+
+
+                        <a (click)="detailForm.form.valid && saveTaller(detailForm)" class="btn  btn-outline-primary"
+                           href="#"
+                           *ngIf="!detail.isNew"
+                           [buttonBusy]="saving" [busyText]="'Guardando..'">
+                            <i class="fa fa-save"></i> <span>Guardar</span>
+                        </a>
+
+
+
+
+                        <a (click)="detailForm.form.valid && applyTaller(detailForm)" class="btn  btn-outline-primary"
+                           href="#"
+                           *ngIf="detail.isNew">
+                            <i class="fa fa-save"></i> <span>OK</span>
+                        </a>
+
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+    </div>
+    <div *ngIf="active" class="m-quick-sidebar-overlay"></div>
+</form>
+

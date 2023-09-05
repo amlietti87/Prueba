@@ -1,0 +1,26 @@
+﻿<div class="col-md-12" style="padding:0px; display:inline-flex">
+    <button *ngIf="showAddButton"
+            type="button"
+            class="smallesttext btn btn-primary blue"
+            (click)="onAddButtonClick()">
+        <i class="la la-plus"></i>
+    </button>
+    <select #combobox
+            class="form-control custom-combo"
+            [(ngModel)]="value"
+            [disabled]="IsDisabled || isLoading"
+            (ngModelChange)="selectedItemChange.emit($event)"
+            name="combobox"
+            title="{{emptyText}}"
+            jq-plugin="selectpicker"
+            data-container="body"
+            [attr.data-live-search]="livesearch">
+        <option *ngIf="allowNullable==true" value="">
+            {{emptyText}}
+        </option>
+        <option *ngFor="let item of items" [value]="item.Id">{{item.Description}}</option>
+    </select>
+    <div *ngIf="isLoading"  class="m-loader m-loader--brand" style="position: initial !important;">
+
+    </div>
+</div>

@@ -1,0 +1,244 @@
+﻿
+<form  #detailForm="ngForm" novalidate  (ngSubmit)="detailForm.form.valid && save(detailForm)"  autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span *ngIf="detail.Id">{{"Editar Grupo de Inspectores"}}</span>
+            <span *ngIf="!detail.Id">{{"Crear Grupo de Inspectores"}}</span>
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group col-lg-12" [ngClass]="{'has-danger': Descripcion.invalid && (Descripcion.dirty || Descripcion.touched)}">
+                <label>Descripción</label>
+                <input #Descripcion="ngModel" class="form-control" type="text" name="Descripcion" [(ngModel)]="detail.Descripcion" required maxlength="100">
+    
+                <div *ngIf="Descripcion.invalid && (Descripcion.dirty || Descripcion.touched)"
+                        class=" form-control-feedback">
+                    <div *ngIf="Descripcion.errors.required">
+                        La descripción es Requerida
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-5">
+                <label>Notificación</label>
+                    <notification-combo #Notification="ngModel"
+                                        [(ngModel)]="detail.NotificacionId"
+                                        id="Notification"
+                                        name="Notification"
+                                        emptyText="Seleccione...">
+                    </notification-combo>
+                </div>
+        
+                <div class="form-group col-md-3">
+                    <label>Linea</label>
+                    <span class="ui-fluid">
+                        <linea-autocomplete #Linea="ngModel"
+                                            [(ngModel)]="detail.Linea"
+                                            name="linea"  
+                                            (ngModelChange)="OnLineaChange($event)"
+                                            placeHolder="Lineas">
+                        </linea-autocomplete>
+                    </span>
+                </div>
+        </div>
+
+        <div class="m-checkbox-list col-lg-5">
+            <label class="m-checkbox" [hidden]="!detail.Id">
+                <input #Anulado="ngModel" id="Anulado" type="checkbox" name="Anulado" [(ngModel)]="detail.Anulado">
+                Anulado
+                <span></span>
+            </label>
+        </div>
+        <tabset class="tab-container tabbable-line">
+
+            <tab heading="{{'Zonas'}}" customClass="m-tabs__item">
+                <div class="form-group" style="padding-left: 0px;">
+                    <button class="btn btn-primary blue" type="button" (click)="OnGruposInspectoresZonaRowAdded()">
+                        <i class="fa fa-save"></i> <span>Agregar Zona</span>
+                    </button>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="primeng-datatable-container primeng-small primeng-small-buttons-small" style="padding-bottom: 6px;">
+                            <p-dataTable [value]="detail.InspGrupoInspectoresZona" scrollable="true" scrollHeight="100px" [editable]="true" responsive="false" emptyMessage="">
+                                <!-- Column Zona-->
+                                <p-column field="Descripcion" header="Zona" [editable]="true" [sortable]="true">
+                                    <ng-template let-row="rowData" pTemplate="editor">
+                                        <div>
+                                            <zonas-combo [showAddButton]="allowAddZona" name="{{'Zona' + row.Id}}" id="{{'Zona' + row.Id}}" [(ngModel)]="row.ZonaId" [BuscarZona]="false" [Anulado]="2" (ngModelChange)="OnZonaComboChanged($event, row)" emptyText="{{'Seleccione..'}}">
+                                            </zonas-combo>
+                                        </div>
+                                    </ng-template>
+
+                                    <ng-template let-row="rowData" pTemplate="body">
+                                        <div><span style="color: blue;">{{ row.ZonaNombre }}</span></div>
+                                    </ng-template>
+                                </p-column>
+
+                                <!-- Column Acciones -->
+                                <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                    <ng-template let-col let-row="rowData" pTemplate type="body">
+                                        <div class="dropdown">
+                                            <a href="javascript:void(0);" (click)="OnGruposInspectoresZonaRowRemoved(row)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Eliminar">
+                                                <i class="la la-trash"></i>
+                                            </a>
+                                        </div>
+                                    </ng-template>
+                                </p-column>
+                            </p-dataTable>
+                        </div>
+                    </div>
+                </div>
+            </tab>
+
+            <tab heading="{{'Rangos Horarios'}}" customClass="m-tabs__item">
+                <div class="form-group" style="padding-left: 0px;">
+                    <button class="btn btn-primary blue" type="button" (click)="OnGruposInspectoresRangosHorariosRowAdded()">
+                        <i class="fa fa-save"></i> <span>Agregar Rango Horario</span>
+                    </button>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="primeng-datatable-container primeng-small primeng-small-buttons-small" style="padding-bottom: 6px;">
+                            <p-dataTable [value]="detail.InspGrupoInspectoresRangosHorarios" scrollable="true" scrollHeight="100px" [editable]="true" responsive="false" emptyMessage="">
+
+                                <!-- Column RangoHorario-->
+                                <p-column field="Descripcion" header="Rango Horario" [editable]="true" [sortable]="true">
+                                    <ng-template let-row="rowData" pTemplate="editor">
+                                        <div>
+                                            <rangoshorarios-combo [showAddButton]="true" name="{{'RangoHorario' + row.Id}}" id="{{'RangoHorario' + row.Id}}" [(ngModel)]="row.RangoHorarioId" [BuscarRangoHorario]="false" [Anulado]="2" (ngModelChange)="OnRangosHorariosComboChanged($event, row)" emptyText="{{'Seleccione..'}}">
+                                            </rangoshorarios-combo>
+                                        </div>
+                                    </ng-template>
+
+                                    <ng-template let-row="rowData" pTemplate="body">
+                                        <div><span style="color: blue;">{{ row.NombreRangoHorario }}</span></div>
+                                    </ng-template>
+
+                                </p-column>
+
+                                <!-- Column Acciones -->
+                                <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                    <ng-template let-col let-row="rowData" pTemplate type="body">
+                                        <div class="dropdown">
+                                            <a href="javascript:void(0);" (click)="OnGruposInspectoresRangosHorariosRowRemoved(row)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Eliminar">
+                                                <i class="la la-trash"></i>
+                                            </a>
+                                        </div>
+                                    </ng-template>
+                                </p-column>
+                            </p-dataTable>
+                        </div>
+                    </div>
+                </div>
+            </tab>
+
+            <tab heading="{{'Turnos'}}" customClass="m-tabs__item">
+
+                <div class="form-group" style="padding-left: 0px;">
+                    <button class="btn btn-primary blue" type="button" (click)="OnGruposInspectoresTurnosRowAdded()">
+                        <i class="fa fa-save"></i> <span>Agregar Turno</span>
+                    </button>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="primeng-datatable-container primeng-small primeng-small-buttons-small" style="padding-bottom: 6px;">
+                            <p-dataTable [value]="detail.InspGrupoInspectoresTurnos" scrollable="true" scrollHeight="100px" [editable]="true" responsive="false" emptyMessage="">
+
+                                <!-- Column Turnos-->
+                                <p-column field="Descripcion" header="Turnos" [editable]="true" [sortable]="true">
+                                    <ng-template let-row="rowData" pTemplate="editor">
+                                        <div>
+                                            <persturnos-combo name="{{'Turno' + row.Id}}" id="{{'Turno' + row.Id}}" [(ngModel)]="row.TurnoId" (ngModelChange)="OnTurnosComboChanged($event, row)" emptyText="{{'Seleccione..'}}">
+                                            </persturnos-combo>
+                                        </div>
+                                    </ng-template>
+
+                                    <ng-template let-row="rowData" pTemplate="body">
+                                        <div><span style="color: blue;">{{ row.TurnoNombre }}</span></div>
+                                    </ng-template>
+
+                                </p-column>
+
+                                <!-- Column Acciones -->
+                                <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                    <ng-template let-col let-row="rowData" pTemplate type="body">
+                                        <div class="dropdown">
+                                            <a href="javascript:void(0);" (click)="OnGruposInspectoresTurnosRowRemoved(row)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Eliminar">
+                                                <i class="la la-trash"></i>
+                                            </a>
+                                        </div>
+                                    </ng-template>
+                                </p-column>
+                            </p-dataTable>
+                        </div>
+                    </div>
+                </div>
+            </tab>
+
+            <tab heading="{{'Tareas'}}" customClass="m-tabs__item">
+
+                <div class="form-group" style="padding-left: 0px;">
+                    <button class="btn btn-primary blue" type="button" (click)="OnGruposInspectoresTareaRowAdded()">
+                        <i class="fa fa-plus"></i> <span>Agregar Tarea</span>
+                    </button>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="primeng-datatable-container primeng-small primeng-small-buttons-small" style="padding-bottom: 6px;">
+                            <p-dataTable [value]="detail.InspGrupoInspectoresTareas" scrollable="true" scrollHeight="100px" [editable]="true" responsive="false" emptyMessage="">
+
+                                <!-- Column Tipos Tarea-->
+                                <p-column field="Descripcion" header="Tipo de Tarea" [editable]="true" [sortable]="true">
+                                    <ng-template let-row="rowData" pTemplate="editor">
+                                        <div>
+                                            <tareas-combo  name="{{'Tarea' + row.Id}}" id="{{'Tarea' + row.Id}}" [(ngModel)]="row.TareaId" (ngModelChange)="OnTareaComboChanged($event, row)" emptyText="{{'Seleccione..'}}">
+                                            </tareas-combo>
+                                        </div>
+                                    </ng-template>
+
+                                    <ng-template let-row="rowData" pTemplate="body">
+                                        <div><span style="color: blue;">{{ row.TareaNombre }}</span></div>
+                                    </ng-template>
+
+                                </p-column>
+
+                                <!-- Column Acciones -->
+                                <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                    <ng-template let-col let-row="rowData" pTemplate type="body">
+                                        <div class="dropdown">
+                                            <a href="javascript:void(0);" (click)="OnGruposInspectoresTareaRowRemoved(row)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Eliminar">
+                                                <i class="la la-trash"></i>
+                                            </a>
+                                        </div>
+                                    </ng-template>
+                                </p-column>
+                            </p-dataTable>
+                        </div>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+
+    </div>
+    <div class="modal-footer">
+        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue"
+                [buttonBusy]="saving" [busyText]="'Guardando..'"
+                [disabled]="!detailForm.form.valid"
+                [hidden]="!allowmodificargropoInsp && detail.Id">
+            <i class="fa fa-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+</form>
+      

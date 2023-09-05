@@ -1,0 +1,44 @@
+﻿<form #detailForm="ngForm"
+      novalidate
+                  (ngSubmit)="detailForm.form.valid && EnviarMail()" 
+      autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span>
+                Seleccionar Correo
+            </span>
+        </h4>
+        <div class="m-portlet__nav-item">
+            <a href="#"
+               (click)="close()"
+               class="m-portlet__nav-link m-portlet__nav-link--icon">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" [ngClass]="{'has-danger': CorreoInput.invalid && (CorreoInput.dirty || CorreoInput.touched)}">
+                    <label>Correo</label>
+                    <input #CorreoInput="ngModel" class="form-control" type="text" name="CorreoInput" [(ngModel)]="correo" required maxlength="250">
+
+                    <div *ngIf="CorreoInput.invalid && (CorreoInput.dirty || CorreoInput.touched)"
+                         class=" form-control-feedback">
+                        <div *ngIf="CorreoInput.errors.required">
+                            El correo es requerido
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="form-group col-lg-2">
+            <button class="btn btn-metal" [disabled]="!correo || correo == null" type="submit">
+                <i class="fa fa-save"></i> Enviar Correo
+            </button>
+        </div>
+    </div>
+</form>
+

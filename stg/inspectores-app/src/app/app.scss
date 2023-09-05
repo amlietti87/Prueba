@@ -1,0 +1,93 @@
+// http://ionicframework.com/docs/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+@font-face {
+    font-family: 'Tenali Ramakrishna', sans-serif;
+    src: url('../assets/fonts/TenaliRamakrishna-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: 'Tenali Ramakrishna', sans-serif;
+}
+
+//Estilo autocomplete conductores
+
+ionic-selectable-page{
+    .toolbar-background{
+        background: #2c2e3e !important;
+        color: #ffffff !important;
+    }
+
+    .toolbar-title{
+        color: #ffffff;
+    }
+
+    .bar-button-default-md{
+        color: #ffffff;
+        font-size: 20px;
+    }
+
+}
+
+.popoverOpacity {
+    ion-backdrop {
+        opacity: 0.5;
+    }
+    .popover-content {
+        border-radius: 10px;
+    }       
+}
+
+.toast-top {
+    .toast-wrapper {
+        transform: translateY(56px) !important;
+    }
+}
+
+//Titulo alert/confirm
+.alert-title {
+    font-size: 19px !important;
+  }
+
+.label-form {
+    color: #2874A6 !important;
+}
+
+.icon-calendar{
+    font-size: 30px !important;
+    color: #1ABC9C;
+}
+
+.btn-search {
+    margin-left: 5px !important;
+    font-size: 14px !important;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+

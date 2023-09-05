@@ -1,0 +1,50 @@
+﻿<div bsModal #selectSectoresHorarios="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="selectSectoresHorarios" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #userForm="ngForm" novalidate (ngSubmit)="save()" name="form">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>Permisos</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" [ngClass]="{'has-danger': pepe.invalid && ((pepe.dirty || pepe.touched) || userForm.submitted)}">
+                        <label>Tipo de Día</label>
+                        <tipoDia-combo #pepe="ngModel"
+                                       required
+                                       [ItemsModel]="TiposDias"
+                                       id="pepe"
+                                       name="pepe"
+                                       allowNullable="{{false}}"
+                                       livesearch="{{false}}"
+                                       [(ngModel)]="TipodeDiaId">
+                        </tipoDia-combo>
+                        <div *ngIf="pepe.invalid && (pepe.dirty || pepe.touched)"
+                             class="form-control-feedback">
+                            <div *ngIf="pepe.errors.required">
+                                El nombre es Requerido
+                            </div>
+                        </div>
+                    </div>
+                    <label>Sectores</label>
+                    <p-pickList [source]="Sectores" [target]="SectoresSelected" sourceHeader="Sectores Excluidos" targetHeader="Sectores Incluidos" [responsive]="true" filterBy="Description"
+                                sourceFilterPlaceholder="Búsqueda por texto" targetFilterPlaceholder="Búsqueda por texto" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}"
+                                [showSourceControls]="false" [showTargetControls]="false" required>
+                        <ng-template let-sector pTemplate="item">
+                            {{sector.Description}}
+                        </ng-template>
+                    </p-pickList>
+
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving || resettingPermissions" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="!userForm.form.valid" [buttonBusy]="saving" [busyText]="'Exportando'"><i class="fa fa-save"></i> <span>Exportar</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

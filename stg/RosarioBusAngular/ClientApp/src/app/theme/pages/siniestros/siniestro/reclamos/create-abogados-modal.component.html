@@ -1,0 +1,81 @@
+﻿<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span *ngIf="detail.Id">{{"Editar Abogado"}}: {{detail.ApellidoNombre}}</span>
+            <span *ngIf="!detail.Id">{{"Crear Abogado"}}</span>
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group col-md-4" [ngClass]="{'has-danger': ApellidoNombre.invalid && (ApellidoNombre.dirty || ApellidoNombre.touched || detailForm.submitted)}">
+                <label>Apellido y Nombre</label>
+                <input #ApellidoNombre="ngModel" class="form-control" type="text" name="ApellidoNombre" [(ngModel)]="detail.ApellidoNombre" required maxlength="250">
+
+                <div *ngIf="ApellidoNombre.invalid && (ApellidoNombre.dirty || ApellidoNombre.touched  || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="ApellidoNombre.errors.required">
+                        Apellido y Nombre es Requerido
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group col-md-4" [ngClass]="{'has-danger': Domicilio.invalid && (Domicilio.dirty || Domicilio.touched)}">
+                <label>Domicilio</label>
+                <input #Domicilio="ngModel" class="form-control" type="text" name="Domicilio" [(ngModel)]="detail.Domicilio" maxlength="250">
+            </div>
+
+            <div class="form-group col-md-4" [ngClass]="{'has-danger': LocalidadId.invalid && (LocalidadId.dirty || LocalidadId.touched)}">
+                <label>Localidad</label><br />
+                <localidad-autocomplete #LocalidadId="ngModel" [(ngModel)]="detail.selectLocalidades" name="LocalidadId" id="LocalidadId" placeHolder="Localidades">
+                </localidad-autocomplete>
+            </div>
+
+            <div class="form-group col-md-4" [ngClass]="{'has-danger': Telefono.invalid && (Telefono.dirty || Telefono.touched)}">
+                <label>Teléfono</label>
+                <input #Telefono="ngModel" class="form-control" name="Telefono" [(ngModel)]="detail.Telefono" maxlength="50">
+            </div>
+
+            <div class="form-group col-md-4" [ngClass]="{'has-danger': Celular.invalid && (Celular.dirty || Celular.touched)}">
+                <label>Celular</label>
+                <input #Celular="ngModel" class="form-control" name="Celular" [(ngModel)]="detail.Celular" maxlength="50">
+            </div>
+
+            <div class="form-group col-md-4" [ngClass]="{'has-danger': Email.invalid && (Email.dirty || Email.touched || detailForm.submitted)}">
+                <label>Email</label>
+                <input #Email="ngModel" type="email" class="form-control" [(ngModel)]="detail.Email"
+                       name="email"
+                       pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,10}$"
+                       maxlength="250">
+                <div *ngIf="Email.invalid && (Email.dirty || Email.touched  || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="Email.errors?.pattern">
+                        No es un Email valido
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <div class="m-checkbox-list">
+                    <label class="m-checkbox">
+                        <input #Anulado="ngModel" id="Anulado" type="checkbox" name="Anulado" [(ngModel)]="detail.Anulado">
+                        <em>Anulado</em>
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue"
+                [buttonBusy]="saving" [busyText]="'Guardando..'"
+                [disabled]="!detailForm.form.valid">
+            <i class="fa fa-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+</form>
+

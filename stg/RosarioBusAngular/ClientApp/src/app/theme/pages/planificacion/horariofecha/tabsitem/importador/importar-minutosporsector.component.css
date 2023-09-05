@@ -1,0 +1,5 @@
+﻿.ImportarMinxSec{
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+}

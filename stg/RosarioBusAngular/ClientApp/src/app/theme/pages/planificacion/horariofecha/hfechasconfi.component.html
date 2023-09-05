@@ -1,0 +1,110 @@
+﻿<div>
+    <div class="m-subheader">
+        <div style="text-align: right;">
+            <button (click)="onCreate()" *ngIf="allowAdd" 
+                    
+                    class="btn btn-primary blue"><i class="fa fa-plus"></i> Crear Fecha Horaria</button>
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div [hidden]="!active" class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form class="horizontal-form filters" autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+
+                                        <input #gb [(ngModel)]="filter.FilterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="'Buscar...'" type="text">
+                                        <span class="input-group-append">
+                                            <button (click)="onSearch()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    
+                    <div class="primeng-datatable-container primeng-small"
+                         [busyIf]="primengDatatableHelper.isLoading">
+
+                        <p-dataTable #dataTable
+                                     [globalFilter]="gb"
+                                     [value]="primengDatatableHelper.records"
+                                     emptyMessage="{{l('Sin Datos')}}"
+                                     scrollable="true"
+                                     scrollWidth="100%"
+                                     responsive="primengDatatableHelper.isResponsive">
+
+                            <p-column field="DescripcionLinea" header="Nombre" [sortable]="true">
+                            </p-column>
+
+                            <p-column field="FechaUltimaModificacion" header="Ultima Modificacion" [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    {{row.FechaUltimaModificacion | date: 'yyyy-MM-dd'}}
+                                </ng-template>
+                            </p-column>
+
+
+                            <p-column field="Activo" header="Activo" [sortable]="false">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <span *ngIf="row.Activo" data-toggle="tooltip" title="Estado" class="m-badge m-badge--success m-badge--wide">
+                                        Activo
+                                    </span>
+                                    <span *ngIf="!row.Activo" data-toggle="tooltip" title="Estado" class="m-badge m-badge--danger m-badge--wide">
+                                        Desac
+                                    </span>
+                                </ng-template>
+                            </p-column>
+
+
+
+
+                            <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div class="dropdown">
+
+                                        <a href="javascript:void(0);" (click)="onEditLineaHorario(row)" *ngIf="allowModify" title="Línea-Horario"
+                                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill fa-rotate-270">
+                                            <i class="la la-download"></i>
+                                        </a>
+
+                                        <a href="javascript:void(0);" (click)="onEditLineaAsociadas(row)" *ngIf="allowModify" title="Modificar Lineas Asociadas"
+                                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill fa-rotate-270">
+                                            <i class="la la-edit"></i>
+                                        </a>
+
+
+
+                                    </div>                                   
+
+                                </ng-template>
+                            </p-column>
+
+                        </p-dataTable>
+
+
+
+
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+
+                </div>
+            </div>
+        </div>
+
+        <ng-template #createOrEdit></ng-template>
+        
+
+    </div>
+
+
+</div>
+
+

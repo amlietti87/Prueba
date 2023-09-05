@@ -1,0 +1,66 @@
+<div class="m-subheader" appunwraptag="" style="padding-top: 15px;">
+    <!--style="margin-bottom: 15px; margin-top: 15px;"-->
+    <div class="d-flex align-items-center">
+        <div class="mr-auto">
+            <h3 class="m-subheader__title m-subheader__title--separator">
+                {{title}}
+            </h3>
+            <ul *ngIf="items.length > 0" class="m-subheader__breadcrumbs m-nav m-nav--inline">
+                <li class="m-nav__item m-nav__item--home">
+                    <a href="#" class="m-nav__link m-nav__link--icon">
+                        <i class="m-nav__link-icon {{icon}}"></i>
+                    </a>
+                </li>
+                <li class="m-nav__separator">
+                    -
+                </li>
+                <ng-template ngFor let-bItem [ngForOf]="items">
+                    <li class="m-nav__item">
+                        <a class="m-nav__link" (click)="onClickItemBreadcrumbs(bItem)">
+                            <span class="m-nav__link-text">
+                                {{bItem.name}}
+                            </span>
+                        </a>
+                    </li>
+                    <li class="m-nav__separator" *ngIf="bItem.icon">
+                        <i class="m-nav__link-icon {{bItem.icon}}"></i>
+                    </li>
+
+                    <li class="m-nav__separator" *ngIf="!bItem.isLast">
+                        >
+                    </li>
+
+
+                </ng-template>
+
+
+
+                <!--<li class="m-nav__item">
+                <a class="m-nav__link">
+                    <span class="m-nav__link-text">
+
+                    </span>
+                </a>
+            </li>
+            <li class="m-nav__separator">
+                - <i class="m-nav__link-icon fa fa-bus"></i>
+            </li>
+            <li class="m-nav__item">
+                <a href="" class="m-nav__link">
+                    <span class="m-nav__link-text">
+
+                    </span>
+                </a>
+            </li>-->
+            </ul>
+        </div>
+
+
+
+        <div class="text-right">
+            <ng-content select="[rightcontent]"></ng-content>
+        </div>
+
+
+    </div>
+</div>

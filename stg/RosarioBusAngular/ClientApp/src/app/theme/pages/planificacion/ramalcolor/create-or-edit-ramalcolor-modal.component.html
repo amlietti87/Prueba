@@ -1,0 +1,235 @@
+﻿
+<form #detailForm="ngForm" 
+      novalidate 
+      (ngSubmit)="detailForm.form.valid && save(detailForm)" 
+      autocomplete="off"
+      id="createOrEditRamalColorModal"
+      name="createOrEditRamalColorModal">
+    <div [hidden]="!active" class="m-portlet m-portlet--mobile m-portlet--acce m-portlet--head-sm" id="m_portlet_detail" m-portlet="true">
+
+
+
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <span class="m-portlet__head-icon">
+                        <i class="{{icon}}"></i>
+                    </span>
+                    <h3 class="m-portlet__head-text">
+                        <span *ngIf="detail.Id">Editar {{title}}: {{detail.Nombre}}</span>
+                        <span *ngIf="!detail.Id">Crear {{title}}</span>
+                    </h3>
+                </div>
+            </div>
+            <div class="m-portlet__head-tools">
+
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item">
+                        <a href="#" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-angle-down"></i>
+                        </a>
+                    </li>
+                    <li class="m-portlet__nav-item">
+                        <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-expand"></i>
+                        </a>
+                    </li>
+                    <li class="m-portlet__nav-item">
+                        <a href="#" (click)="close()" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-close"></i>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--right m-tabs-line-danger" role="tablist" style="padding-right:50px">
+                    <li class="nav-item m-tabs__item" [hidden]="!viewMainTab">
+                        <a class="nav-link m-tabs__link active" data-toggle="tab" id="m_heder_portlet_tab_RC" href="#m_portlet_tab_RC" role="tab">
+                            Ramal / Color
+                        </a>
+                    </li>
+                    <li class="nav-item m-tabs__item" [hidden]="!viewChildTab" *ngIf="viewMode != 1">
+                        <a class="nav-link m-tabs__link" (click)="onBanderaClick()" id="m_heder_portlet_tab_Banderas" data-toggle="tab" href="#m_portlet_tab_Banderas" role="tab">
+                            Banderas
+                        </a>
+                    </li>
+                </ul>
+
+
+            </div>
+        </div>
+
+        <div class="m-portlet__body">
+
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="m_portlet_tab_RC">
+
+                    <div class="form-group" [ngClass]="{'has-danger': Nombre.invalid && (Nombre.dirty || Nombre.touched || detailForm.submitted)}">
+                        <label>Nombre</label>
+                        <input #Nombre="ngModel" class="form-control" type="text" name="Nombre" [(ngModel)]="detail.Nombre" required maxlength="32">
+
+                        <div *ngIf="Nombre.invalid && (Nombre.dirty || Nombre.touched || detailForm.submitted)"
+                             class=" form-control-feedback">
+                            <div *ngIf="Nombre.errors.required">
+                                El nombre es Requerido
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Línea</label>
+                        <input class="form-control" type="text" name="NombreLinea" value="{{NombreLinea}}" disabled>
+                    </div>
+
+                    <div class="form-group"  *ngIf="Sucursalid == 1 && PlaTipoLineaId == 1" [ngClass]="{'has-danger': ColorTupid.invalid && (ColorTupid.dirty || ColorTupid.touched || detailForm.submitted)}"> 
+                        <label>Color Tup</label>                        
+                        <bandera-tup-combo #ColorTupid="ngModel"
+                                           [required]="Sucursalid == 1 && PlaTipoLineaId == 1"
+                                           [isRequired]="Sucursalid == 1 && PlaTipoLineaId == 1"
+                                           name="ColorTupid"
+                                           floatLabel="auto"
+                                           placeholder="Color TUP"
+                                           [livesearch]="false"
+                                           [(ngModel)]="detail.ColorTupid" emptyText="{{'Seleccione..'}}">
+                        </bandera-tup-combo>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <div class="m-checkbox-list">
+                            <label class="m-checkbox">
+                                <input #Activo="ngModel" [disabled]="viewMode != 2" id="Activo" type="checkbox" name="Activo" [(ngModel)]="detail.Activo">
+                                Activo
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div class="m-portlet__foot">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 m--valign-middle">
+
+                            </div>
+                            <div class="col-lg-6 m--align-right">
+                                <div>
+                                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary"
+                                            [buttonBusy]="saving" [busyText]="'Guardando..'">
+                                        <i class="fa fa-save"></i> <span>Guardar</span>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="m_portlet_tab_Banderas"> 
+
+                    <div class="row" style="margin-bottom: 10px"> 
+                        <div class="col-md-8" style="margin-bottom: auto">
+                            <h3>Banderas de {{detail.Nombre}} de {{detail.NombreLinea}}</h3>
+                        </div> 
+                        <div class="col-md-4 text-right" *ngIf="viewMode != 1">
+                            <button type="button" (click)="onCreateBanderas()" *ngIf="allowBanderaAdd" class="btn btn-primary blue"><i class="fa fa-plus"></i> Crear Bandera</button>
+
+                        </div>
+
+                    </div>
+                     
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-Datatable-Start>-->
+                        <div class="primeng-datatable-container"
+                             [busyIf]="primengDatatableHelper.isLoading">
+
+                            <p-dataTable #dataTableBanderas
+                                         [lazy]="true"
+                                         (onLazyLoad)="onSearchBanderas($event)"
+                                         [value]="primengDatatableHelper.records"
+                                         [paginator]="false"
+                                         emptyMessage="{{l('Sin Datos')}}"
+                                         scrollable="true"
+                                         ScrollWidth="100%"
+                                         sortField = "AbrBan"
+                                         responsive="primengDatatableHelper.isResponsive">
+                                <p-column field="AbrBan" header="Abreviación" [sortable]="true">
+                                    <ng-template let-col let-row="rowData" pTemplate type="body">
+                                        {{row.Nombre}}
+                                    </ng-template>
+                                </p-column>
+                                <p-column field="DesBan" header="Descripción" [sortable]="true">
+                                    <ng-template let-col let-row="rowData" pTemplate type="body">
+                                        {{row.Descripcion}}
+                                    </ng-template>
+                                </p-column>                                
+                                <p-column field="CodigoVarianteLinea" header="Código variante de línea" [sortable]="true"></p-column>
+
+                                <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                    <ng-template let-col let-row="rowData" pTemplate type="body">
+
+                                        <a href="javascript:void(0);" (click)="onEditRutasEnBandera(row)" *ngIf="allowBanderaModify" title="ir a mapas" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill">
+                                            <i class="la la-fast-forward"></i>
+                                        </a>
+
+                                        <a href="#" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown">
+                                            <i class="la la-ellipsis-h"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a href="javascript:void(0);" (click)="onEditBanderas(row)" *ngIf="allowBanderaModify" class="dropdown-item" title="Editar">
+                                                <i class="la la-edit"></i>Editar
+                                            </a>
+                                            <a href="javascript:void(0);" (click)="onDeleteBandera(row)" *ngIf="allowBanderaDelete" class="dropdown-item" title="Eliminar">
+                                                <i class="la la-trash"></i>Eliminar
+                                            </a>
+
+                                        </div>
+
+
+                                    </ng-template>
+
+
+                                </p-column>
+
+                            </p-dataTable>
+
+                            <div class="primeng-paging-container">
+                                <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                                             #paginatorBanderas
+                                             (onPageChange)="onSearchBanderas($event)"
+                                             [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                                             [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    Registros totales:  {{ primengDatatableHelper.totalRecordsCount}}
+                                </span>
+                            </div>
+
+                        </div>
+                        <!--<Primeng-Datatable-End>-->
+
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+</form>
+
+<createOrEditBanderaDtoModal #createOrEditBanderaDtoModal></createOrEditBanderaDtoModal>
+<createOrEditEmpresaDtoModal #createOrEditEmpresaDtoModal></createOrEditEmpresaDtoModal>
+
+

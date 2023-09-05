@@ -1,0 +1,151 @@
+﻿
+<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+    <div [hidden]="!active" class="m-portlet m-portlet--mobile m-portlet--acce m-portlet--head-sm" id="m_portlet_detail" m-portlet="true">
+
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <span class="m-portlet__head-icon">
+                        <i class="{{icon}}"></i>
+                    </span>
+                    <h3 class="m-portlet__head-text">
+                        <span>Ver Rutas</span>
+                    </h3>
+                </div>
+            </div>
+            <div class="m-portlet__head-tools">
+
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item">
+                        <a href="#" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-angle-down"></i>
+                        </a>
+                    </li>
+                    <li class="m-portlet__nav-item">
+                        <a href="#"
+                           id="fullscreentools"
+                           m-portlet-tool="fullscreen"
+                           class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-expand"></i>
+                        </a>
+                    </li>
+                    <li class="m-portlet__nav-item">
+                        <a href="#" (click)="close()" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-close"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="m-portlet__body">
+
+
+            <mat-drawer-container class="example-container" autosize>
+              
+                <mat-drawer #drawer class="example-sidenav" mode="side" position="end">
+
+
+                    <table style="width: 160px;">
+
+                        <tbody>
+
+                            <ng-template ngFor let-l [ngForOf]="Rutas">
+                                <tr>
+                                    <td>
+                                        <!--<h6 class="m--font-primary"  >  {{l.Nombre}}</h6>--> 
+                                        <!--<p-toggleButton [(ngModel)]="l.Selected" onLabel="{{l.Nombre}}" name="{{l.Id}}_Selectedb" offLabel="{{l.Nombre}}"
+                                                        (onChange)="toogleMarkersAndPolylinesBy(l)"
+                                                        offIcon="fa fa-remove"
+                                                        onIcon="fa fa-check"></p-toggleButton>-->
+                                        <button type="button" class="btn  btn-block btn-Ruta" (click)="verGeoJson(l)" [ngClass]="{'btn-success': l.Selected, 'btn-outline-success btn-block': !l.Selected    }"
+                                                >
+                                            <i *ngIf="l.Selected" class="la la-check"></i>
+                                            <i *ngIf="!l.Selected" class="fa fa-remove"></i>
+                                            <span>
+                                                {{l.AbrBan}}
+                                            </span>
+                                            
+                                        </button>
+
+                                        
+
+                                    </td>
+                                    <!--<td>
+                                        <span class="m-switch m-switch--icon">
+                                            <label>
+                                                <input type="checkbox"  [(ngModel)]="l.Selected"  name="{{l.Id}}_Selected" (click)="toogleMarkersAndPolylinesBy(l)">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </td>-->
+
+                                </tr>
+
+
+                             
+
+                            </ng-template>
+
+                           
+
+
+                        </tbody>
+
+                    </table>
+
+                  
+
+                </mat-drawer>
+
+                <div class="example-sidenav-content">
+                    <button type="button" class="btn btn-outline-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air"
+                            style="
+                            position: absolute;
+                            right: 10px;
+                            top: 10px;
+                            z-index: 1;
+                            "
+                            mat-button (click)="drawer.toggle()">
+                        <i *ngIf="!drawer.opened" class="la la-arrow-circle-o-left"></i>
+                        <i *ngIf="drawer.opened" class="la la-arrow-circle-right"></i>
+                    </button>
+
+
+
+                    <app-rutasmaps #mapaComponents
+                                   [loadOnInit]="loadOnInit"></app-rutasmaps>
+
+
+                </div>
+
+            </mat-drawer-container>
+
+
+
+
+
+
+        </div>
+
+
+
+        <div class="m-portlet__foot">
+            <div class="row align-items-center">
+                <div class="col-lg-6 m--valign-middle">
+
+                </div>
+                <div class="col-lg-6 m--align-right">
+                    <div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</form>
+

@@ -1,0 +1,50 @@
+﻿<form #detailForm="ngForm"
+      novalidate
+      autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span>
+                Opciones de exporte
+            </span>
+        </h4>
+        <div class="m-portlet__nav-item">
+            <a href="#"
+               (click)="close()"
+               class="m-portlet__nav-link m-portlet__nav-link--icon">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="m-checkbox-list">
+                        <label class="m-checkbox">
+                            <input #Sectores="ngModel" id="Sectores" type="checkbox" name="Sectores" [(ngModel)]="filter.CambioSectoresMapa">
+                            <em>Cambio Sector</em>
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="m-checkbox-list">
+                        <label class="m-checkbox">
+                            <input #Paradas="ngModel" id="Paradas" type="checkbox" name="Paradas" [(ngModel)]="filter.ParadasMapa">
+                            <em>Paradas</em>
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="form-group col-lg-2">
+            <button class="btn btn-metal" (click)="save()">
+                <i class="fa fa-save"></i> Exportar KML
+            </button>
+        </div>
+    </div>
+</form>
+

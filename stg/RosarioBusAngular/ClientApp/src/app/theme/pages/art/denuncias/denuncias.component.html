@@ -1,0 +1,499 @@
+﻿<div>
+    <div class="m-subheader">
+        <div style="text-align: right;">
+            <button (click)="onCreate()"
+                    *ngIf="allowAdd && active"
+                    class="btn btn-primary blue">
+                <i class="fa fa-plus"></i> Crear Denuncia
+            </button>
+        </div>
+    </div>
+    <div class="m-content">
+        <div [hidden]="!active"
+             class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form class="horizontal-form filters"
+                      autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+                        <div class="row m--margin-bottom-10"
+                             [hidden]="!advancedFiltersAreShown">
+                            <!--aca los filtros-->
+                            <div class="form-group col-lg-2">
+                                <label>Nro. Denuncia</label>
+                                <input  #NroDenuncia
+                                        class="form-control"
+                                        type="text"
+                                        name="NroDenuncia"
+                                        [(ngModel)]="filter.NroDenuncia">
+                            </div>
+                            <div class="form-group col-lg-2 combos-denuncia">
+                                <label>Unidad de Negocio</label>
+                                <sucursal-combo-denuncia class="without-underline"
+                                                         name="SucursalId"
+                                                        [(ngModel)]="filter.SucursalId">
+                                </sucursal-combo-denuncia>
+                            </div>
+
+                            <div class="form-group col-lg-2 combos-denuncia">
+                                <label>Empresa</label>
+                                <empresa-combo-denuncia class="without-underline"
+                                                 #EmpresaId
+                                                name="EmpresaId"
+                                                [(ngModel)]="filter.EmpresaId">
+                                </empresa-combo-denuncia>
+                            </div>
+
+                            <div class="form-group col-lg-2">
+                                <label>Empleado</label><br />
+                                <span class="ui-fluid">
+                                    <empleado-autocomplete [(ngModel)]="filter.selectEmpleados"
+                                                           #ConductorId
+                                                           name="EmpleadoId"
+                                                           id="EmpleadoId"
+                                                           placeHolder="Todos">
+                                    </empleado-autocomplete>
+                                </span>
+                            </div>
+                            <div class="form-group col-lg-2">
+                                <label>F. Recepción Desde</label>
+                                <br />
+                                <mat-form-field style="width: 100%;">
+                                    <input matInput
+                                           [(ngModel)]="filter.FechaDenunciaDesde"
+                                           name="FechaDenunciaDesde"
+                                           [matDatepicker]="FechaDenunciaDesde"
+                                           (dateChange)="addEvent('change', $event)">
+                                    <mat-datepicker-toggle matSuffix
+                                                           [for]="FechaDenunciaDesde"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaDenunciaDesde
+                                                    (selectedChanged)="onDate($event)"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+
+                            <div class="form-group col-lg-2">
+                                <label>F. Recepción Hasta</label>
+                                <br />
+                                <mat-form-field style="width: 100%;">
+                                    <input matInput
+                                           [(ngModel)]="filter.FechaDenunciaHasta"
+                                           name="FechaDenunciaHasta"
+                                           [matDatepicker]="FechaDenunciaHasta"
+                                           (dateChange)="addEvent('change', $event)">
+                                    <mat-datepicker-toggle matSuffix
+                                                           [for]="FechaDenunciaHasta"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaDenunciaHasta
+                                                    (selectedChanged)="onDate($event)"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-lg-2">
+                                <label>F. Ocurrencia Desde</label>
+                                <br />
+                                <mat-form-field style="width: 100%;">
+                                    <input matInput
+                                           [(ngModel)]="filter.FechaOcurrenciaDesde"
+                                           name="FechaOcurrenciaDesde"
+                                           [matDatepicker]="FechaOcurrenciaDesde"
+                                           (dateChange)="addEvent('change', $event)">
+                                    <mat-datepicker-toggle matSuffix
+                                                           [for]="FechaOcurrenciaDesde"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaOcurrenciaDesde
+                                                    (selectedChanged)="onDate($event)"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+
+                            <div class="form-group col-lg-2">
+                                <label>F. Ocurrencia Hasta</label>
+                                <br />
+                                <mat-form-field style="width: 100%;">
+                                    <input matInput
+                                           [(ngModel)]="filter.FechaOcurrenciaHasta"
+                                           name="FechaOcurrenciaHasta"
+                                           [matDatepicker]="FechaOcurrenciaHasta"
+                                           (dateChange)="addEvent('change', $event)">
+                                    <mat-datepicker-toggle matSuffix
+                                                           [for]="FechaOcurrenciaHasta"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaOcurrenciaHasta
+                                                    (selectedChanged)="onDate($event)"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-lg-2 combos-denuncia">
+                                <label>Estado</label>
+                                <denunciaestados-combo class="without-underline"
+                                                       name="EstadoDenuncia"
+                                                       id="EstadoDenuncia"
+                                                       #EstadoDenuncia="ngModel"
+                                                       [(ngModel)]="filter.EstadoDenuncia">
+                                </denunciaestados-combo>
+                            </div>
+                            <div class="form-group col-lg-2 combos-denuncia">
+                                <label>Contingencia</label>
+                                <contingencias-combo class="without-underline" 
+                                                     name="ContingenciaId"
+                                                     id="ContingenciaId"
+                                                     #ContingenciaId="ngModel"
+                                                     [(ngModel)]="filter.ContingenciaId">
+                                </contingencias-combo>
+                            </div>
+                            <div class="form-group col-lg-2 combos-denuncia">
+                                <label>Patología</label>
+                                <patologias-combo class="without-underline" 
+                                                  name="PatologiaId"
+                                                  id="PatologiaId"
+                                                  #PatologiaId="ngModel"
+                                                  [(ngModel)]="filter.PatologiaId">
+                                </patologias-combo>
+                            </div>
+                            <div class="form-group col-lg-2 combos-denuncia">
+                                <label>Prestador médico</label>
+                                <prestadores-combo class="without-underline"
+                                                    name="PrestadorMedicoId"
+                                                   id="PrestadorMedicoId"
+                                                   #PrestadorMedicoId="ngModel"
+                                                   [(ngModel)]="filter.PrestadorMedicoId">
+                                </prestadores-combo>
+                            </div>
+                            <div class="form-group col-lg-2">
+                                <label>Baja Servicio</label>
+                                <yesnoall-combo name="BajaServicio"
+                                                id="BajaServicio"
+                                                #BajaMedica="ngModel"
+                                                [(ngModel)]="filter.BajaServicio"
+                                                emptyText="{{'Todos'}}">
+                                </yesnoall-combo>
+                            </div>
+                            <div class="form-group col-lg-2 combos-denuncia">
+                                <label>Tratamiento</label>
+                                <tratamientos-combo class="without-underline"    
+                                                    name="TratamientoId"
+                                                    id="TratamientoId"
+                                                    #TratamientoId="ngModel"
+                                                    [(ngModel)]="filter.TratamientoId">
+                                </tratamientos-combo>
+                            </div>
+                            <div class="form-group col-lg-2">
+                                <label>F. Último Ctrl. Desde</label>
+                                <br />
+                                <mat-form-field style="width: 100%;">
+                                    <input matInput
+                                           [(ngModel)]="filter.FechaUltimoControlDesde"
+                                           name="FechaUltimoControlDesde"
+                                           [matDatepicker]="FechaUltimoControlDesde"
+                                           (dateChange)="addEvent('change', $event)">
+                                    <mat-datepicker-toggle matSuffix
+                                                           [for]="FechaUltimoControlDesde"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaUltimoControlDesde
+                                                    (selectedChanged)="onDate($event)"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+
+                            <div class="form-group col-lg-2">
+                                <label>F. Último Ctrl. Hasta</label>
+                                <br />
+                                <mat-form-field style="width: 100%;">
+                                    <input matInput
+                                           [(ngModel)]="filter.FechaUltimoControlHasta"
+                                           name="FechaUltimoControlHasta"
+                                           [matDatepicker]="FechaUltimoControlHasta"
+                                           (dateChange)="addEvent('change', $event)">
+                                    <mat-datepicker-toggle matSuffix
+                                                           [for]="FechaUltimoControlHasta"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaUltimoControlHasta
+                                                    (selectedChanged)="onDate($event)"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-group col-lg-2">
+                                <label>F. Próx. Cons. Desde</label>
+                                <br />
+                                <mat-form-field style="width: 100%;">
+                                    <input matInput
+                                           [(ngModel)]="filter.FechaProxConsultaDesde"
+                                           name="FechaProxConsultaDesde"
+                                           [matDatepicker]="FechaProxConsultaDesde"
+                                           (dateChange)="addEvent('change', $event)">
+                                    <mat-datepicker-toggle matSuffix
+                                                           [for]="FechaProxConsultaDesde"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaProxConsultaDesde
+                                                    (selectedChanged)="onDate($event)"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+
+                            <div class="form-group col-lg-2">
+                                <label>F. Próx. Consul. Hasta</label>
+                                <br />
+                                <mat-form-field style="width: 100%;">
+                                    <input matInput
+                                           [(ngModel)]="filter.FechaProxConsultaHasta"
+                                           name="FechaProxConsultaHasta"
+                                           [matDatepicker]="FechaProxConsultaHasta"
+                                           (dateChange)="addEvent('change', $event)">
+                                    <mat-datepicker-toggle matSuffix
+                                                           [for]="FechaProxConsultaHasta"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaProxConsultaHasta
+                                                    (selectedChanged)="onDate($event)"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-group col-lg-2">
+                                <label>F. Audiencia Desde</label>
+                                <br />
+                                <mat-form-field style="width: 100%;">
+                                    <input matInput
+                                           [(ngModel)]="filter.FechaAudienciaDesde"
+                                           name="FechaAudienciaDesde"
+                                           [matDatepicker]="FechaAudienciaDesde"
+                                           (dateChange)="addEvent('change', $event)">
+                                    <mat-datepicker-toggle matSuffix
+                                                           [for]="FechaAudienciaDesde"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaAudienciaDesde
+                                                    (selectedChanged)="onDate($event)"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+
+                            <div class="form-group col-lg-2">
+                                <label>F. Audiencia Hasta</label>
+                                <br />
+                                <mat-form-field style="width: 100%;">
+                                    <input matInput
+                                           [(ngModel)]="filter.FechaAudienciaHasta"
+                                           name="FechaAudienciaHasta"
+                                           [matDatepicker]="FechaAudienciaHasta"
+                                           (dateChange)="addEvent('change', $event)">
+                                    <mat-datepicker-toggle matSuffix
+                                                           [for]="FechaAudienciaHasta"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaAudienciaHasta
+                                                    (selectedChanged)="onDate($event)"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group col-lg-2 combos-denuncia">
+                                <label>Motivo Audiencia</label>
+                                <motivosaudiencia-combo class="without-underline"
+                                                        name="MotivoAudienciaId"
+                                                        id="MotivoAudienciaId"
+                                                        #MotivoAudienciaId="ngModel"
+                                                        [(ngModel)]="filter.MotivoAudienciaId"
+                                                        emptyText="{{'Todos'}}">
+                                </motivosaudiencia-combo>
+                            </div>
+                            <div class="form-group col-lg-2">
+                                <label>Alta Médica</label>
+                                <yesnoall-combo name="AltaMedica"
+                                                id="AltaMedica"
+                                                #AltaMedica="ngModel"
+                                                [(ngModel)]="filter.AltaMedica"
+                                                emptyText="{{'Todos'}}">
+                                </yesnoall-combo>
+                            </div>
+                            <div class="form-group col-lg-2">
+                                <label>Alta Laboral</label>
+                                <yesnoall-combo name="AltaLaboral"
+                                                id="AltaLaboral"
+                                                #AltaLaboral="ngModel"
+                                                [(ngModel)]="filter.AltaLaboral"
+                                                emptyText="{{'Todos'}}">
+                                </yesnoall-combo>
+                            </div>
+                            <div class="form-group col-lg-2">
+                                <label>Reingresos</label>
+                                <yesnoall-combo name="Reingreso"
+                                                id="Reingreso"
+                                                #Reingreso="ngModel"
+                                                [(ngModel)]="filter.TieneReingresos"
+                                                emptyText="{{'Todos'}}">
+                                </yesnoall-combo>
+                            </div>
+                            <div class="form-group col-lg-2">
+                                <label>Nro. Siniestro</label>
+                                <input #Siniestro
+                                       class="form-control"
+                                       type="text"
+                                       name="Siniestro"
+                                       [(ngModel)]="filter.Siniestro">
+                            </div>
+                            <div class="form-group col-lg-2">
+                                <label>Juicio</label>
+                                <yesnoall-combo name="Juicio"
+                                                id="Juicio"
+                                                #Juicio="ngModel"
+                                                [(ngModel)]="filter.Juicio"
+                                                emptyText="{{'Todos'}}">
+                                </yesnoall-combo>
+                            </div>
+                            <div class="form-group col-lg-2">
+                                <label>Anulado</label>
+                                <yesnoall-combo #ComboAnulado
+                                                name="ComboAnulado"
+                                                id="ComboAnulado"
+                                                #Anulado="ngModel"
+                                                [(ngModel)]="filter.Anulado"
+                                                emptyText="{{'Todos'}}">
+                                </yesnoall-combo>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-sm-12 text-right">
+                                    <button class="btn btn-metal"
+                                            (click)="onSearch()">
+                                        <i class="fa fa-refresh"></i> Actualizar
+                                    </button>
+                                    <button class="btn btn-metal" (click)="BorrarFiltros()">
+                                        <i class="fa fa-refresh"></i> Borrar Filtros
+                                    </button>
+                                    <button *ngIf="list.length > 0 && allowExportar"
+                                            class="btn btn-metal"
+                                            (click)="GetReporteExcel()">
+                                        <i class="la la-file-excel-o"></i> Exportar a Excel
+                                    </button>
+                                    <button *ngIf="allowImportar"
+                                            class="btn btn-metal"
+                                            (click)="ImportarDesdeExcel()">
+                                        <i class="la la-file-excel-o"></i> Importar desde Excel
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row margin-bottom-10">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" [hidden]="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> Mostrar filtros avanzados</span>
+                                <span class="clickable-item text-muted" [hidden]="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> Ocultar filtros avanzados</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div id="datatable-denuncias" class="primeng-datatable-container primeng-small"
+                         style="overflow:auto; "
+                         [busyIf]="primengDatatableHelper.isLoading">
+
+                        <p-dataTable #dataTable
+                                     [lazy]="true"
+                                     (onLazyLoad)="onSearch($event)"
+                                     [value]="primengDatatableHelper.records"
+                                     [paginator]="false"
+                                     emptyMessage="{{l('Sin Datos')}}"
+                                     [tableStyle]="{'table-layout':'auto'}"
+                                     [scrollable]="false"
+                                     [rowStyleClass]="setColorRow"
+                                     responsive="primengDatatableHelper.isResponsive">
+
+                            <p-column header="Acciones"
+                                      [sortable]="false"
+                                      styleClass="col-primeng-small">
+                                <ng-template let-col
+                                             let-row="rowData"
+                                             pTemplate
+                                             type="body">
+
+                                    <div class="dropdown">
+                                        <a href="javascript:void(0);"
+                                           (click)="onEdit(row)"
+                                           *ngIf="allowModify || allowVisualizar"
+                                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                           title="Editar">
+                                            <i class="la la-edit"></i>
+                                        </a>
+                                        <a href="javascript:void(0);"
+                                           *ngIf="allowDelete && !row.Anulado"
+                                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                           (click)="onDelete(row)">
+                                            <i class="la la-trash"></i>
+                                        </a>
+                                        <a href="javascript:void(0);"
+                                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                           (click)="onAdjuntarArchivosShow(row)"
+                                           *ngIf="allowAdjunto && !row.Anulado">
+                                            <i class="la la-paperclip"></i>
+                                        </a>
+                                        <a href="javascript:void(0);"
+                                           *ngIf="allowAnular && !row.Anulado"
+                                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                           (click)="onAnularShow(row)"
+                                           title="Anular">
+                                            <i class="la la-adn"></i></a>
+
+                                        <a href="javascript:void(0);"
+                                            *ngIf="allowImprimir && !row.Anulado"
+                                            data-toggle="tooltip" data-placement="top" title="Imprimir"
+                                            class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                            (click)="onPrint(row)">
+                                             <i class="la la-file-pdf-o"></i>
+                                         </a>
+                                             
+                                    </div>
+
+                                </ng-template>
+                            </p-column>
+
+                            <p-column field="NroDenuncia" header="Nro." [sortable]="true"></p-column>
+                            <p-column field="Sucursal.DscSucursal" header="U. de Negocio" [sortable]="true">
+                                <ng-template let-col
+                                             let-row="rowData"
+                                             pTemplate
+                                             type="body">
+                                    {{row.SucursalGrilla}}
+                                </ng-template>
+                            </p-column>
+                            <p-column field="Empresa.DesEmpr" header="Empresa" [sortable]="true">
+                                <ng-template let-col
+                                             let-row="rowData"
+                                             pTemplate
+                                             type="body">
+                                    {{row.EmpresaGrilla}}
+                                </ng-template>
+                            </p-column>
+                            <p-column field="PrestadorMedico.Descripcion" header="Prestador médico" [sortable]="true">
+                            </p-column>
+                            <p-column field="NombreEmpleado" header="Empleado" [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">{{row.EmpleadoGrilla}}</ng-template>
+                            </p-column>
+                            <p-column field="FechaOcurrencia" header="Fecha Ocurrencia" [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">{{row.FechaOcurrencia | date: 'dd-MM-yyyy'}}</ng-template>
+                            </p-column>
+                            <p-column field="FechaRecepcionDenuncia" header="Fecha Recepción" [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">{{row.FechaRecepcionDenuncia | date: 'dd-MM-yyyy'}}</ng-template>
+                            </p-column>
+                            <p-column field="Anulado" header="Anulado" [sortable]="true" styleClass="col-primeng-small">
+                                >
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div style="text-align:center">
+                                        <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': row.Anulado}">
+                                            <input [(ngModel)]="row.Anulado" type="checkbox" disabled><span></span>
+                                        </label>
+                                    </div>
+                                </ng-template>
+                            </p-column>
+                        </p-dataTable>
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                                         #paginator
+                                         (onPageChange)="onSearch($event)"
+                                         [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                Registros totales:  {{ primengDatatableHelper.totalRecordsCount}}
+                            </span>
+                        </div>
+
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+
+                </div>
+            </div>
+        </div>
+
+        <ng-template #createOrEdit></ng-template>
+
+    </div>
+
+
+
+</div>

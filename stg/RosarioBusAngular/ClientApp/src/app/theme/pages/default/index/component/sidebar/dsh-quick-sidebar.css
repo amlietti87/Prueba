@@ -1,0 +1,45 @@
+﻿.DSHDetailsidebar {
+    width: 270px !important;
+}
+
+.list-group-item-dashboard {
+    border-color: transparent !important;
+}
+
+
+.itemDashboard {
+    display: flex;
+}
+
+.dsh-m-list-settings__item-label {
+    font-size: 11px !important;
+}
+
+.itemDashboard > .m-timeline-3__item-time {
+    padding-top: 8px;
+    margin-left:10px;
+    font-size: 10px;
+}
+
+
+.m-list-settings .m-list-settings__group .m-list-settings__item {
+    padding: 2px 0;
+}
+
+.m-switch input:empty ~ span {
+    height: 21px;
+}
+
+    .m-switch input:empty ~ span:after {
+        height: 15px;
+        width: 15px;
+    }
+
+.m-switch input:checked ~ span:after {
+    margin-left: 34px;
+}
+
+
+.m-switch.m-switch--outline.m-switch--brand input:empty ~ span:after {
+    color: #fff0;
+}

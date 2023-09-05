@@ -1,0 +1,18 @@
+﻿<div [ngStyle]="{'background':getColor()}" class="template-novedad" [hidden]="item.EsFranco">
+    <table>
+        <tr>
+            <td class="celda-novedad">
+                <span style=" color:black; border:0px" title="{{item.DetalleNovedad}}">{{item.DescNovedad}}</span>
+                <br />
+            </td>
+            <td class="celda-acciones">
+                <a href="javascript:void(0);" [hidden]="!allowmodificarDiagramacion"  *ngIf="(item.PasadaSueldos | uppercase) != 'S' && item.FrancoNovedad"  class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" style="width:8px !important; height:15px !important;" title="Agregar Franco" (click)="agregarFranco(item)">
+                    <i class="accion-icon">*</i>
+                </a>
+                <br />
+            </td>
+        </tr>
+    </table>
+</div>
+
+

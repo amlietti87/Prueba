@@ -1,0 +1,104 @@
+﻿<form #detailForm="ngForm" 
+      novalidate 
+      (ngSubmit)="detailForm.form.valid && save(detailForm)" 
+      autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span *ngIf="detail.Id">{{"Editar Practicante"}}: {{detail.Descripcion}}</span>
+            <span *ngIf="!detail.Id">{{"Crear Practicante"}}</span>
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group col-md-3" [ngClass]="{'has-danger': ApellidoNombre.invalid && (ApellidoNombre.dirty || ApellidoNombre.touched)}">
+                <label>Apellido y Nombre</label>
+                <input #ApellidoNombre="ngModel" class="form-control" type="text" name="ApellidoNombre" [(ngModel)]="detail.ApellidoNombre" required maxlength="250">
+
+                <div *ngIf="ApellidoNombre.invalid && (ApellidoNombre.dirty || ApellidoNombre.touched)"
+                     class=" form-control-feedback">
+                    <div *ngIf="ApellidoNombre.errors.required">
+                        El Apellido y Nombre es Requerido
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-3" [ngClass]="{'has-danger': TipoDocId.invalid && ((TipoDocId.dirty || TipoDocId.touched) || detailForm.submitted)}">
+                <label>Tipo de Doc</label>
+                <tipoDocId-combo [showAddButton]="allowAddTipoDni"
+                                 [TipoDocId]="detail.TipoDocId"
+                                 #TipoDocId="ngModel"
+                                 name="Descripcion"
+                                 [(ngModel)]="detail.TipoDocId" emptyText="{{'Seleccione..'}}">
+                </tipoDocId-combo>
+
+
+                <div *ngIf="TipoDocId.invalid && (TipoDocId.dirty || TipoDocId.touched || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="TipoDocId.errors.required" class="has-required">
+                        El campo Tipo de Doc es requerido
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group col-md-3" [ngClass]="{'has-danger': NroDoc.invalid && (NroDoc.dirty || NroDoc.touched)}">
+                <label>Nro. Doc</label>
+                <input #NroDoc="ngModel" [disabled]="!detail.TipoDocId" type="text" class="form-control" [(ngModel)]="detail.NroDoc"
+                       name="NroDoc"
+                       maxlength="100">
+            </div>
+            <div class="form-group col-md-3" [ngClass]="{'has-danger': Domicilio.invalid && (Domicilio.dirty || Domicilio.touched)}">
+                <label>Domicilio</label>
+                <input #Domicilio="ngModel" class="form-control" type="text" name="Domicilio" [(ngModel)]="detail.Domicilio" maxlength="250">
+            </div>
+            <div class="form-group col-md-3" [ngClass]="{'has-danger': LocalidadId.invalid && (LocalidadId.dirty || LocalidadId.touched)}">
+                <label>Localidad</label><br />
+                <localidad-autocomplete [showAddButton]="allowAddLocalidades" #LocalidadId="ngModel" [(ngModel)]="detail.selectLocalidades" name="LocalidadId" id="LocalidadId" placeHolder="Localidades">
+                </localidad-autocomplete>
+            </div>
+
+            <div class="form-group col-md-3" [ngClass]="{'has-danger': FechaNacimiento.invalid && (FechaNacimiento.dirty || FechaNacimiento.touched)}">
+                <label>Fecha Nacimiento</label>
+                <br />
+                <mat-form-field>
+                    <input #FechaNacimiento="ngModel" matInput [(ngModel)]="detail.FechaNacimiento"
+                           name="FechaNacimiento" [matDatepicker]="FechaNacimiento">
+                    <mat-datepicker-toggle matSuffix [for]="FechaNacimiento"></mat-datepicker-toggle>
+                    <mat-datepicker #FechaNacimiento></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div class="form-group col-md-3" [ngClass]="{'has-danger': Telefono.invalid && (Telefono.dirty || Telefono.touched)}">
+                <label>{{"Teléfono"}}</label>
+                <input #Telefono="ngModel" type="text" class="form-control" [(ngModel)]="detail.Telefono"
+                       name="Telefono"
+                       maxlength="50">
+            </div>
+            <div class="form-group col-md-3" [ngClass]="{'has-danger': Celular.invalid && (Celular.dirty || Celular.touched)}">
+                <label>{{"Celular"}}</label>
+                <input #Celular="ngModel" type="text" class="form-control" [(ngModel)]="detail.Celular"
+                       name="Celular"
+                       maxlength="50">
+            </div>
+            <div class="form-group col-md-3">
+                <div class="m-checkbox-list">
+                    <label class="m-checkbox">
+                        <input #Anulado="ngModel" id="Anulado" type="checkbox" name="Anulado" [(ngModel)]="detail.Anulado">
+                        <em>Anulado</em>
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue"
+                [buttonBusy]="saving" [busyText]="'Guardando..'"
+                [disabled]="!detailForm.form.valid">
+            <i class="fa fa-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+</form>

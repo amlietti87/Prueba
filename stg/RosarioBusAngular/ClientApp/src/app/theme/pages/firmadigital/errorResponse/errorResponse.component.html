@@ -1,0 +1,41 @@
+﻿<form #detailForm="ngForm"
+      novalidate
+      autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span>
+                Error al aplicar
+            </span>
+        </h4>
+        <div class="m-portlet__nav-item">
+            <a href="#"
+               (click)="close()"
+               class="m-portlet__nav-link m-portlet__nav-link--icon">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+    <div class="modal-body">
+        
+        <div class="row align-items-center">
+
+            <div class="primeng-datatable-container primeng-small"
+                 >
+
+                <p-dataTable #dataTable
+                             [value]="datosGrilla"
+                             emptyMessage="Sin Datos"
+                             scrollable="true"
+                             scrollWidth="100%">
+
+                    <p-column field="Error" header="Error" ></p-column>
+                    <p-column field="Documento" header="Documento" ></p-column>
+                </p-dataTable>
+
+            </div>
+            <!--<Primeng-Datatable-End>-->
+
+        </div>
+    </div>
+</form>
+

@@ -1,0 +1,188 @@
+﻿     <div class="modal-header">
+        <h4 class="modal-title">
+            <span>Importar - Tipo de Día: {{DescTdia}}</span>
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <!-- Portlet body -->
+    <div class="modal-body">
+        <div>
+            <div class="row m--padding-10">
+                <div class="col-md-6">
+
+                    <!-- Elegir archivo Input -->
+                    <button type="button"
+                            [hidden]="fileUpload"
+                            (click)="ElegirArchivo()"
+                            class="btn btn-outline-info btn-sm"
+                            [buttonBusy]="isLoading" [busyText]="'Cargando..'"
+                            >
+                        <i class="la la-search"></i>Selecionar Archivo Excel
+                    </button>
+                    <label>{{fileUpload != null ? fileUpload.name : ''}}</label>
+                    <!-- File Input -->
+                    <input #fileInput
+                           style="display:none"
+                           type="file"
+                           name="fileInput"
+                           id="fileInput"
+                           class="form-control form-control-file"
+                           (change)="upload($event)"
+                           accept=".xlsx"
+                           [formControl]="myControl" />
+
+                    <!-- ClearFile() Button -->
+                    <button type="button"
+                            [hidden]="!fileUpload"
+                            (click)="ClearFile()"
+                            class="btn btn-outline-danger  btn-sm"
+                            [buttonBusy]="isLoading" [busyText]="'Cargando..'"
+                            >
+                        <i class="la la-times "></i>Borrar
+                    </button>
+
+                    <!-- ClearFile() uploadPlanilla() -->
+                    <button type="button"
+                            [hidden]="!fileUpload"
+                            (click)="uploadPlanilla()"
+                            class="btn btn-outline-success btn-sm"
+                            [buttonBusy]="isLoading" [busyText]="'Cargando..'"
+                            >
+
+                        <i class="la la-upload"></i>Importar
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Table -->
+            <div class="row">
+
+                <div class="col-md-12 pTableSectores" [busyIf]="isLoading">
+                    <p-table [value]="resultadoImportacion" [scrollable]="true" scrollHeight="300px" >
+                        <ng-template pTemplate="header" let-columns>
+                            <tr >
+                                
+                                <th style="width:20px">
+                                </th>
+                                <th>
+                                    SERV
+                                </th>
+                                <th>
+                                    Sale
+                                </th>
+                                <th>
+                                    Llega
+                                </th>
+                                <th>
+                                    Duración
+                                </th>
+
+                                <th>
+                                    Sale R
+                                </th>
+                                <th>
+                                    Llega R
+                                </th>
+                                <th>
+                                    Duración R
+                                </th>
+
+                                <th>
+                                    Sale A
+                                </th>
+                                <th>
+                                    Llega A
+                                </th>
+                                <th>
+                                    Duración A
+                                </th>
+                            </tr>
+                        </ng-template>
+
+
+
+
+                        <ng-template pTemplate="body" let-row>
+                            <tr [ngClass]="{'rowHasError': !row.IsValid}"
+                                data-toggle="m-tooltip" data-placement="top" title="{{row.Errors.join(',')}}"
+                                >
+                                <td style="width:20px">
+                                    <span *ngIf="!row.IsValid" class="m-input-icon__icon m-input-icon__icon--right"
+                                          >
+                                        <span>
+                                            <i class="la la-info m--font-danger" style="font-size:14px"></i>
+                                        </span>
+                                    </span>
+                                </td>
+                                <td>
+                                    {{row.servicio}}
+                                </td>
+
+                                <td>
+                                    {{row.sale}}
+                                </td>
+
+                                <td>
+                                    {{row.llega}}
+                                </td>
+                                <td [ngClass]="{'cotaMaxima': row.DuracionNumber > 573, 'cotaMinima': (row.DuracionNumber < 389 && row.DuracionNumber > 0)}">
+                                    {{row.DuracionFomat}}
+                                </td>
+
+                                <td>
+                                    {{row.saleRelevo}}
+                                </td>
+
+                                <td>
+                                    {{row.llegaRelevo}}
+                                </td>
+                                <td [ngClass]="{'cotaMaxima': row.DuracionRelevoNumber > 573, 'cotaMinima': (row.DuracionRelevoNumber < 389 && row.DuracionRelevoNumber > 0)}">
+                                    {{row.DuracionRelevoFomat}}
+                                </td>
+
+                                <td>
+                                    {{row.saleAuxiliar}}
+                                </td>
+
+                                <td>
+                                    {{row.llegaAuxiliar}}
+                                </td>
+                                <td [ngClass]="{'cotaMaxima': row.DuracionAuxiliarNumber > 573, 'cotaMinima': (row.DuracionAuxiliarNumber < 389 && row.DuracionAuxiliarNumber > 0)}">
+                                    {{row.DuracionAuxiliarFomat}}
+                                </td>
+
+                            </tr>
+                        </ng-template>
+
+
+                    </p-table>
+
+
+
+                </div>
+
+            </div>
+
+
+
+    </div>
+
+        <div class="modal-footer">
+    
+            <!-- Guardar Button -->
+            <button [disabled]="isLoading" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+            <button type="button"
+                    class="btn btn-primary blue"
+                    (click)="Procesar()"
+                    [buttonBusy]="isLoading" [busyText]="'Cargando..'"
+                    >
+                <i class="fa fa-save"></i> <span>Guardar</span>
+            </button>
+        </div>
+

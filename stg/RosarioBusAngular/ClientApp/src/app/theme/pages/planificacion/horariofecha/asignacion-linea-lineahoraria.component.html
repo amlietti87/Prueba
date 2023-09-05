@@ -1,0 +1,120 @@
+﻿<form #detailForm="ngForm" novalidate (ngSubmit)="save(detailForm)">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span>
+                Lineas Asociadas:
+                <!--<span *ngIf="userName">
+                    {{detail.DesLin}}</span>
+            </span>-->
+            <span>
+                    {{detail.DesLin}}
+                </span>
+            </span>
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+
+        <div class="row">
+            <div class="form-group col-md-4" [ngClass]="{'has-danger': NameInput.invalid && ((NameInput.dirty || NameInput.touched) || detailForm.submitted)}">
+                <label>Nombre</label>
+                <input #NameInput="ngModel" required class="form-control" type="text" name="NameInput" [(ngModel)]="detail.DesLin" maxlength="32">
+
+                <div *ngIf="NameInput.invalid && (NameInput.dirty || NameInput.touched || detailForm.submitted)" class="form-control-feedback">
+                    <div *ngIf="NameInput.errors.required">
+                        El Nombre es requerido
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group col-md-4">
+                <label>Unidad de negocio</label>
+                <sucursal-combo #SucursalId="ngModel" name="SucursalId" [IsDisabled]="viewMode != 1" [(ngModel)]="detail.SucursalId" emptyText="{{'Unidad de negocio...'}}">
+                </sucursal-combo>
+
+                <div *ngIf="SucursalId && SucursalId.invalid && (SucursalId.dirty || SucursalId.touched || detailForm.submitted)" class=" form-control-feedback">
+                    <div *ngIf="SucursalId.errors.required" class="has-required">
+                        El campo es requerido
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group col-md-4" [ngClass]="{'has-danger': TipoLineaId.invalid && ((TipoLineaId.dirty || TipoLineaId.touched) || detailForm.submitted)}">
+                <label>Tipo de línea</label>
+                <div style="display:block; width:100%">
+                    <tipoLinea-combo #TipoLineaId="ngModel" required name="TipoLineaId" [(ngModel)]="UrbInterInt" emptyText="{{'Seleccione...'}}">
+                    </tipoLinea-combo>
+                </div>
+
+                <div *ngIf="TipoLineaId.invalid && (TipoLineaId.dirty || TipoLineaId.touched || detailForm.submitted)" class=" form-control-feedback">
+                    <div *ngIf="TipoLineaId.errors.required" class="has-required">
+                        El campo Tipo de Linea es requerido
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group col-md-4">
+                <label>Responsable de Informes</label>
+                <div style="display:block; width:100%">
+                    <responsableInformes-combo [isRequired]="false" name="CodResponsableInformes" placeholder="Responsable de informes" [(ngModel)]="detail.CodRespInformes" emptyText="{{'Seleccione...'}}">
+                    </responsableInformes-combo>
+                </div>
+            </div>
+
+            
+
+
+
+
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-md-4">
+                <span class="ui-fluid">
+                    <div class="ui-inputgroup">
+
+                        <plalinea-autocomplete [SucursalId]="detail.SucursalId" #lineaAC="ngModel" name="lineas" id="lineas" [(ngModel)]="selectItem" placeHolder="LINEAS" field="Description">
+                        </plalinea-autocomplete>
+                        <button pButton type="button" icon="fa-plus" class="ui-button-success" (click)="addLinea(selectItem)" [disabled]="!(selectItem)"></button>
+                    </div>
+                </span>
+            </div>
+            
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="m-list-badge m-list-badge--light-bg col-md-12">
+                    <div class="m-list-badge__label m--font-info" style="display: table-caption;">
+                        Líneas asociadas
+                    </div>
+                    <div class="m-list-badge__items" style="line-height: 30px">
+                        <a class="m-list-badge__item" [ngClass]="{ 'm-animate-shake': c.animate }" *ngFor="let c of detail.PlaLineaLineaHoraria">
+
+                            <span>{{c.Description}}</span>
+                            <i *ngIf="c.IsSelected" class="fa fa-times" (click)="removeLinea(c)"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+
+
+
+
+    </div>
+    <div class="modal-footer">
+        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue" [disabled]="!detailForm.form.valid" [buttonBusy]="saving" [busyText]="'Guardando...'"><i class="fa fa-save"></i> <span>Guardar</span></button>
+    </div>
+</form>

@@ -1,0 +1,171 @@
+﻿<div class="modal-header">
+    <h4 class="modal-title">
+        <span>Copiar Minutos</span>
+    </h4>
+    <button type="button" class="close" (click)="close()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<!-- Portlet body -->
+<div class="modal-body">
+    <form #copiarMinutosForm="ngForm" novalidate autocomplete="off">
+
+        <div class="row">
+            <div class="col-md-7">
+                <h5>Origen</h5>
+                <hr />
+                <div class="row">
+                    <div class="form-group col-md-4" [ngClass]="{'has-danger': cod_hfecha_origen.invalid && (cod_hfecha_origen.dirty || cod_hfecha_origen.touched || copiarMinutosForm.submitted)}">
+                        <label>Horario</label>
+                        <hfechasconfi-combo #cod_hfecha_origen="ngModel"
+                                            [(ngModel)]="data.CodHfechaOrigen"
+                                            name="cod_hfecha_origen"
+                                            [LineaId]="LineaId"
+                                            [autoLoad]="false"
+                                            required></hfechasconfi-combo>
+                        <div *ngIf="cod_hfecha_origen.invalid && (cod_hfecha_origen.dirty || cod_hfecha_origen.touched || copiarMinutosForm.submitted)"
+                             class=" form-control-feedback">
+                            <div *ngIf="cod_hfecha_origen.errors.required">
+                                Es requerido
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="form-group col-md-4" [ngClass]="{'has-danger': FilterCodTdiaOrigen.invalid && (FilterCodTdiaOrigen.dirty || FilterCodTdiaOrigen.touched || copiarMinutosForm.submitted)}">
+                        <label>Tipo de Dia</label>
+                        <tipoDia-combo #codTipoDiaComboOrigen
+                                       [(ngModel)]="data.CodTdiaOrigen"
+                                       livesearch="{{false}}"
+                                       emptyText="{{'Seleccione..'}}"
+                                       required
+                                       name="FilterCodTdiaOrigen"
+                                       id="FilterCodTdiaOrigen"
+                                       #FilterCodTdiaOrigen="ngModel"
+                                       placeHolder="Tipo de dia">
+                        </tipoDia-combo>
+                        <div *ngIf="FilterCodTdiaOrigen.invalid && (FilterCodTdiaOrigen.dirty || FilterCodTdiaOrigen.touched || copiarMinutosForm.submitted)"
+                             class=" form-control-feedback">
+                            <div *ngIf="FilterCodTdiaOrigen.errors.required">
+                                Es Requerido
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4" [ngClass]="{'has-danger': TipoHoraFiltroOrigen.invalid && (TipoHoraFiltroOrigen.dirty || TipoHoraFiltroOrigen.touched || copiarMinutosForm.submitted)}">
+                        <label>Tipo de Hora</label>
+                        <p-dropdown [options]="htposhorasSelectItem"
+                                    dropdownIcon="fa fa-fw fa-angle-down "
+                                    filter="true"
+                                    #tipoHoraComboOrigen
+                                    #TipoHoraFiltroOrigen="ngModel"
+                                    (ngModelChange)="TipoHoraOrigenChanged($event)"
+                                    name="TipoHoraFiltroOrigen"
+                                    id="TipoHoraFiltroOrigen"
+                                    [(ngModel)]="data.TipoHoraOrigen"
+                                    [style]="{'width':'100%'}"></p-dropdown>
+                        <div *ngIf="TipoHoraFiltroOrigen.invalid && (TipoHoraFiltroOrigen.dirty || TipoHoraFiltroOrigen.touched || copiarMinutosForm.submitted)"
+                             class=" form-control-feedback">
+                            <div *ngIf="TipoHoraFiltroOrigen.errors.required">
+                                Es Requerido
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h5>Destino</h5>
+                <hr />
+                <div class="row">
+                    <div class="form-group col-md-4" >
+                        <!---->
+
+                        <label>Fecha actual</label>
+                        <input class="form-control"
+                               name="FechaDestino"
+                               id="FechaDestino"
+                               #FechaOrigen="ngModel"
+                               [(ngModel)]="data.FechaDestino" disabled />
+
+
+                       
+
+                    </div>
+                    <div class="form-group col-md-4" [ngClass]="{'has-danger': FilterCodTdiaDetino.invalid && (FilterCodTdiaDetino.dirty || FilterCodTdiaDetino.touched || copiarMinutosForm.submitted)}">
+                        <label>Tipo de Dia</label>
+                        <tipoDia-combo #codTipoDiaComboDetino
+                                       [(ngModel)]="data.CodTdiaDestino"
+                                       livesearch="{{false}}"
+                                       emptyText="{{'Seleccione..'}}"
+                                       name="FilterCodTdiaDetino"
+                                       id="FilterCodTdiaDetino"
+                                       required
+                                       #FilterCodTdiaDetino="ngModel"
+                                       placeHolder="Tipo de dia">
+                        </tipoDia-combo>
+                        <div *ngIf="FilterCodTdiaDetino.invalid && (FilterCodTdiaDetino.dirty || FilterCodTdiaDetino.touched || copiarMinutosForm.submitted)"
+                             class=" form-control-feedback">
+                            <div *ngIf="FilterCodTdiaDetino.errors.required">
+                                Es requerido
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4" [ngClass]="{'has-danger': TipoHoraFiltroDetino.invalid && (TipoHoraFiltroDetino.dirty || TipoHoraFiltroDetino.touched || copiarMinutosForm.submitted)}">
+                        <label>Tipo de Hora</label>
+                        <p-dropdown [options]="htposhorasSelectItem"
+                                    dropdownIcon="fa fa-fw fa-angle-down "
+                                    filter="true"
+                                    #tipoHoraComboDetino
+                                    #TipoHoraFiltroDetino="ngModel"
+                                    name="TipoHoraFiltroDetino"
+                                    id="TipoHoraFiltroDetino"
+                                    [disabled]="disableTipoHoraDestino"
+                                    [(ngModel)]="data.TipoHoraDestino"
+                                    [style]="{'width':'100%'}"></p-dropdown>
+                        <div *ngIf="TipoHoraFiltroDetino.invalid && (TipoHoraFiltroDetino.dirty || TipoHoraFiltroDetino.touched || copiarMinutosForm.submitted)"
+                             class=" form-control-feedback">
+                            <div *ngIf="TipoHoraFiltroDetino.errors.required">
+                                Es requerido
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-5">
+
+                <h5>Banderas</h5>
+                <hr />
+                <div class="row">
+                    <p-pickList [source]="BanderasSource" [target]="Banderastarget" sourceHeader="Banderas Excluidas" targetHeader="Banderas Incluidas" [responsive]="true" filterBy="Nombre"
+                                sourceFilterPlaceholder="Búsqueda por texto" targetFilterPlaceholder="Búsqueda por texto" [sourceStyle]="{'height':'200px'}" [targetStyle]="{'height':'200px'}"
+                                [showSourceControls]="false" [showTargetControls]="false" required>
+                        <ng-template let-bandera pTemplate="item">
+                            {{bandera.Nombre}}
+                        </ng-template>
+                    </p-pickList>
+                </div>
+
+            </div>
+
+        </div>
+        
+    
+
+
+       
+
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+    <button type="button"
+            class="btn btn-primary blue"
+            (click)="Procesar()" [buttonBusy]="saving" [busyText]="'Copiando..'">
+        <i class="fa fa-save"></i> <span>Copiar</span>
+    </button>
+</div>
+

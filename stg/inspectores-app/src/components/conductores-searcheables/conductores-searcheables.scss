@@ -1,0 +1,20 @@
+conductores-searcheables {
+
+  .label-conductor {
+    color: #2874A6 !important;
+    padding-top: 12px;
+  }
+
+  .form-conductores-searcheables{
+    ion-item{
+      border-bottom: none !important;
+      // border-bottom: 1px solid #dedede;
+    }
+  }
+
+  .ionic-selectable-value {
+    font-size: 13px;
+  }
+
+
+}

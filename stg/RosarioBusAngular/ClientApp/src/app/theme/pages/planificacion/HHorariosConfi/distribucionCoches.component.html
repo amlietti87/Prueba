@@ -1,0 +1,100 @@
+﻿<div>
+    <div class="m-subheader">
+        <div style="text-align: right;">
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form #SabanaFilterForm="ngForm" class="horizontal-form filters" autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+
+
+                        <div class="row m--margin-bottom-10">
+
+
+                            <!--Lineas-->
+                            <div class="form-group col-md-6">
+                                <label>Fecha</label>
+                                <div class="row">
+                                    <mat-form-field>
+                                        <input matInput
+                                               [(ngModel)]="fecha"
+                                               name="fecha"
+                                               [matDatepicker]="fechaToogle">
+                                        <mat-datepicker-toggle matSuffix
+                                                               [for]="fechaToogle"></mat-datepicker-toggle>
+                                        <mat-datepicker #fechaToogle></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+
+                            <!---->
+
+                            <div class="form-group col-md-6" [ngClass]="{'has-danger': FilterCodTdiaDetino.invalid && (FilterCodTdiaDetino.dirty || FilterCodTdiaDetino.touched || SabanaFilterForm.submitted)}">
+                                <label>Tipo de Dia</label>
+                                <tipoDia-combo #codTipoDiaComboDetino
+                                               [(ngModel)]="codTdia"
+                                               livesearch="{{false}}"
+                                               emptyText="{{'Seleccione..'}}"
+                                               CodHfecha="CodHfecha"
+                                               name="FilterCodTdiaDetino"
+                                               id="FilterCodTdiaDetino"
+                                               #FilterCodTdiaDetino="ngModel"
+                                               placeHolder="Tipo de dia">
+                                </tipoDia-combo>
+                                <div *ngIf="FilterCodTdiaDetino.invalid && (FilterCodTdiaDetino.dirty || FilterCodTdiaDetino.touched || SabanaFilterForm.submitted)"
+                                     class=" form-control-feedback">
+                                    <div *ngIf="FilterCodTdiaDetino.errors.required">
+                                        Es requerido
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Lineas</h5>
+                            <hr />
+                            <div class="row">
+                                <p-pickList [source]="LineasOrigenSource" [target]="LineasOrigentarget"
+                                            sourceHeader="Lineas"
+                                            targetHeader="Lineas Agregadas" [responsive]="true" filterBy="Description"
+                                            sourceFilterPlaceholder="Búsqueda por texto"
+                                            targetFilterPlaceholder="Búsqueda por texto" [sourceStyle]="{'height':'200px'}" [targetStyle]="{'height':'200px'}"
+                                            [showSourceControls]="false" [showTargetControls]="false" required>
+                                    <ng-template let-linea pTemplate="item">
+                                        {{linea.Description}}
+                                    </ng-template>
+                                </p-pickList>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </form>
+
+
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button [disabled]="generando" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+            <button type="button" class="btn btn-primary blue"
+                    (click)="GetReporte()"
+                    [buttonBusy]="generando" [busyText]="'Generando Reporte...'">
+                <i class="fa fa-save"></i> <span>Generar Reporte</span>
+            </button>
+        </div>
+
+    </div>
+
+
+    <ng-template #createOrEdit></ng-template>
+
+</div>
+
+

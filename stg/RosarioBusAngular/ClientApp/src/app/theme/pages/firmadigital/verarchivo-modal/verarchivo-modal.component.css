@@ -1,0 +1,15 @@
+﻿:host ::ng-deep .ng2-pdf-viewer-container {
+    width: 100% !important;
+}
+
+.visor{
+    font-size: 2.5rem !important;
+}
+
+.widthFixer {
+    min-width: 850px !important;
+}
+
+.textbox {
+    min-height: 60px !important;
+}

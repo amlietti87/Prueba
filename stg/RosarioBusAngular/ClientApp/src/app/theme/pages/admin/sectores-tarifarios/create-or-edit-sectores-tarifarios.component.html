@@ -1,0 +1,50 @@
+<div bsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <form *ngIf="active" #detailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="detail.Id">{{"Editar Sector Tarifario"}}: {{detail.DscSectorTarifario}}</span>
+                        <span *ngIf="!detail.Id">{{"Crear Sector Tarifario"}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Código</label>
+                        <input #rolecodManualSectorTarifarioInput class="form-control" type="number" name="CodManualSectorTarifario"
+                            [(ngModel)]="detail.CodManualSectorTarifario" required min="1" max="2147483648">
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input #roledscSectorTarifarioInput class="form-control" type="text" name="DscSectorTarifario"
+                            [(ngModel)]="detail.DscSectorTarifario" required maxlength="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <input #roledscCompletaInput class="form-control" type="text" name="DscCompleta"
+                            [(ngModel)]="detail.DscCompleta" maxlength="60">
+                    </div>
+                    <div class="m-checkbox-list">
+                        <label class="m-checkbox">
+                            <input type="checkbox" name="Nacional" [(ngModel)]="detail.Nacional">
+                            Es Nacional
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary blue" [buttonBusy]="saving" [busyText]="'Guardando..'"
+                        [disabled]="!detailForm.form.valid">
+                        <i class="fa fa-save"></i> <span>Guardar</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

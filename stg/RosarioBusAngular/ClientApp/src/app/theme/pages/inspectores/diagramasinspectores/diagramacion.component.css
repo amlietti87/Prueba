@@ -1,0 +1,48 @@
+﻿body {
+}
+#porletDiagramacion td {
+    width: 56px !important;
+    padding: 0px !important;
+}
+.tdInspectores {
+    border: 1px solid lightgray;
+}
+.informacion {
+    color: red !important;
+    font-size: 10px !important;
+}
+
+.header-diag-label{
+    color:black;
+}
+.smallsize .header-diag-info {
+    font-size: 15px !important;
+}
+.header-diag-info {
+    font-size: 15px !important;
+    padding-right: 20px;
+    color: #797D7F;
+}
+.m-portlet__foot-diagramacion {
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+    background-color: #f2f3f8;
+    border-top: 1px solid black;
+}
+
+#porletDiagramacion {
+    bottom: 2.7rem;
+}
+
+.ui-table-frozen-view .ui-table-scrollable-body {
+    max-height: calc(100vh - 145px) !important;
+}
+
+.style-modal-turnos {
+    padding-top: 18px;
+}
+
+.style-modal-search {
+    padding-top: 10px;
+}

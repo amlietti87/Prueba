@@ -1,0 +1,89 @@
+<div [hidden]="!active" class="m-portlet m-portlet--mobile m-portlet--acce m-portlet--head-sm" id="m_portlet_detail" m-portlet="true">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon">
+                    <i class="fa fa-map-signs"></i>
+                </span>
+                <h3 class="m-portlet__head-text">
+                    <span *ngIf="detail.Id">{{"Editar"}}: {{detail.Description}}</span>
+                    <span *ngIf="!detail.Id">{{"Crear"}}</span>
+                </h3>
+            </div>
+        </div>
+        <div class="m-portlet__head-tools">
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item">
+                    <a href="#" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-angle-down"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item">
+                    <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-expand"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item">
+                    <a href="#" (click)="close()" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-close"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="m-portlet__body">
+        <form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+            <div>
+                <div class="form-group">
+                    <label>Tipo de dato</label>
+                    <dataTypes-combo #DataTypeId="ngModel"
+                                    Id="DataTypeId"
+                                    name="DataTypeId"
+                                    required
+                                    [(ngModel)]="detail.DataTypeId"
+                                     [disabled]="true">
+                    </dataTypes-combo>
+                </div>
+                <div class="form-group" [ngClass]="{'has-danger': Value.invalid && (Value.dirty || Value.touched)}">
+                    <label>Valor</label>
+                    <input #Value="ngModel" class="form-control" type="text" name="Value" [(ngModel)]="detail.Value" required maxlength="100">
+                    <div *ngIf="Value.invalid && (Value.dirty || Value.touched)"
+                            class=" form-control-feedback">
+                        <div *ngIf="Value.errors.required">
+                            El Valor es Requerido
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" [ngClass]="{'has-danger': Descripcion.invalid && (Descripcion.dirty || Descripcion.touched)}">
+                    <label>Descripción</label>
+                    <input #Descripcion="ngModel" class="form-control" type="text" name="Descripcion" [(ngModel)]="detail.Descripcion" required maxlength="200">
+                    <div *ngIf="Descripcion.invalid && (Descripcion.dirty || Descripcion.touched)"
+                            class=" form-control-feedback">
+                        <div *ngIf="Descripcion.errors.required">
+                            La descripción es Requerida
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" [ngClass]="{'has-danger': Token.invalid && (Token.dirty || Token.touched)}">
+                    <label>Token</label>
+                    <input #Token="ngModel" class="form-control" type="text" name="Token" [(ngModel)]="detail.Token"  [disabled]="true" required maxlength="50">
+                    <div *ngIf="Token.invalid && (Token.dirty || Token.touched)"
+                            class=" form-control-feedback">
+                        <div *ngIf="Token.errors.required">
+                            El Token es Requerido
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                <button type="submit" class="btn btn-primary blue"
+                        [disabled]="!detailForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="'Guardando..'">
+                    <i class="fa fa-save"></i> <span>Guardar</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<ng-template #createOrEditChild></ng-template>

@@ -1,0 +1,26 @@
+﻿.template-vacio {
+    color: black !important;
+    font-size: 8px;
+    text-align: center;
+    display: inline-block;
+    max-width: 60px;
+    padding: 0px 0px 5px 0px;
+}
+
+.validacion-zona {
+    color: red !important;
+    font-size: 7px;
+    text-align: left;
+    max-width: 60px;
+    padding: 0px 0px 0px 0px;
+    font-weight: bold
+}
+
+.informacion {
+    color: red !important;
+    font-size: 8px;
+}
+
+.template-vacio table {
+    table-layout: initial !important;
+}

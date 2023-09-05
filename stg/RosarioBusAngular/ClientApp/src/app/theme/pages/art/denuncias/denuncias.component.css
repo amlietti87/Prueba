@@ -1,0 +1,102 @@
+﻿.tableDenuncias .ui-datatable table tbody tr.ui-datatable-even {
+    background-color: unset !important;
+}
+
+.primeng-datatable-container .ui-datatable table thead tr th{
+    white-space: nowrap;
+}
+
+.primeng-datatable-container .ui-datatable table thead tr td {
+    white-space: nowrap;
+}
+
+
+
+/* background-colorS */
+
+
+tr.Aquamarine > td {
+    background-color: aquamarine !important;
+}
+tr.Azure > td {
+    background-color: azure !important;
+}
+tr.BurlyWood > td {
+    background-color: burlywood !important;
+}
+tr.CadetBlue > td {
+    background-color: cadetblue !important;
+}
+tr.Gainsboro > td {
+    background-color: gainsboro !important;
+}
+tr.Gold > td {
+    background-color: gold !important;
+}
+tr.Gray > td {
+    background-color: gray !important;
+}
+
+tr.Khaki > td {
+    background-color: Khaki !important;
+}
+tr.LawnGreen > td {
+    background-color: LawnGreen !important;
+}
+tr.LightGreen > td {
+    background-color: LightGreen !important;
+}
+tr.LightSkyBlue > td {
+    background-color: LightSkyBlue !important;
+}
+tr.Linen > td {
+    background-color: Linen !important;
+}
+tr.MediumOrchid > td {
+    background-color: MediumOrchid !important;
+}
+tr.MediumPurple > td {
+    background-color: MediumPurple !important;
+}
+tr.MistyRose > td {
+    background-color: MistyRose !important;
+}
+tr.Olive > td {
+    background-color: Olive !important;
+}
+tr.OliveDrab > td {
+    background-color: OliveDrab !important;
+}
+tr.Orange > td {
+    background-color: Orange !important;
+}
+tr.OrangeRed > td {
+    background-color: OrangeRed !important;
+}
+tr.Orchid > td {
+    background-color: Orchid !important;
+}
+tr.PaleTurquoise > td {
+    background-color: PaleTurquoise !important;
+}
+tr.Peru > td {
+    background-color: Peru !important;
+}
+tr.Pink > td {
+    background-color: Pink !important;
+}
+tr.Plum > td {
+    background-color: Plum !important;
+}
+tr.RoyalBlue > td {
+    background-color: RoyalBlue !important;
+}
+tr.SandyBrown > td {
+    background-color: SandyBrown !important;
+}
+tr.SeaGreen > td {
+    background-color: SeaGreen !important;
+}
+tr.SteelBlue > td {
+    background-color: SteelBlue !important;
+}

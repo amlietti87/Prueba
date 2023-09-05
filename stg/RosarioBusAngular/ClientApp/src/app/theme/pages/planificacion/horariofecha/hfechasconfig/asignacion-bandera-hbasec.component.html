@@ -1,0 +1,289 @@
+﻿<!--<div class="m-content">
+    <div [hidden]="!active" class="m-portlet m-portlet--mobile">-->
+<div class="m-portlet__body" style="padding-top: 0rem;
+    padding-bottom: 0rem;
+    padding: 0rem 0rem;">
+
+    <div class="row align-items-center">
+
+
+        <div class="col-md-7 hBasec" [busyIf]="loadingbanderas">
+            <h4>Banderas</h4>
+            <div class="primeng-datatable-container primeng-small" style="overflow:auto;  ">
+                <p-table [value]="detail.HBasec" [scrollable]="true" scrollHeight="300px" [style]="{height:'340px'}" frozenWidth="80px">
+                    <ng-template pTemplate="frozenheader">
+                        <tr>
+                            <th style="width:80px;height:48px;">
+                                Bandera
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="frozenbody" let-rowData>
+                        <tr>
+                            <td style="width:80px; height:48px !important;">{{rowData.DescripcionAbreviatura}}</td>
+                        </tr>
+                    </ng-template>
+                    
+
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <!-- <th style="width:80px">
+        Bandera
+    </th> -->
+                            <th style="width:120px;height:48px;">
+                                Descripcion
+                            </th>
+                            <th style="width:120px">
+                                Sentido
+                            </th>
+
+                            <th style="width:70px" title="N° Secuencia">
+                                N° Sec.
+                            </th>
+
+                            <th style="width:120px" title="Texto bandera">
+                                Texto bandera
+                            </th>
+
+                            <th style="width:80px" title="Movible">
+                                Movible
+                            </th>
+
+                            <th style="width:120px" title="Observacion">
+                                Observación
+                            </th>
+
+                            <th style="width:80px">Kmr</th>
+                            <th style="width:80px">Km</th>
+                            <th style="width:100px">Ban. Color</th>
+                            <th style="width:100px">Ban. Tup</th>
+                            <th style="width:100px">Mapa</th>
+
+                            <th *ngIf="showTooltip" style="width:80px">
+                                Acciones
+                            </th>
+                            <th *ngIf="allowChangeRoute" style="width:80px">
+                                Acciones
+                            </th>
+
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData>
+                        <tr (click)="onRowSelect(rowData)" [ngClass]="{'ui-state-highlight': rowData.Selected}">
+                            <!-- <td style="width:80px">{{rowData.DescripcionAbreviatura}}</td> -->
+                            <td style="width:120px; height:48px !important;">{{rowData.DescripcionBandera}}</td>
+                            <td style="width:120px; height:48px !important;">{{rowData.DescripcionSentido}}</td>
+                            <td style="width:70px; height:48px !important;" pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <div class="m-input-icon m-input-icon--right">
+                                            <input type="text" [(ngModel)]="rowData.NroSecuencia" name="NroSecuencia_{{rowData.CodBan}}" currencyMask min="0" max="999" style="width:100%" #NroSecuencia="ngModel" [options]="{ allowNegative: false, precision : 0,  prefix: '', thousands: '', decimal: ',' }">
+
+                                            <span *ngIf="NroSecuencia && NroSecuencia.invalid && (NroSecuencia.dirty || NroSecuencia.touched) && NroSecuencia.errors.max" class="m-input-icon__icon" style="width:auto !important" data-toggle="m-tooltip" data-placement="top" title="Exede máximo valor 999">
+                                                <span>
+                                                    <i class="la la-info m--font-danger"></i>
+                                                </span>
+                                            </span>
+                                        </div>
+
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        <span> {{rowData.NroSecuencia}}</span>
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+
+                            <td style="width:120px; height:48px !important;" pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <div class="m-input-icon m-input-icon--right">
+                                            <input type="text" [(ngModel)]="rowData.TextoBandera"  maxlength="256" name="TextoBandera_{{rowData.CodBan}}" style="width:100%" #TextoBandera="ngModel">
+                                        </div>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        <div style="white-space:nowrap;text-overflow:ellipsis;max-height:48px;overflow:hidden" title="{{rowData.TextoBandera}}"> {{rowData.TextoBandera}}</div>
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+
+
+                            <td style="width:80px; height:48px !important;" pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <p-dropdown [options]="mobile" #Movible="ngModel" name="Movible_{{rowData.CodBan}}" [(ngModel)]="rowData.Movible" [style]="{'width':'100%'}"></p-dropdown>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowData.Movible == 'N' ? 'NO' :  rowData.Movible == 'S' ? 'SI' : '' }}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+
+                            <td style="width:120px; height:48px !important;" pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <div class="m-input-icon m-input-icon--right">
+                                            <input type="text" [(ngModel)]="rowData.ObsBandera" maxlength="256" name="ObsBandera_{{rowData.CodBan}}" style="width:100%" #ObsBandera="ngModel">
+                                        </div>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        <div style="white-space:nowrap;text-overflow:ellipsis;max-height:48px;overflow:hidden" title="{{rowData.ObsBandera}}"> {{rowData.ObsBandera}}</div>
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+
+
+                            <td style="width:80px; height:48px !important;" pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+
+                                        <div class="m-input-icon m-input-icon--right">
+                                            <input type="text" [(ngModel)]="rowData.Kmr" name="Kmr_{{rowData.CodBan}}" currencyMask min="0" max="999" style="width:100%" #Kmr="ngModel" [options]="{ allowNegative: false, precision : 2,  prefix: '', thousands: '', decimal: ',' }">
+
+                                            <span *ngIf="Kmr && Kmr.invalid && (Kmr.dirty || Kmr.touched) && Kmr.errors.max" class="m-input-icon__icon" style="width:auto !important" data-toggle="m-tooltip" data-placement="top" title="Exede máximo valor 999">
+                                                <span>
+                                                    <i class="la la-info m--font-danger"></i>
+                                                </span>
+                                            </span>
+
+                                        </div>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        <span> {{rowData.Kmr}}</span>
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td style="width:80px; height:48px !important;" pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <div class="m-input-icon m-input-icon--right">
+                                            <input type="text" [(ngModel)]="rowData.Km" name="km_{{rowData.CodBan}}" currencyMask min="0" max="999" style="width:100%" #Km="ngModel" [options]="{ allowNegative: false, precision : 2,  prefix: '', thousands: '', decimal: ',' }">
+
+                                            <span *ngIf="Km && Km.invalid && (Km.dirty || Km.touched) && Km.errors.max" class="m-input-icon__icon" style="width:auto !important" data-toggle="m-tooltip" data-placement="top" title="Exede máximo valor 999">
+                                                <span>
+                                                    <i class="la la-info m--font-danger"></i>
+                                                </span>
+                                            </span>
+
+                                        </div>
+
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        <span> {{rowData.Km}}</span>
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+
+
+
+                            <td pEditableColumn style="width:100px; height:48px !important;">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <p-dropdown [options]="BanderasColoresSelectItem" (onChange)="selectedItemChangeBanderasColores($event,rowData)" filter="true" autoDisplayFirst="false" autofocus="true" appendTo="body" #CodBanderaColor="ngModel" name="CodBan_{{rowData.CodBanderaColor}}"
+                                                    id="CodBan_{{rowData.CodBanderaColor}}" [(ngModel)]="rowData.CodBanderaColor" [style]="{'width':'100%'}"></p-dropdown>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowData.DescripcionBanderaColor}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+
+
+                            <td pEditableColumn style="width:100px; height:48px !important;">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <p-dropdown [options]="BanderaTupSelectItem" (onChange)="selectedItemChangeBanderaTup($event,rowData)" filter="true" autoDisplayFirst="false" autofocus="true" appendTo="body" #CodBanderaTup="ngModel" name="CodBan_{{rowData.CodBanderaTup}}" id="CodBan_{{rowData.CodBanderaTup}}"
+                                                    [(ngModel)]="rowData.CodBanderaTup" [style]="{'width':'100%'}"></p-dropdown>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowData.DescripcionBanderaTup}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td style="width:100px; height:48px !important; white-space: nowrap !important; text-overflow: ellipsis !important; overflow: hidden !important;">
+                                <div title="{{rowData.Recorido}}" *ngIf="rowData.Recorido" style="cursor:pointer" (click)="irMapa(rowData)">
+                                    {{rowData.Recorido}}
+                                </div>
+
+                            </td>
+
+
+                            <td *ngIf="showTooltip" style="width:80px; height:48px !important;">
+                                <a title="{{rowData.Recorido}}" href="javascript:void(0);" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" (click)="onRemapearRecoridoBandera(rowData)"><i class="la la-refresh"></i></a>
+                            </td>
+                            <td *ngIf="allowChangeRoute" style="width:80px; height:48px !important;">
+                                <a title="Cambiar Recorrido" href="javascript:void(0);" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" (click)="onChangeRoute(rowData)"><i class="fa fa-exchange"></i></a>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+
+
+            </div>
+        </div>
+        <div class="col-md-5" [busyText]="sectoresBusyText" [busyIf]="loadingsectores">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Sectores: {{sectoresTitle}}</h4>
+                </div>
+                <div class="col-md-6">
+                    <div [hidden]="!hasSectoresChange()" class="pull-right">
+                        <a title="Guardar los sectores" href="javascript:void(0);" [buttonBusy]="loadingsectores" [busyText]="'Guardando..'" class="btn btn-primary btn-sm" (click)="GuardarSectores()"><i class="la la-save"></i>Guardar Sectores</a>
+                    </div>
+                </div>
+            </div>
+            <div class="primeng-datatable-container primeng-small" style="overflow:auto;  ">
+                <p-table [value]="sectores" [scrollable]="true" scrollHeight="300px" [style]="{height:'340px'}">
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>
+                                S. Horario
+                            </th>
+                            <th>
+                                S. Tarifario
+                            </th>
+                            <th>
+                                Orden
+                            </th>
+                            <th>
+                                Ver en Planilla
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowS>
+                        <tr [ngClass]="{'rowHasChange': rowS.VerEnResumenOriginal != rowS.VerEnResumen}">
+                            <td>{{rowS.Calle1}}/{{rowS.Calle2}}</td>
+                            <td>{{rowS.DescripcionSectorTarifario}}</td>
+                            <td>{{rowS.Orden}}</td>
+                            <td>
+                                <input type="checkbox" checked="checked" (ngModelChange)="verEnResumenchange($event, rowS)" name="EsPuntoInicio_{{rowS.Orden}}" [(ngModel)]="rowS.VerEnResumen">
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+    </div>
+
+
+
+
+</div>
+
+
+
+
+<!--</div>
+        <ng-template #createOrEdit></ng-template>
+</div>-->

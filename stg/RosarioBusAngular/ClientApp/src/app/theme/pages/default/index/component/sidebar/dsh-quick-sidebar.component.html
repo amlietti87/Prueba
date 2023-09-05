@@ -1,0 +1,76 @@
+﻿<!-- begin::Quick Sidebar -->
+<div id="DSHDetailsidebar" class="m-quick-sidebar m-quick-sidebar--tabbed m-quick-sidebar--skin-light DSHDetailsidebar" appunwraptag="">
+    <div class="DSHsidebar_content m--hide">
+
+        <ul id="m_quick_sidebar_tabs" class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
+            <li class="nav-item m-tabs__item">
+                <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_quick_sidebar_tabs_messenger" role="tab">
+                    Dashboard Items
+                </a>
+            </li>
+
+
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active m-scrollable" id="m_quick_sidebar_tabs_messenger" role="tabpanel">
+                <div class="m-messenger m-messenger--message-arrow m-messenger--skin-light">
+                    <form #detailFormDSH="ngForm" novalidate (ngSubmit)="false" autocomplete="off">
+                        <div class="porletContainner">
+
+
+
+                            <div class="m-list-settings">
+                                <div class="m-list-settings__group m-scrollable" data-scrollable="true" data-max-height="60vh">
+                                    <div class="m-list-settings__item" *ngFor="let item of items; let i=index;">
+                                        <span class="m-list-settings__item-label dsh-m-list-settings__item-label">
+                                            {{item.Description}}
+                                        </span>
+                                        <span class="m-list-settings__item-control">
+                                            <span class="m-switch m-switch--outline m-switch--icon-check m-switch--brand">
+                                                <label>
+                                                    <input type="checkbox" class="form-control form-control-sm m-input" id="select_{{i}}" name="select_{{i}}"
+                                                           #Selected="ngModel"
+                                                           [(ngModel)]="item.Selected"
+                                                           (change)="switchDashboard(item)">
+                                                    <span></span>
+                                                </label>
+                                            </span>
+                                        </span>
+                                    </div>
+
+
+
+
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                    </form>
+
+                    <div class="m--align-right">
+                        <button type="button"
+                                class="btn btn-default"
+                                (click)="cancelar()">
+                            Cancelar
+                        </button>
+
+
+                        <a (click)="guardarClick()" class="btn  btn-outline-primary"
+                           href="#">
+                            <i class="fa fa-save"></i> <span>Save</span>
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end::Quick Sidebar -->

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="7.0" codebase="@CodeBase">
+  <information>
+    <title>SignarAdP</title>
+    <vendor>Lyris IT</vendor>
+    <homepage href="https://lyris.com.ar" />
+    <description>Complemento para firmar digitalmente recibos y documentos asociados.</description>
+    <update check="always" policy="always"/>
+  </information>
+  <security>
+    <all-permissions />
+  </security>
+  <resources>
+    <property name="jnlp.packEnabled" value="true"/>
+    <property name="jnlp.versionEnabled" value="true"/>
+    <j2se version="1.8+" />
+    <jar href="ComplementoDeFirmaRB.jar" main="true" version="@Version" />
+    <jar href="bcmail-jdk15-1.46.jar" version="1.46.19" />
+    <jar href="bcprov-jdk15-1.46.jar" version="1.46.19" />
+    <jar href="bctsp-jdk15-1.46.jar" version="1.46.19" />
+    <jar href='jackson-annotations-2.4.0.jar' version="2.40.19" />
+    <jar href='jackson-core-2.4.2.jar' version="2.42.19" />
+    <jar href='jackson-databind-2.4.2.jar' version="2.42.19" />
+    <jar href='unirest-java-1.4.10_custom-with-dependencies.jar' version="1.410.19"/>
+  </resources>
+  <application-desc main-class="ar.com.lyris.runnable.MainApp">
+    <argument>@SessionId</argument>
+    <argument>@IdUsuario</argument>
+    <argument>@BaseUrl</argument>
+  </application-desc>
+</jnlp>

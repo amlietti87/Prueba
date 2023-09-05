@@ -1,0 +1,9 @@
+.type {
+    fill: #888;
+    text-anchor: middle;
+}
+
+.shape {
+    fill: #eee;
+    stroke: #ccc;
+}

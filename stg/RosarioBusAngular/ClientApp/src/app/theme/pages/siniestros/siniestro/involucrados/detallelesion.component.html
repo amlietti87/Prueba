@@ -1,0 +1,199 @@
+﻿<!--<div class="m-content">
+    <div [hidden]="!active" class="m-portlet m-portlet--mobile">-->
+<div class="m-portlet__body">
+    <div class="row align-items-center" 
+         style="margin-left: 0px">
+
+        <div rightcontent>
+            <button type="button" 
+                    (click)="AgregarLesion()" 
+                    *ngIf="allowAdd" 
+                    class="btn btn-primary blue"
+                    style="position: absolute; left:400px; top: -48px;">
+
+                <i class="fa fa-plus"></i> Agregar Detalle Lesión
+
+            </button>
+        </div>
+        <!--<Primeng-Datatable-Start>-->
+
+        <div class="primeng-datatable-container primeng-small"  
+             style="overflow:auto; margin-top: 1%;">
+
+            <p-dataTable [value]="list"
+                         scrollable="true"
+                         scrollHeight="300px"
+                         responsive="false"
+                         [editable]="true"
+                         emptyMessage="">
+
+                <!-- Lugar Atencion -->
+                <p-column field="LugarAtencion"
+                          header="Lugar de atenci&oacute;n"
+                          [sortable]="false"
+                          [editable]="true">
+
+                    <ng-template let-row="rowData"
+                                 pTemplate="editor">
+
+                        <input class="form-control"
+                               type="text"
+                               name="{{ 'LugarAtencion' + row.Id }}"
+                               id="{{ 'LugarAtencion' + row.Id }}"
+                               [(ngModel)]="row.LugarAtencion"
+                               maxlength="2000">
+                    </ng-template>
+
+                </p-column>
+
+                <!-- FechaFactura -->
+                <p-column field="FechaFactura"
+                          header="Fecha Factura"
+                          [sortable]="false"
+                          [editable]="true">
+
+                    <ng-template let-row="rowData"
+                                 pTemplate="editor">
+                        <mat-form-field class="mat-form-field-mat-datepicker mat-form-field-mat-datepicker-100p">
+                            <input matInput
+                                   [(ngModel)]="row.FechaFactura"
+                                   name="{{ 'FechaFactura' + row.Id }}"
+                                   id="{{ 'FechaFactura' + row.Id }}"
+                                   [matDatepicker]="FechaFactura">
+                            <mat-datepicker-toggle matSuffix [for]="FechaFactura"></mat-datepicker-toggle>
+                            <mat-datepicker #FechaFactura></mat-datepicker>
+                        </mat-form-field>
+                    </ng-template>
+
+
+                    <ng-template let-col
+                                 let-row="rowData"
+                                 pTemplate
+                                 type="body">
+                        {{row.FechaFactura | date: 'dd-MM-yyyy'}}
+                    </ng-template>
+
+                </p-column>
+
+                <!-- NroFactura -->
+                <p-column field="NroFactura"
+                          header="Nro. Factura"
+                          [sortable]="false"
+                          [editable]="true">
+
+                    <ng-template let-row="rowData"
+                                 pTemplate="editor">
+
+                        <input class="form-control"
+                               type="text"
+                               name="{{ 'NroFactura' + row.Id }}"
+                               id="{{ 'NroFactura' + row.Id }}"
+                               [(ngModel)]="row.NroFactura"
+                               maxlength="2000">
+
+                    </ng-template>
+                    
+                </p-column>
+
+                <!-- ImporteFactura -->
+                <p-column field="ImporteFactura"
+                          header="Importe"
+                          [sortable]="false"
+                          [editable]="true">
+
+                    <ng-template let-row="rowData"
+                                 pTemplate="editor">
+                        <input currencyMask
+                               [options]="{ prefix: '', thousands: '.', decimal: ',' }"
+                               #ImporteFactura="ngModel"
+                               class="form-control"
+                               type="text"
+                               name="{{ 'ImporteFactura' + row.Id }}"
+                               id="{{ 'ImporteFactura' + row.Id }}"
+                               [(ngModel)]="row.ImporteFactura">
+
+                    </ng-template>
+
+                    <ng-template let-row="rowData"
+                                 pTemplate="body">
+                        <input currencyMask
+                               [options]="{ prefix: '', thousands: '.', decimal: ',' }"
+                               #ImporteFactura="ngModel"
+                               class="form-control"
+                               type="text"
+                               name="{{ 'ImporteFactura' + row.Id }}"
+                               id="{{ 'ImporteFactura' + row.Id }}"
+                               [(ngModel)]="row.ImporteFactura"
+                               disabled>
+
+                    </ng-template>
+
+                </p-column>
+
+                <!-- Observaciones-->
+                <p-column field="Observaciones"
+                          header="Observaciones"
+                          [sortable]="false"
+                          [editable]="true">
+
+                    <ng-template let-row="rowData"
+                                 pTemplate="editor">
+
+                        <input class="form-control"
+                               type="text"
+                               name="{{ 'Observaciones' + row.Id }}"
+                               id="{{ 'Observaciones' + row.Id }}"
+                               [(ngModel)]="row.Observaciones"
+                               maxlength="2000">
+
+                    </ng-template>
+
+
+                </p-column>
+
+                <!-- Acciones -->
+                <p-column header="Acciones"
+                          [sortable]="false"
+                          styleClass="col-actions">
+                    <ng-template let-col
+                                 let-row="rowData"
+                                 pTemplate
+                                 type="body">
+
+                        <div class="dropdown">
+
+                            <!-- Edit Button
+                               <a href="javascript:void(0);"
+                                  (click)="onEdit(row)"
+                                  *ngIf="allowModify"
+                                  class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                  title="Editar">
+
+                                   <i class="la la-edit"></i>
+
+                               </a>
+                            -->
+
+                            <!-- Drop Button -->
+                            <a href="javascript:void(0);"
+                               *ngIf="allowDelete"
+                               class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                               (click)="onDelete(row, true)">
+
+                                <i class="la la-trash"></i>
+
+                            </a>
+
+                        </div>
+
+                    </ng-template>
+                </p-column>
+
+            </p-dataTable>
+        </div>
+    </div>
+
+
+
+
+</div>

@@ -1,0 +1,11 @@
+D:\RBus\RBusRepo\stg\TECSO.FWK.Domain\bin\Debug\netcoreapp2.1\TECSO.FWK.Domain.deps.json
+D:\RBus\RBusRepo\stg\TECSO.FWK.Domain\bin\Debug\netcoreapp2.1\TECSO.FWK.Domain.dll
+D:\RBus\RBusRepo\stg\TECSO.FWK.Domain\bin\Debug\netcoreapp2.1\TECSO.FWK.Domain.pdb
+D:\RBus\RBusRepo\stg\TECSO.FWK.Domain\bin\Debug\netcoreapp2.1\TECSO.FWK.dll
+D:\RBus\RBusRepo\stg\TECSO.FWK.Domain\bin\Debug\netcoreapp2.1\TECSO.FWK.pdb
+D:\RBus\RBusRepo\stg\TECSO.FWK.Domain\obj\Debug\netcoreapp2.1\TECSO.FWK.Domain.csprojAssemblyReference.cache
+D:\RBus\RBusRepo\stg\TECSO.FWK.Domain\obj\Debug\netcoreapp2.1\TECSO.FWK.Domain.AssemblyInfoInputs.cache
+D:\RBus\RBusRepo\stg\TECSO.FWK.Domain\obj\Debug\netcoreapp2.1\TECSO.FWK.Domain.AssemblyInfo.cs
+D:\RBus\RBusRepo\stg\TECSO.FWK.Domain\obj\Debug\netcoreapp2.1\TECSO.FWK.Domain.csproj.CopyComplete
+D:\RBus\RBusRepo\stg\TECSO.FWK.Domain\obj\Debug\netcoreapp2.1\TECSO.FWK.Domain.dll
+D:\RBus\RBusRepo\stg\TECSO.FWK.Domain\obj\Debug\netcoreapp2.1\TECSO.FWK.Domain.pdb

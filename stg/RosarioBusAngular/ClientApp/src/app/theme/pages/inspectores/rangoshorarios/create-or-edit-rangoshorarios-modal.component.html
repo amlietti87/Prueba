@@ -1,0 +1,127 @@
+﻿
+            <form  #detailForm="ngForm" novalidate  (ngSubmit)="detailForm.form.valid && save(detailForm)"  autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="detail.Id">{{"Editar Rango Horarios"}}</span>
+                        <span *ngIf="!detail.Id">{{"Crear Rango Horario"}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Descripción -->
+                    <div class="form-group col-lg-12" [ngClass]="{'has-danger': Descripcion.invalid && (Descripcion.dirty || Descripcion.touched)}">
+                        <label>Descripción</label>
+                        <input #Descripcion="ngModel" class="form-control" type="text" name="Descripcion" [(ngModel)]="detail.Descripcion" required maxlength="100">
+                        <div *ngIf="Descripcion.invalid && (Descripcion.dirty || Descripcion.touched)" class="form-control-feedback">
+                            <div *ngIf="Descripcion.errors['required']">
+                                La descripción es Requerida
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Francos -->
+                    <div class="francos-turno m-checkbox-list row">
+                        <div class="col-lg-4">
+                            <label class="m-checkbox">
+                                <input type="checkbox" name="EsFranco" [(ngModel)]="detail.EsFranco" (ngModelChange)="OnChangeEsFranco($event)">
+                                Corresponde a Franco
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col-lg-5">
+                            <label class="m-checkbox">
+                                <input type="checkbox" name="EsFrancoTrabajado" [(ngModel)]="detail.EsFrancoTrabajado" [disabled]="!detail.EsFranco">
+                                Corresponde a Franco Trabajado
+                                <span></span>
+                            </label>
+                        </div>
+                        <!-- color -->
+                        <div class="col-lg-3">
+                            <div class="m-list-settings__item">
+                                <span class="m-list-settings__item-label">
+                                    Color
+                                </span>
+                                <span class="m-list-settings__item-control">
+                                    <input #Color="ngModel" type="color" name="colorPicker_turnos" [(ngModel)]="detail.Color" />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- HoraDesde/HoraHasta-->            
+                    <div class="item-turno row">
+                        <div class="form-group col-lg-6" [ngClass]="{'has-danger': isDisabled && allowHoraDesde || HoraDesde.invalid && (HoraDesde.dirty || HoraDesde.touched)}">
+                            <label>Hora Desde </label>
+                            <ngb-timepicker #HoraDesde="ngModel"
+                                            [(ngModel)]="detail.HoraDesde"
+                                            name="HoraDesde" 
+                                            [spinners]="true"  
+                                            [meridian]="false"
+                                            (ngModelChange)="horaOnChange(detail)"
+                                            size="small"
+                                            [disabled]="detail.EsFranco"                             
+                                            required>
+                            </ngb-timepicker>
+                            <div *ngIf="detail.HasError" class="m--font-danger form-control-feedback">                         
+                                {{detail.ErrorMessages}}
+                            </div>
+                            <div *ngIf="isDisabled && allowHoraDesde || HoraDesde.invalid && (HoraDesde.dirty || HoraDesde.touched) "  class="form-control-feedback">                                                              
+                                <div *ngIf=" allowHoraDesde || HoraDesde.invalid && (HoraDesde.dirty || HoraDesde.touched) ">
+                                    Hora Desde es requerido. 
+                                </div>    
+                            </div>
+                        </div>  
+
+                        <div class="form-group col-lg-6" [ngClass]="{'has-danger': isDisabled && allowHoraHasta || HoraHasta.invalid && (HoraHasta.dirty || HoraHasta.touched)}">
+                            <label> Hora Hasta </label>
+                            <ngb-timepicker #HoraHasta="ngModel"
+                                            [(ngModel)]="detail.HoraHasta"
+                                            name="HoraHasta" 
+                                            [spinners]="true"
+                                            [meridian]="false"
+                                            (ngModelChange)="horaOnChange(detail)"
+                                            size="small"
+                                            [disabled]="detail.EsFranco"
+                                            required>
+                            </ngb-timepicker>
+                            <div *ngIf="isDisabled && allowHoraHasta || HoraHasta.invalid && (HoraHasta.dirty || HoraHasta.touched) && HoraHasta.errors['required']"  class="form-control-feedback">                               
+                                Hora Hasta es requerido.     
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Novedades -->
+                    <div class="item-turno col-lg-5"  [ngClass]="{'has-danger': allowNovedad && detail.EsFranco && (this.detail.NovedadId == null || this.detail.NovedadId.toString() == '') }">
+                        <label >Novedad</label>
+                        <novedades-combo    #NovedadId
+                                            [(ngModel)]="detail.NovedadId"
+                                            name="NovedadId"      
+                                            [disabled]="isDisabled"                          
+                                            emptyText="Seleccione...">
+                        </novedades-combo>
+                        <div *ngIf="allowNovedad && detail.EsFranco && (this.detail.NovedadId == null || this.detail.NovedadId.toString() == '') " class="form-control-feedback">
+                            <div *ngIf="allowNovedad && detail.EsFranco && (this.detail.NovedadId == null || this.detail.NovedadId.toString() == '') ">
+                                Novedad es Requerida
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Anulado -->
+                    <div class="item-turno m-checkbox-list col-lg-5">
+                        <label class="m-checkbox" [hidden]="!detail.Id">
+                            <input #Anulado="ngModel" id="Anulado" type="checkbox" name="Anulado" [(ngModel)]="detail.Anulado">
+                            Anulado
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary blue"
+                            [buttonBusy]="saving" [busyText]="'Guardando..'"
+                            [disabled]="!detailForm.form.valid"
+                            [hidden]="!allowmodificarturno && detail.Id">
+                        <i class="fa fa-save"></i> <span>Guardar</span>
+                    </button>
+                </div>
+            </form>
+

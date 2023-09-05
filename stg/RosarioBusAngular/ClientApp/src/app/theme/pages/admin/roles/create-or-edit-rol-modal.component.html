@@ -1,0 +1,68 @@
+﻿<div bsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <form *ngIf="active" #detailForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="detail.Id">{{"Editar Rol"}}: {{detail.Name}}</span>
+                        <span *ngIf="!detail.Id">{{"Crear Rol"}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label>Código</label>
+                        <input #roleNameInput class="form-control" type="text" name="Name" 
+                               [(ngModel)]="detail.Name" 
+                               [disabled]="detail.IsStatic"
+                               required maxlength="32">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Nombre
+                        </label>
+                        <input #roledisplayNameInput class="form-control" 
+                               type="text" name="DisplayName" 
+                               [(ngModel)]="detail.DisplayName" 
+                               [disabled]="detail.IsStatic"
+                               required maxlength="64">
+                    </div>
+                    <div class="m-checkbox-list">
+                        <label class="m-checkbox">
+                            <input id="EditRole_IsDefault" 
+                                   type="checkbox" name="IsDefault" 
+                                   [(ngModel)]="detail.IsDefault"
+                                   [disabled]="detail.IsStatic"
+                                   >
+                            Es por defecto
+                            <span></span>
+                        </label>                        
+                    </div>
+                    <div class="m-checkbox-list">
+                        <label class="m-checkbox">
+                            <input id="EditRole_CaducarSesionInactividad" 
+                                   type="checkbox" name="CaducarSesionInactividad" 
+                                   [(ngModel)]="detail.CaducarSesionInactividad"
+                                   [disabled]="detail.IsStatic"
+                                   >
+                            Caducar sesión por inactividad
+                            <span></span>
+                        </label>                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary blue"
+                            [buttonBusy]="saving" [busyText]="'Guardando..'"
+                            [disabled]="!detailForm.form.valid">
+                        <i class="fa fa-save"></i> <span>Guardar</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+﻿
+
+
+.thReclamosImportador {
+    width: 80px !important;
+    min-width: 80px !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+}
+
+.tdReclamosImportador {
+    width: 80px !important;
+    min-width: 80px !important;
+
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+}

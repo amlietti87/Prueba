@@ -1,0 +1,89 @@
+﻿<form #detailForm="ngForm" 
+	  novalidate 
+	  (ngSubmit)="detailForm.form.valid && save(detailForm)" 
+	  autocomplete="off">
+	<div class="modal-header">
+		<h4 class="modal-title">
+			<span *ngIf="detail.Id">{{"Editar Localidad"}}: {{detail.Descripcion}}</span>
+            <span *ngIf="!detail.Id">{{"Crear Localidad"}}</span>
+		</h4>
+		<button type="button" class="close" (click)="close()" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+    <div class="modal-body">
+        <div class="row">
+
+        </div>
+        <div class="form-group" [ngClass]="{'has-danger': Descripcion.invalid && (Descripcion.dirty || Descripcion.touched)}">
+            <label>Descripción</label>
+            <input #Descripcion="ngModel" 
+                   class="form-control" 
+                   type="text" 
+                   name="Descripcion" 
+                   [(ngModel)]="detail.DscLocalidad" 
+                   required 
+                   maxlength="2000">
+
+            <div *ngIf="Descripcion.invalid && (Descripcion.dirty || Descripcion.touched)"
+                 class=" form-control-feedback">
+                <div *ngIf="Descripcion.errors.required">
+                    La Descripción es Requerida
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" [ngClass]="{'has-danger': CodigoPostal.invalid && (CodigoPostal.dirty || CodigoPostal.touched)}">
+            <label>Código Postal:</label>
+            <input #CodigoPostal="ngModel"
+                   class="form-control" 
+                   type="text" 
+                   name="CodigoPostal" 
+                   [(ngModel)]="detail.CodPostal" 
+                   required 
+                   maxlength="2000">
+
+            <div *ngIf="CodigoPostal.invalid && (CodigoPostal.dirty || CodigoPostal.touched)"
+                 class=" form-control-feedback">
+                <div *ngIf="CodigoPostal.errors.required">
+                    El código postal es requerido
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group" [ngClass]="{'has-danger': Provincia.invalid && (Provincia.dirty || Provincia.touched)}">
+            <label>Provincia:</label>
+            <provincias-combo #Provincia="ngModel"
+                              [(ngModel)]="detail.CodProvincia"
+                              [showAddButton]="true"
+                              id="Provincia"
+                              name="Provincia"
+                              emptyText="Seleccione..."
+                              required>
+            </provincias-combo>
+
+            <div *ngIf="Provincia.invalid && (Provincia.dirty || Provincia.touched)"
+                 class=" form-control-feedback">
+                <div *ngIf="Provincia.errors.required">
+                    La Provincia es Requerida
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+	<div class="modal-footer">
+		<button [disabled]="saving" 
+                type="button" 
+                class="btn btn-default" 
+                (click)="close()">Cancelar</button>
+		<button type="submit" 
+                class="btn btn-primary blue"
+				[buttonBusy]="saving"
+                [busyText]="'Guardando..'"
+				[disabled]="!detailForm.form.valid">
+			<i class="fa fa-save"></i> <span>Guardar</span>
+		</button>
+	</div>
+</form>

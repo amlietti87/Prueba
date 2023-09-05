@@ -1,0 +1,15 @@
+D:\RBus\RBusRepo\stg\TECSO.FWK.Infra.Data\bin\Debug\netcoreapp2.1\TECSO.FWK.Infra.Data.deps.json
+D:\RBus\RBusRepo\stg\TECSO.FWK.Infra.Data\bin\Debug\netcoreapp2.1\TECSO.FWK.Infra.Data.runtimeconfig.json
+D:\RBus\RBusRepo\stg\TECSO.FWK.Infra.Data\bin\Debug\netcoreapp2.1\TECSO.FWK.Infra.Data.runtimeconfig.dev.json
+D:\RBus\RBusRepo\stg\TECSO.FWK.Infra.Data\bin\Debug\netcoreapp2.1\TECSO.FWK.Infra.Data.dll
+D:\RBus\RBusRepo\stg\TECSO.FWK.Infra.Data\bin\Debug\netcoreapp2.1\TECSO.FWK.Infra.Data.pdb
+D:\RBus\RBusRepo\stg\TECSO.FWK.Infra.Data\bin\Debug\netcoreapp2.1\TECSO.FWK.dll
+D:\RBus\RBusRepo\stg\TECSO.FWK.Infra.Data\bin\Debug\netcoreapp2.1\TECSO.FWK.Domain.dll
+D:\RBus\RBusRepo\stg\TECSO.FWK.Infra.Data\bin\Debug\netcoreapp2.1\TECSO.FWK.Domain.pdb
+D:\RBus\RBusRepo\stg\TECSO.FWK.Infra.Data\bin\Debug\netcoreapp2.1\TECSO.FWK.pdb
+D:\RBus\RBusRepo\stg\TECSO.FWK.Infra.Data\obj\Debug\netcoreapp2.1\TECSO.FWK.Infra.Data.csprojAssemblyReference.cache
+D:\RBus\RBusRepo\stg\TECSO.FWK.Infra.Data\obj\Debug\netcoreapp2.1\TECSO.FWK.Infra.Data.AssemblyInfoInputs.cache
+D:\RBus\RBusRepo\stg\TECSO.FWK.Infra.Data\obj\Debug\netcoreapp2.1\TECSO.FWK.Infra.Data.AssemblyInfo.cs
+D:\RBus\RBusRepo\stg\TECSO.FWK.Infra.Data\obj\Debug\netcoreapp2.1\TECSO.FWK.Infra.Data.csproj.CopyComplete
+D:\RBus\RBusRepo\stg\TECSO.FWK.Infra.Data\obj\Debug\netcoreapp2.1\TECSO.FWK.Infra.Data.dll
+D:\RBus\RBusRepo\stg\TECSO.FWK.Infra.Data\obj\Debug\netcoreapp2.1\TECSO.FWK.Infra.Data.pdb

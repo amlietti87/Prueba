@@ -1,0 +1,50 @@
+page-desvio {
+
+  .card-desvio{
+    padding: 0px !important;
+  }
+
+  .item-accion-desvio{
+    padding: 0px !important;
+    text-align: center;
+  }
+
+  .icon-trash{
+    font-size: 26px;
+  }
+
+  .col-card {
+    border-left: 3px solid #E74C3C;
+  }
+
+ .label-fechaHora {
+    font-weight: bold;
+    color: #424949;
+  }
+
+ .truncated-text {
+   padding-left: 8px;
+   padding-right: 8px;
+  }
+
+  //Pagina sin consultas
+  .sin-consultas {
+    padding-top: 50px;
+  }
+
+  .item-icon-not-search{
+    text-align: center;
+  }
+
+  .label-info{
+    font-size: 20px;
+    color: #D7DBDD;
+  }
+
+  .icon-not-search {
+    font-size: 300px;
+    color: #1ABC9C;
+    opacity: 0.2;
+  }
+
+}

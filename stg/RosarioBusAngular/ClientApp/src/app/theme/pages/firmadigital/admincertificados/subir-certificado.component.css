@@ -1,0 +1,9 @@
+.AdjuntoContainer .blockUI.blockMsg.blockElement {
+    top: 33% !important;
+    left: 50% !important;
+}
+
+.blockElement {
+    top: 33% !important;
+    left: 50% !important;
+}

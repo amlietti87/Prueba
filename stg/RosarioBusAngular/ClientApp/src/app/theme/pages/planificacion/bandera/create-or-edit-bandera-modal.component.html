@@ -1,0 +1,526 @@
+﻿<form id="detailFormBandera" #detailForm="ngForm" novalidate (ngSubmit)="save(detailForm)" autocomplete="off">
+    <div [hidden]="!active" class="m-portlet m-portlet--mobile m-portlet--acce m-portlet--head-sm" id="m_portlet_detail" m-portlet="true">
+
+
+
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <span class="m-portlet__head-icon">
+                        <i class="{{icon}}"></i>
+                    </span>
+                    <h3 class="m-portlet__head-text">
+                        <span *ngIf="detail.Id">Editar {{title}}: {{detail.Nombre}}</span>
+                        <span *ngIf="!detail.Id">Crear {{title}}</span>
+                    </h3>
+                </div>
+            </div>
+            <div class="m-portlet__head-tools">
+
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item">
+
+                        <a href="#" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-angle-down"></i>
+                        </a>
+                    </li>
+                    <li class="m-portlet__nav-item">
+                        <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-expand"></i>
+                        </a>
+                    </li>
+                    <li class="m-portlet__nav-item">
+                        <a href="#" (click)="close()" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-close"></i>
+                        </a>
+                    </li>
+                </ul>
+
+
+                <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--right m-tabs-line-danger" role="tablist" style="padding-right:50px">
+                    <li class="nav-item m-tabs__item" [hidden]="!viewMainTab">
+                        <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_portlet_tab_generalbandera" id="m_portlet_heder_tab_generalbandera" role="tab">
+                            General
+                        </a>
+                    </li>
+                    <li class="nav-item m-tabs__item" [hidden]="!viewChildTab" *ngIf="viewMode != 1">
+                        <a class="nav-link m-tabs__link" (click)="onRutasClick()" data-toggle="tab" href="#m_portlet_tab_Recororidos" id="m_portlet_heder_tab_Recororidos" role="tab">
+                            Mapas
+                        </a>
+                    </li>
+                </ul>
+
+
+
+            </div>
+        </div>
+
+        <div class="m-portlet__body">
+            <div class="tab-content">
+                <div class="tab-pane active" id="m_portlet_tab_generalbandera">
+
+                    <div class="row">
+                        <div class="form-group col">
+                            <label>Línea</label>
+                            <input disabled class="form-control" type="text" name="LineaNombre" value="{{detail.LineaNombre}}">
+                        </div>
+
+
+                        <div class="form-group col">
+                            <label>Ramal/Color</label>
+                            <input disabled class="form-control" type="text" name="RamalColorNombre" value="{{detail.RamalColorNombre}}">
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="form-group col-md-6 col-lg-6" [ngClass]="{'has-danger': Nombre.invalid && (Nombre.dirty || Nombre.touched || detailForm.submitted)}">
+                            <label>Abreviación </label>
+                            <input #Nombre="ngModel" class="form-control" type="text" name="Nombre" [(ngModel)]="detail.Nombre" required maxlength="4">
+
+                            <div *ngIf="Nombre.invalid && (Nombre.dirty || Nombre.touched  || detailForm.submitted)" class=" form-control-feedback">
+                                <div *ngIf="Nombre.errors.required">
+                                    La Abreviación es requerida
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group col-md-6 col-lg-6" [ngClass]="{'has-danger': Descripcion.invalid && (Descripcion.dirty || Descripcion.touched || detailForm.submitted )}">
+                            <label>Descripción </label>
+                            <input #Descripcion="ngModel" class="form-control" type="text" name="Descripcion" [(ngModel)]="detail.Descripcion" required maxlength="15">
+
+                            <div *ngIf="Descripcion.invalid && (Descripcion.dirty || Descripcion.touched || detailForm.submitted)" class=" form-control-feedback">
+                                <div *ngIf="Descripcion.errors.required">
+                                    La Descripción es requerida
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div *ngIf="detail.TipoBanderaId==1" class="form-group col-md-6 col-lg-6">
+                            <label>Código variante de línea</label>
+                            <input #CodigoVarianteLinea="ngModel" class="form-control" type="text" name="CodigoVarianteLinea" [(ngModel)]="detail.CodigoVarianteLinea" maxlength="50">
+
+                            <!--<div *ngIf="CodigoVarianteLinea.invalid && (CodigoVarianteLinea.dirty || CodigoVarianteLinea.touched || detailForm.submitted)"
+        class=" form-control-feedback">
+        <div *ngIf="CodigoVarianteLinea.errors.required">
+            El Código variante de línea es requerido
+        </div>
+    </div>-->
+                        </div>
+
+                        <div [hidden]="detail.TipoBanderaId == 2" class="form-group col-md-6 col-lg-6">
+                            <label>Descripción Pasajeros </label>
+                            <input #DescripcionPasajeros="ngModel" class="form-control" type="text" name="DescripcionPasajeros" [(ngModel)]="detail.DescripcionPasajeros" maxlength="31">
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="form-group col-md-4 col-lg-4" [ngClass]="{'has-danger': Origen.invalid && (Origen.dirty || Origen.touched || detailForm.submitted)}">
+                            <label>Origen</label>
+                            <span class="ui-fluid">
+                                <origen-predictivo #Origen="ngModel"
+                                                   [(ngModel)]="detail.Origen"
+                                                   style="width:  100% !important;"
+                                                   name="Origen"
+                                                   id="Origen"
+                                                   placeHolder=""
+                                                   required>
+                                </origen-predictivo>
+                            </span>
+
+
+                            <div *ngIf="Origen.invalid && (Origen.dirty || Origen.touched || detailForm.submitted)" class=" form-control-feedback">
+                                <div *ngIf="Origen.errors.required">
+                                    El Origen es requerido
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="form-group col-md-4 col-lg-4" [ngClass]="{'has-danger': Destino.invalid && (Destino.dirty || Destino.touched || detailForm.submitted)}">
+                            <label>Destino</label>
+                            <span class="ui-fluid">
+                                <destino-predictivo #Destino="ngModel"
+                                                    [(ngModel)]="detail.Destino"
+                                                    style="width:  100% !important;"
+                                                    name="Destino"
+                                                    id="Destino"
+                                                    placeHolder=""
+                                                    required>
+                                </destino-predictivo>
+                            </span>
+                            <div *ngIf="Destino.invalid && (Destino.dirty || Destino.touched || detailForm.submitted)" class=" form-control-feedback">
+                                <div *ngIf="Destino.errors.required">
+                                    El Destino es requerido
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group col-md-4 col-lg-4">
+                            <label>Por Donde</label>
+                            <input #PorDonde="ngModel" class="form-control" maxlength="500" type="text" name="PorDonde" [(ngModel)]="detail.PorDonde">
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="row">
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <!-- [ngClass]="{'has-danger': Cartel.invalid && (Cartel.dirty || Cartel.touched || detailForm.submitted)}">-->
+                            <label>Cartel</label>
+                            <input #Cartel="ngModel" class="form-control" type="text" name="Cartel" [(ngModel)]="detail.Cartel" disabled>
+                        </div>
+
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label>Ramalero</label>
+                            <input #Ramalero="ngModel" class="form-control" type="text" name="Ramalero" [(ngModel)]="detail.Ramalero" maxlength="100">
+
+                            <!--<div *ngIf="Ramalero.invalid && (Ramalero.dirty || Ramalero.touched || detailForm.submitted)"
+                                class=" form-control-feedback">
+                                <div *ngIf="Ramalero.errors.required">
+                                    El Ramalero es Requerido
+                                </div>
+                            </div>-->
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="form-group col-md-6 col-lg-6" [ngClass]="{'has-danger': SentidoBanderaId.invalid && (SentidoBanderaId.dirty || SentidoBanderaId.touched || detailForm.submitted)}">
+                            <label>Sentido</label>
+
+                            <sentidoBandera-combo #SentidoBanderaId="ngModel" #sentidoBanderaCombo required name="SentidoBanderaId" [(ngModel)]="detail.SentidoBanderaId" emptyText="{{'Seleccione..'}}">
+                            </sentidoBandera-combo>
+
+                            <div *ngIf="SentidoBanderaId.invalid && (SentidoBanderaId.dirty || SentidoBanderaId.touched  || detailForm.submitted)" class=" form-control-feedback">
+                                <div *ngIf="SentidoBanderaId.errors.required">
+                                    El Sentido es Requerido
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6" [ngClass]="{'has-danger': TipoBanderaId.invalid && (TipoBanderaId.dirty || TipoBanderaId.touched || detailForm.submitted)}">
+                            <label>Tipo de bandera</label>
+                            <tipoBandera-combo #TipoBanderaId="ngModel" required allowNullable="{{false}}" name="TipoBanderaId" disabled="{{true}}" livesearch="{{false}}" [(ngModel)]="detail.TipoBanderaId" emptyText="{{'Seleccione..'}}">
+                            </tipoBandera-combo>
+                            <div *ngIf="TipoBanderaId.invalid && (TipoBanderaId.dirty || TipoBanderaId.touched  || detailForm.submitted)" class=" form-control-feedback">
+                                <div *ngIf="TipoBanderaId.errors.required">
+                                    El Tipo de Bandera es Requerido
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="row">
+
+                        <div class="form-group col-md-3 col-lg-3">
+                            <div class="m-checkbox-list">
+                                <label class="m-checkbox">
+                                    <input #Activo="ngModel" id="Activo" type="checkbox" name="Activo" [(ngModel)]="detail.Activo">
+                                    Activo
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="align-items-center" *ngIf="detail.TipoBanderaId==1">
+
+                        <div class="text-right">
+                            <button type="button" (click)="addNewBanderaSube()" class="btn btn-primary blue" style="margin-bottom: 15px;">
+                                <i class="fa fa-plus"></i>
+                                Crear Sube
+                            </button>
+                        </div>
+
+                        <div class="primeng-datatable-container" id="PlaCodigoSubeBanderaTable">
+
+                            <p-dataTable #dataTable [value]="detail.PlaCodigoSubeBandera" scrollable="true" scrollHeight="300px" [rowsPerPageOptions]="[10]" emptyMessage="Sin Sube" [editable]="true" responsive="false">
+
+                                <p-column field="TipoDiaNombre" header="Empresa" [editable]="true" [sortable]="true">
+                                    <ng-template let-row="rowData" pTemplate="editor">
+
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <empresa-combo #CodEmpresa="ngModel" required [ItemsModel]="Empresas" [AutomaticSearch]="false" (change)="onEmpresaChange($event.target.value, row)" id="{{ 'CodEmpresa' + row.Id }}" name="{{ 'CodEmpresa' + row.Id }}" allowNullable="{{true}}" livesearch="{{false}}"
+                                                    [(ngModel)]="row.CodEmpresa">
+                                                </empresa-combo>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <div *ngIf="CodEmpresa.invalid && (CodEmpresa.dirty || CodEmpresa.touched || detailForm.submitted)" class=" form-control-feedback">
+                                                    <small *ngIf="CodEmpresa.errors.required" class="has-required">
+                                                        El campo 'Empresa' es requerido
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template let-row="rowData" pTemplate="body">
+                                        <div>
+                                            {{ row.EmpresaNombre }}
+                                        </div>
+                                    </ng-template>
+                                </p-column>
+
+                                <p-column field="CodigoSube" [editable]="true" header="Codigo Sube" [sortable]="false">
+                                    <ng-template let-row="rowData" pTemplate="editor">
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <input #CodigoSube="ngModel" type="number" id="{{ 'CodigoSube' + row.Id }}" name="{{ 'CodigoSube' + row.Id }}" [(ngModel)]="row.CodigoSube" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <div *ngIf="CodigoSube.invalid && (CodigoSube.dirty || CodigoSube.touched || detailForm.submitted)" class=" form-control-feedback">
+                                                    <small *ngIf="CodigoSube.errors.required" class="has-required">
+                                                        El campo 'Código Sube' es requerido
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template let-row="rowData" pTemplate="body">
+                                        <div>
+                                            {{ row.CodigoSube }}
+                                        </div>
+                                    </ng-template>
+                                </p-column>
+
+
+                                <p-column field="Descripcion" [editable]="true" header="Descripción" [sortable]="false">
+                                    <ng-template let-row="rowData" pTemplate="editor">
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <input #Descripcion="ngModel" type="text" id="{{ 'Descripcion' + row.Id }}" name="{{ 'Descripcion' + row.Id }}" [(ngModel)]="row.Descripcion" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <div *ngIf="Descripcion.invalid && (Descripcion.dirty || Descripcion.touched || detailForm.submitted)" class=" form-control-feedback">
+                                                    <small *ngIf="Descripcion.errors.required" class="has-required">
+                                                        El campo 'Descripción' es requerido
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template let-row="rowData" pTemplate="body">
+                                        <div>
+                                            {{ row.Descripcion }}
+                                        </div>
+                                    </ng-template>
+                                </p-column>
+
+                                <p-column field="SentidoBanderaSube" header="Sentido" [editable]="true" [sortable]="true">
+                                    <ng-template let-row="rowData" pTemplate="editor">
+
+                                        <div class="row">
+                                            <div class="col-md-10">
+
+                                                <sentidobanderasube-combo #SentidoBanderaSube="ngModel" required [ItemsModel]="SentidosBandera" [AutomaticSearch]="false" (change)="onSentidoBanderaChange($event.target.value, row)" id="{{ 'SentidoBanderaSube' + row.Id }}" name="{{ 'SentidoBanderaSube' + row.Id }}"
+                                                    allowNullable="{{true}}" livesearch="{{false}}" [(ngModel)]="row.SentidoBanderaSubeId">
+                                                </sentidobanderasube-combo>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <div *ngIf="SentidoBanderaSube.invalid && (SentidoBanderaSube.dirty || SentidoBanderaSube.touched || detailForm.submitted)" class=" form-control-feedback">
+                                                    <small *ngIf="SentidoBanderaSube.errors.required" class="has-required">
+                                                        El campo 'Sentido Bandera Sube' es requerido
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template let-row="rowData" pTemplate="body">
+                                        <div>
+                                            {{ row.SentidoBanderaSubeNombre }}
+                                        </div>
+                                    </ng-template>
+                                </p-column>
+
+                                <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                    <ng-template let-col let-row="rowData" pTemplate type="body">
+                                        <div class="dropdown">
+                                            <a href="javascript:void(0);" (click)="onBanderaSubeDelete(row)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Eliminar">
+                                                <i class="la la-trash"></i>
+                                            </a>
+                                        </div>
+                                    </ng-template>
+                                </p-column>
+                            </p-dataTable>
+
+                        </div>
+
+
+                    </div>
+
+                    <!--<div class="">
+                        <a href="javascript:void(0);" (click)="crearEmpresa(row)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Crear Empresa">
+                            <i class="la la-plus"></i>
+                        </a>
+                    </div>-->
+
+
+
+
+                    <div class="m-portlet__foot">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 m--valign-middle">
+
+                            </div>
+                            <div class="col-lg-6 m--align-right">
+                                <div>
+                                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving" [busyText]="'Guardando..'">
+                                        <i class="fa fa-save"></i> <span>Guardar</span>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="tab-pane" id="m_portlet_tab_Recororidos">
+
+                    <div class="row" style="margin-bottom: 10px">
+                        <div class="col-md-8" style="margin-bottom: auto">
+                            <h3>Mapas</h3>
+                        </div>
+                        <div class="col-md-4  text-right" *ngIf="viewMode != 1">
+                            <button type="button" (click)="onCreateRuta()" class="btn btn-primary blue"><i class="fa fa-plus"></i>
+                                Crear Mapa</button>
+                        </div>
+                    </div>
+
+
+                    <div class="row align-items-center">
+                        <!--<Primeng-Datatable-Start>-->
+                        <div class="primeng-datatable-container" [busyIf]="primengDatatableHelper.isLoading">
+
+                            <p-dataTable #dataTableRutas [lazy]="true" (onLazyLoad)="onSearchRutas($event)" [value]="primengDatatableHelper.records" [paginator]="false" emptyMessage="Sin Datos" scrollable="true" ScrollWidth="100%" responsive="primengDatatableHelper.isResponsive">
+                                <p-column field="Nombre" header="Nombre" [sortable]="true">
+                                    <ng-template let-col let-row="rowData" pTemplate type="body">
+
+                                        {{row.Nombre}}
+
+                                        <div *ngIf="row.EsOriginal == 2" class="m-badge m-badge--success m-badge--wide float-right">
+                                            <span>
+                                                Original
+                                            </span>
+                                        </div>
+
+                                        <!--<div *ngIf="row.EsOriginal == 1" class="m-badge m-badge--primary m-badge--wide float-right">
+                                            <span>
+                                                Anterior 
+                                            </span>
+                                        </div>-->
+                                    </ng-template>
+                                </p-column>
+                                <p-column field="EstadoRuta.Nombre" header="Estado" [sortable]="true">
+                                    <ng-template let-col let-row="rowData" pTemplate type="body">
+                                        {{row.EstadoRutaNombre}}
+                                    </ng-template>
+                                </p-column>
+
+                                <p-column field="Fecha" header="Vigencia Desde" [sortable]="true">
+                                    <ng-template let-col let-row="rowData" pTemplate type="body">
+                                        {{row.FechaVigenciaDesde | date: 'dd-MM-yyyy'}}
+
+                                    </ng-template>
+
+                                </p-column>
+                                <p-column field="FechaVigenciaHasta" header="Vigencia Hasta" [sortable]="true">
+                                    <ng-template let-col let-row="rowData" pTemplate type="body">
+                                        {{row.FechaVigenciaHasta | date: 'dd-MM-yyyy'}}
+                                    </ng-template>
+                                </p-column>
+                                <p-column field="Vigente" header="Vigente" [sortable]="false">
+                                    <ng-template let-col let-row="rowData" pTemplate type="body">
+                                        <div class="medium-size" style="text-align:center">
+                                            <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': row.Vigente}">
+                                                <input [(ngModel)]="row.Vigente" name="Vigente_{{row.Id}}" type="checkbox" disabled><span></span>
+                                            </label>
+                                        </div>
+                                    </ng-template>
+                                </p-column>
+
+
+                                <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                    <ng-template let-col let-row="rowData" pTemplate type="body">
+                                        <a href="javascript:void(0);" (click)="onEditRuta(row)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Editar">
+                                            <i class="la la-edit"></i>
+                                        </a>
+
+                                        <a href="javascript:void(0);" (click)="copiarRecorrido(row)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Copiar Recorrido">
+                                            <i class="la la-copy"></i>
+                                        </a>
+
+
+                                        <a href="#" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown" data-container="body">
+                                            <i class="la la-ellipsis-h"></i>
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-right" data-container="body">
+                                            <a *ngIf="row.EstadoRutaId == 1" href="javascript:void(0);" class="dropdown-item" (click)="aprobarRecorrido(row)">
+                                                <i class="la la-check-circle"></i>Aprobar Recorrido
+                                            </a>
+                                            <a *ngIf="row.EstadoRutaId != 2" href="javascript:void(0);" (click)="onDeleteRecorido(row)" class="dropdown-item" title="Eliminar"><i class="la la-trash"></i>Eliminar</a>
+                                            <a href="javascript:void(0);" (click)="ShowViewSectores(row)" class="dropdown-item" title="Ver Sectores">
+                                                <i class="la la-eye"></i>Ver Sectores
+                                            </a>
+                                            <a href="javascript:void(0);" (click)="ExportarCoordenadas(row)" class="dropdown-item" title="Coordenadas"><i class="la la-file-excel-o"></i>Coordenadas</a>
+                                            <a href="javascript:void(0);" (click)="ExpotarKml(row)" class="dropdown-item" title="Exportar KML"><i class="fa fa-download"></i>Exportar KML</a>
+                                            <!--<a href="javascript:void(0);" (click)="ExportarDemoras(row)" class="dropdown-item"
+    title="Demoras"><i class="la la-file-excel-o"></i>Minutos Por Sector</a>-->
+                                        </div>
+                                    </ng-template>
+                                </p-column>
+
+                            </p-dataTable>
+
+                            <div class="primeng-paging-container">
+                                <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}" #paginatorRutas (onPageChange)="onSearchRutas($event)" [totalRecords]="primengDatatableHelper.totalRecordsCount" [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                                </p-paginator>
+                                <span class="total-records-count">
+                                    Registros totales: {{ primengDatatableHelper.totalRecordsCount}}
+                                </span>
+                            </div>
+
+                        </div>
+                        <!--<Primeng-Datatable-End>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<createOrEditRutaDtoModal #createOrEditRutaDtoModal></createOrEditRutaDtoModal>
+<selectSectoresHorarios #selectSectoresHorarios></selectSectoresHorarios>

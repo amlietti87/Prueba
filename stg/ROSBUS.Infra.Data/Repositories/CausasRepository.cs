@@ -1,0 +1,99 @@
+using ROSBUS.Admin.Domain;
+using ROSBUS.Admin.Domain.Entities;
+using ROSBUS.Admin.Domain.Interfaces.Repositories;
+using ROSBUS.infra.Data.Contexto;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using TECSO.FWK.Infra.Data;
+using TECSO.FWK.Infra.Data.Repositories;
+using System.Linq;
+using TECSO.FWK.Domain.Interfaces.Repositories;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using TECSO.FWK.Domain.Entities;
+
+namespace ROSBUS.infra.Data.Repositories
+{
+    public class CausasRepository : RepositoryBase<AdminContext, SinCausas, int>, ICausasRepository
+    {
+
+        public CausasRepository(IAdminDbContext _context)
+            :base(new DbContextProvider<AdminContext>(_context))
+        {
+
+        }
+
+        public override Expression<Func<SinCausas, bool>> GetFilterById(int id)
+        {
+            return e => e.Id == id;
+        }
+
+
+        public override async Task<SinCausas> AddAsync(SinCausas entity)
+        {
+            //try
+            //{
+            //    DbSet<PlaCoordenadas> dbSet = Context.Set<PlaCoordenadas>();
+            //    EntityEntry<PlaCoordenadas> entittyentry;
+
+            //    if (!dbSet.Any(e => e.Id == entity.Id)) {
+            //        entittyentry = await dbSet.AddAsync(entity);
+            //    }
+            //    else{
+
+            //        entittyentry = dbSet.Attach(entity);
+            //        entittyentry.State = EntityState.Modified;
+            //    }
+
+            //    await this.SaveChangesAsync();
+            //    return entittyentry.Entity;
+            //}
+            //catch (Exception ex)
+            //{
+            //    this.HandleException(ex);
+            //    throw;
+            //}
+
+            return await base.AddAsync(entity);
+
+        }
+
+        protected override IQueryable<SinCausas> AddIncludeForGet(DbSet<SinCausas> dbSet)
+        {
+            return base.AddIncludeForGet(dbSet)
+            .Include(e => e.SinSubCausas);
+        }
+
+
+
+        public async override Task<PagedResult<SinCausas>> GetAllAsync(Expression<Func<SinCausas, bool>> predicate, List<Expression<Func<SinCausas, Object>>> includeExpression = null)
+        {
+            try
+            {
+                IQueryable<SinCausas> query = Context.Set<SinCausas>().Where(predicate).AsQueryable();
+                var total = await query.CountAsync();
+
+                if (includeExpression != null)
+                {
+                    foreach (var include in includeExpression)
+                    {
+                        query = query.Include(include);
+                    }
+
+                }
+                query = query.OrderBy(e => e.Descripcion);
+                return new PagedResult<SinCausas>(total, await query.ToListAsync());
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+                throw;
+            }
+
+        }
+
+    }
+}

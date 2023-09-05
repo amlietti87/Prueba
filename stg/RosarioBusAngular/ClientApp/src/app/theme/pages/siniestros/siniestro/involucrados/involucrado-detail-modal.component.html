@@ -1,0 +1,506 @@
+<form #detailForm="ngForm"
+      class="smallsize"
+      novalidate
+      (ngSubmit)="save(detailForm)"
+      autocomplete="off">
+
+    <div class="modal-header">
+        <h1 class="modal-title">
+            <span *ngIf="viewMode != 1">{{"Editar Involucrado"}}</span>
+            <span *ngIf="viewMode == 1">{{"Crear Involucrado"}}</span>
+        </h1>
+        <div class="m-portlet__nav-item">
+            <a href="#"
+               (click)="close()"
+               class="m-portlet__nav-link m-portlet__nav-link--icon">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div id="scrollInv"
+             class="m-scrollable"
+             data-scrollable="true"
+             data-max-height="75vh"
+             style="height: 75vh; overflow: hidden;">
+            <!--Titular--->
+            <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title><h6>Titular</h6></mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="row">
+                    <!-- Numero de Involucrado --->
+                    <div class="form-group col-xl-2"
+                         [ngClass]="{'has-danger': NroInvolucrado.invalid && (NroInvolucrado.dirty || NroInvolucrado.touched || detailForm.submitted)}">
+                        <label><b>Nro. Involucrado</b></label>
+                        <input #NroInvolucrado="ngModel"
+                               disabled
+                               class="form-control"
+                               type="text"
+                               name="NroInvolucrado"
+                               [(ngModel)]="detail.NroInvolucrado"
+                               required
+                               style="font-weight:bold !important;"
+                               maxlength="32">
+
+                        <div *ngIf="NroInvolucrado.invalid && (NroInvolucrado.dirty || NroInvolucrado.touched || detailForm.submitted)"
+                             class=" form-control-feedback">
+                            <div *ngIf="NroInvolucrado.errors.required">
+                                El Nro. Involucrado es Requerido
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tipo Involucrado--->
+                    <div class="form-group col-xl-2"
+                         [ngClass]="{'has-danger': TipoInvolucradoId.invalid && (TipoInvolucradoId.dirty || TipoInvolucradoId.touched  || detailForm.submitted)}">
+                        <label><b>Tipo Involucrado</b></label>
+                        <tipoinvolucrado-combo [showAddButton]="allowAddTipoInvolucrado"
+                                               name="TipoInvolucradoId"
+                                               id="TipoInvolucradoId"
+                                               #TipoInvolucradoId="ngModel"
+                                               #TipoInvolucradoCombo
+                                               required
+                                               (ngModelChange)="onTipoInvolucradoChanged($event)"
+                                               [(ngModel)]="detail.TipoInvolucradoId"
+                                               emptyText="{{'Seleccione..'}}">
+                        </tipoinvolucrado-combo>
+                        <div *ngIf="TipoInvolucradoId.invalid && (TipoInvolucradoId.dirty || TipoInvolucradoId.touched || detailForm.submitted)"
+                             class=" form-control-feedback">
+                            <div *ngIf="TipoInvolucradoId.errors.required">
+                                El tipo de involucrado es requerido
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Apellido y Nombre -->
+                    <div class="form-group col-xl-8"
+                         [ngClass]="{'has-danger': ApellidoNombre.invalid && (ApellidoNombre.dirty || ApellidoNombre.touched  || detailForm.submitted)}">
+                        <label><b>Apellido y nombre</b></label>
+                        <input #ApellidoNombre="ngModel"
+                               class="form-control"
+                               type="text"
+                               name="ApellidoNombre"
+                               [(ngModel)]="detail.ApellidoNombre"
+                               required
+                               maxlength="250">
+
+                        <div *ngIf="ApellidoNombre.invalid && (ApellidoNombre.dirty || ApellidoNombre.touched  || detailForm.submitted)"
+                             class=" form-control-feedback">
+                            <div *ngIf="ApellidoNombre.errors.required">
+                                El Apellido y Nombre es Requerido
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Tipo Documento-->
+                    <div class="form-group col-xl-2" [ngClass]="{'has-danger': TipoDocId.invalid && (TipoDocId.dirty || TipoDocId.touched  || detailForm.submitted)}">
+                        <label>Tipo documento</label>
+                        <tipoDocId-combo [showAddButton]="allowAddTipoDni"
+                                         [TipoDocId]="detail.TipoDocId"
+                                         name="TipoDocId"
+                                         id="TipoDocId"
+                                         #TipoDocId="ngModel"
+                                         (ngModelChange)="onTipoDocumentoChanged($event)"
+                                         [(ngModel)]="detail.TipoDocId"
+                                         emptyText="{{'Seleccione..'}}">
+                        </tipoDocId-combo>
+                    </div>
+                    <!-- Nro. Documento -->
+                    <div class="form-group col-xl-2">
+                        <label>Nro. Documento</label>
+                        <input #NroDoc="ngModel"
+                               [options]="{ prefix: '', thousands: '', decimal: '', precision: 0 }"
+                               currencyMask
+                               (ngModelChange)="onDocumentoChanged($event)"
+                               class="form-control"
+                               type="text"
+                               name="NroDoc"
+                               [(ngModel)]="detail.NroDoc"
+                               maxlength="50">
+                    </div>
+                    <!-- Historial de Siniestros-->
+                    <div class="form-group col-xl-2">
+                        <label>Hist. de siniestros</label>
+                        <div class="smallpadding  psmallpadding smallSizeFont" *ngIf="bMostrarHistorialSiniestros">
+                            <span style="float:left;">Tercero: {{ HistorialSiniestros.Tercero }}</span>
+                            <span style="float:right;">Conductor: {{ HistorialSiniestros.Conductor }}</span><br />
+                            <span style="float:left;">Lesionado: {{ HistorialSiniestros.Lesionado }}</span>
+                            <span style="float:right;">Testigo: {{ HistorialSiniestros.Testigo }}</span><br />
+                            <span style="float:left;">Mueble/Inmueble:  {{ HistorialSiniestros.Titular }}</span>
+                        </div>
+                    </div>
+                    <!-- Fecha Nacimiento-->
+                    <div class="form-group col-xl-2">
+                        <label>Fecha nacimiento</label>
+                        <mat-form-field class="mat-form-field-mat-datepicker mat-form-field-mat-datepicker-100p">
+                            <input matInput
+                                   [(ngModel)]="detail.FechaNacimiento"
+                                   name="FechaNacimiento"
+                                   [matDatepicker]="FechaNacimiento">
+                            <mat-datepicker-toggle matSuffix [for]="FechaNacimiento"></mat-datepicker-toggle>
+                            <mat-datepicker #FechaNacimiento></mat-datepicker>
+                        </mat-form-field>
+
+                    </div>
+                    <!-- Telefono-->
+                    <div class="form-group col-xl-2">
+                        <label>Tel&eacute;fono</label>
+                        <input #Telefono="ngModel"
+                               class="form-control"
+                               type="text"
+                               name="Telefono"
+                               [(ngModel)]="detail.Telefono"
+                               maxlength="100">
+                    </div>
+                    <!-- Celular-->
+                    <div class="form-group col-xl-2">
+                        <label>Celular</label>
+                        <input #Celular="ngModel"
+                               class="form-control"
+                               type="text"
+                               name="Celular"
+                               [(ngModel)]="detail.Celular"
+                               maxlength="100">
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Domicilio-->
+                    <div class="form-group col-xl-6">
+                        <label>Domicilio</label>
+                        <input #Domicilio="ngModel"
+                               class="form-control"
+                               type="text"
+                               name="Domicilio"
+                               [(ngModel)]="detail.Domicilio"
+                               maxlength="250">
+                    </div>
+                    <!-- Localidad-->
+                    <div class="form-group col-xl-4">
+                        <label>Localidad</label>
+                        <span class="ui-fluid">
+                            <localidad-autocomplete [showAddButton]="allowAddLocalidades"
+                                                    style="width:  100% !important;"
+                                                    #LocalidadId="ngModel"
+                                                    [(ngModel)]="detail.selectLocalidades"
+                                                    name="LocalidadId"
+                                                    id="LocalidadId"
+                                                    placeHolder="Localidades">
+                            </localidad-autocomplete>
+                        </span>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+            <!-- Conductor -->
+            <div *ngIf="bMostrarConductor">
+                <mat-expansion-panel [expanded]="false">
+                    <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+                        <mat-panel-title><h6>Conductor</h6></mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="row">
+                        <!--Apellido y Nombre -->
+                        <div class="form-group col-xl-4"
+                             [ngClass]="{'has-danger': Conductor_ApellidoNombre.invalid && (Conductor_ApellidoNombre.dirty || Conductor_ApellidoNombre.touched  || detailForm.submitted)}">
+                            <label><b>Apellido y nombre</b></label>
+                            <input #Conductor_ApellidoNombre="ngModel"
+                                   class="form-control"
+                                   type="text"
+                                   name="Conductor_ApellidoNombre"
+                                   id="Conductor_ApellidoNombre"
+                                   [(ngModel)]="detail.Conductor.ApellidoNombre"
+                                   maxlength="250"
+                                   required>
+                            <div *ngIf="Conductor_ApellidoNombre.invalid && (Conductor_ApellidoNombre.dirty || Conductor_ApellidoNombre.touched || detailForm.submitted)"
+                                 class=" form-control-feedback">
+                                <div *ngIf="Conductor_ApellidoNombre.errors.required">
+                                    El Nombre y Apellido del conductor es Requerido
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tipo Documento -->
+                        <div class="form-group col-xl-2">
+                            <label>Tipo documento</label>
+                            <tipoDocId-combo [showAddButton]="allowAddTipoDni"
+                                             name="Conductor_TipoDocId"
+                                             [TipoDocId]="detail.Conductor.TipoDocId"
+                                             id="Conductor_TipoDocId"
+                                             #Conductor_TipoDocId="ngModel"
+                                             [(ngModel)]="detail.Conductor.TipoDocId"
+                                             emptyText="{{'Seleccione..'}}">
+                            </tipoDocId-combo>
+                        </div>
+                        <!-- Nro. Documento -->
+                        <div class="form-group col-xl-2">
+                            <label>Nro. Documento</label>
+                            <input #Conductor_NroDoc="ngModel"
+                                   class="form-control"
+                                   type="text"
+                                   name="Conductor_NroDoc"
+                                   [(ngModel)]="detail.Conductor.NroDoc"
+                                   maxlength="50">
+                        </div>
+                        <!-- Fecha Nacimiento -->
+                        <div class="form-group col-xl-2">
+                            <label>Fecha nacimiento</label>
+                            <mat-form-field class="mat-form-field-mat-datepicker mat-form-field-mat-datepicker-100p">
+                                <input matInput
+                                       [(ngModel)]="detail.Conductor.FechaNacimiento"
+                                       name="Conductor_FechaNacimiento"
+                                       [matDatepicker]="Conductor_FechaNacimiento">
+                                <mat-datepicker-toggle matSuffix [for]="Conductor_FechaNacimiento"></mat-datepicker-toggle>
+                                <mat-datepicker #Conductor_FechaNacimiento></mat-datepicker>
+                            </mat-form-field>
+
+                        </div>
+                        <!-- Nro. Licencia -->
+                        <div class="form-group col-xl-2">
+                            <label>Nro. Licencia</label>
+                            <input #Conductor_NroLicencia="ngModel"
+                                   class="form-control"
+                                   type="text"
+                                   name="Conductor_NroLicencia"
+                                   [(ngModel)]="detail.Conductor.NroLicencia"
+                                   maxlength="50">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Domicilio -->
+                        <div class="form-group col-xl-4">
+                            <label>Domicilio</label>
+                            <input #Conductor_Domicilio="ngModel"
+                                   class="form-control"
+                                   type="text"
+                                   name="Conductor_Domicilio"
+                                   [(ngModel)]="detail.Conductor.Domicilio"
+                                   maxlength="250">
+                        </div>
+                        <!-- Localidad -->
+                        <div class="form-group col-xl-4">
+                            <label>Localidad</label>
+                            <span class="ui-fluid">
+                                <localidad-autocomplete [showAddButton]="allowAddLocalidades"
+                                                        style="width:  100% !important;"
+                                                        #Conductor_LocalidadId="ngModel"
+                                                        [(ngModel)]="detail.Conductor.selectLocalidades"
+                                                        name="Conductor_LocalidadId"
+                                                        id="Conductor_LocalidadId"
+                                                        placeHolder="Localidades">
+                                </localidad-autocomplete>
+                            </span>
+                        </div>
+                        <!-- Telefono -->
+                        <div class="form-group col-xl-2">
+                            <label>Tel&eacute;fono</label>
+                            <input #Conductor_Telefono="ngModel"
+                                   class="form-control"
+                                   type="text"
+                                   name="Conductor_Telefono"
+                                   [(ngModel)]="detail.Conductor.Telefono"
+                                   maxlength="50">
+                        </div>
+                        <!-- Celular -->
+                        <div class="form-group col-xl-2">
+                            <label>Celular</label>
+                            <input #Conductor_Celular="ngModel"
+                                   class="form-control"
+                                   type="text"
+                                   name="Conductor_Celular"
+                                   [(ngModel)]="detail.Conductor.Celular"
+                                   maxlength="50">
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </div>
+            <!-- Vehiculo -->
+            <div *ngIf="bMostrarVehiculo">
+                <mat-expansion-panel [expanded]="false">
+                    <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+                        <mat-panel-title><h6>Veh&iacute;culo</h6></mat-panel-title>
+                        <mat-panel-description></mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="row">
+                        <!-- Marca -->
+                        <div class="form-group col-xl-2">
+                            <label>Marca</label>
+                            <input #Vehiculo_Marca="ngModel"
+                                   class="form-control"
+                                   type="text"
+                                   name="Vehiculo_Marca"
+                                   [(ngModel)]="detail.Vehiculo.Marca"
+                                   maxlength="250">
+                        </div>
+                        <!-- Modelo - -->
+                        <div class="form-group col-xl-2">
+                            <label>Modelo</label>
+                            <input #Vehiculo_Modelo="ngModel"
+                                   class="form-control"
+                                   type="text"
+                                   name="Vehiculo_Modelo"
+                                   [(ngModel)]="detail.Vehiculo.Modelo"
+                                   maxlength="250">
+                        </div>
+                        <!-- Dominio -->
+                        <div class="form-group col-xl-2">
+                            <label>Dominio</label>
+                            <input #Vehiculo_Dominio="ngModel"
+                                   class="form-control"
+                                   type="text"
+                                   name="Vehiculo_Dominio"
+                                   [(ngModel)]="detail.Vehiculo.Dominio"
+                                   maxlength="250">
+                        </div>
+                        <!-- Nro. Poliza -->
+                        <div class="form-group col-xl-2">
+                            <label>Nro. de p&oacute;liza</label>
+                            <input #Vehiculo_Poliza="ngModel"
+                                   class="form-control"
+                                   type="text"
+                                   name="Vehiculo_Poliza"
+                                   [(ngModel)]="detail.Vehiculo.Poliza"
+                                   maxlength="250">
+                        </div>
+                        <!-- Seguro -->
+                        <div class="form-group col-xl-3">
+                            <label>Seguro</label>
+                            <seguros-combo [showAddButton]="allowAddCiaSeguro"
+                                           name="detail_Vehiculo_SeguroId"
+                                           style="width: calc(100% - 48px);"
+                                           #SegurosCombo
+                                           id="detail_Vehiculo_SeguroId"
+                                           #detail_Vehiculo_SeguroId="ngModel"
+                                           [(ngModel)]="detail.Vehiculo.SeguroId" emptyText="{{'Seleccione..'}}">
+                            </seguros-combo>
+
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </div>
+            <!-- Lesionado -->
+            <div *ngIf="bMostrarLesionado">
+                <mat-expansion-panel [expanded]="false">
+                    <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+                        <mat-panel-title><h6>Lesionado</h6></mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="row">
+                        <!-- Tipo lesionado -->
+                        <div class="form-group col-md-3" [ngClass]="{'has-danger': IsTipoLesionadoRequired && detail_Lesionado_TipoLesionadoId.invalid && (detail_Lesionado_TipoLesionadoId.dirty || detail_Lesionado_TipoLesionadoId.touched  || detailForm.submitted)}">
+                            <label><b>Tipo Lesionado</b></label>
+                            <tipolesionado-combo [showAddButton]="allowAddTipoLesionado"
+                                                 name="detail_Lesionado_TipoLesionadoId"
+                                                 id="detail_Lesionado_TipoLesionadoId"
+                                                 #detail_Lesionado_TipoLesionadoId="ngModel"
+                                                 #TipoLesionadoCombo
+                                                 [(ngModel)]="detail.TipoLesionadoId"
+                                                 emptyText="{{'Seleccione..'}}">
+                            </tipolesionado-combo>
+                            <div *ngIf="IsTipoLesionadoRequired && detail_Lesionado_TipoLesionadoId.invalid && (detail_Lesionado_TipoLesionadoId.dirty || detail_Lesionado_TipoLesionadoId.touched  || detailForm.submitted)"
+                                 class=" form-control-feedback">
+                                <div *ngIf="detail_Lesionado_TipoLesionadoId.errors.required">
+                                    El tipo de lesionado es requerido
+                                </div>
+                            </div>
+                        </div>
+                        <!--Detalle lesion -->
+                        <div class="form-group col-md-12">
+                            <detallelesion [detail]="detail"
+                                           [(list)]="detail.DetalleLesion">
+
+                            </detallelesion>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+            </div>
+            <!-- Mueble / Inmueble -->
+            <div *ngIf="bMostrarMuebleInmueble">
+                <mat-expansion-panel #gato [expanded]="false">
+                    <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+                        <mat-panel-title><h6>Mueble/Inmueble</h6></mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="row">
+                        <!-- Tipo Inmueble -->
+                        <div class="form-group col-xl-2"
+                             [ngClass]="{'has-danger': detail_MuebleInmueble_TipoInmuebleId.invalid && (detail_MuebleInmueble_TipoInmuebleId.dirty || detail_MuebleInmueble_TipoInmuebleId.touched || detailForm.submitted)}">
+                            <label><b>Tipo Inmueble</b></label>
+                            <tipo-mueble-inmueble-combo [showAddButton]="allowAddTipoMueInmueble"
+                                                        name="detail_MuebleInmueble_TipoInmuebleId"
+                                                        id="detail_MuebleInmueble_TipoInmuebleId"
+                                                        #detail_MuebleInmueble_TipoInmuebleId="ngModel"
+                                                        [(ngModel)]="detail.MuebleInmueble.TipoInmuebleId"
+                                                        emptyText="{{'Seleccione..'}}"
+                                                        required>
+                            </tipo-mueble-inmueble-combo>
+                            <div *ngIf="detail_MuebleInmueble_TipoInmuebleId.invalid && (detail_MuebleInmueble_TipoInmuebleId.dirty || detail_MuebleInmueble_TipoInmuebleId.touched || detailForm.submitted)"
+                                 class=" form-control-feedback">
+                                <div *ngIf="detail_MuebleInmueble_TipoInmuebleId.errors.required">
+                                    El tipo de inmueble es requerido
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Lugar -->
+                        <div class="form-group col-xl-2">
+                            <label>Lugar</label>
+                            <input #MuebleInmueble_Lugar="ngModel"
+                                   class="form-control"
+                                   type="text"
+                                   name="MuebleInmueble_Lugar"
+                                   [(ngModel)]="detail.MuebleInmueble.Lugar"
+                                   maxlength="250">
+                        </div>
+                        <!-- Localidad -->
+                        <div class="form-group col-xl-2">
+                            <label>Localidad</label>
+                            <span class="ui-fluid">
+                                <localidad-autocomplete [showAddButton]="allowAddLocalidades"
+                                                        style="width:  100% !important;"
+                                                        #MuebleInmueble_LocalidadId="ngModel"
+                                                        [(ngModel)]="detail.MuebleInmueble.selectLocalidades"
+                                                        name="MuebleInmueble_LocalidadId"
+                                                        id="MuebleInmueble_LocalidadId"
+                                                        placeHolder="Localidades">
+                                </localidad-autocomplete>
+                            </span>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+
+            </div>
+
+            <!-- Detalle del daño -->
+            <div class="row" [hidden]="!viewDetalleDanio">
+                <div class="form-group col-md-12">
+                    <label>Detalle del da&ntilde;o</label>
+                    <textarea #Detalle="ngModel"
+                              class="form-control"
+                              type="text"
+                              name="Detalle"
+                              rows="4"
+                              [(ngModel)]="detail.Detalle">
+                    </textarea>
+                </div>
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button [disabled]="saving"
+                        type="button"
+                        class="btn btn-default"
+                        (click)="close()">
+                    Cancelar
+                </button>
+
+                <button [hidden]="!((viewMode == 1 && allowAdd) || (viewMode == 2 && allowModify))"
+                        type="submit"
+                        [buttonBusy]="saving"
+                        [busyText]="'Guardando..'"
+                        class="btn btn-primary blue">
+                    <i class="fa fa-save"></i> <span>Aceptar</span>
+                </button>
+
+            </div>
+        </div>
+        </div>
+</form>
+
+
+
+

@@ -1,0 +1,1052 @@
+import { Component, Input ,OnInit, group, ViewChild, ChangeDetectorRef, Injector } from '@angular/core';
+
+// import { RbMap } from '../rbmaps/RbMap';
+// import { HEROES } from '../rbmaps/RbMaps';
+
+import { RbMapMarker, CustomMarker, PuntoInfo, DataRecorrido } from '../rbmaps/RbMapMarker';
+import { RbMapGrupo } from '../rbmaps/RbMapGrupo';
+import { RbMapLinea } from '../rbmaps/RbMapLinea';
+import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { RbMapServicesGrupo } from './RbMapServicesGrupo';
+import { RbMapServicesLinea } from './RbMapServicesLinea';
+import { RbMapServices } from './RbMapServices';
+import { AppComponentBase } from '../../shared/common/app-component-base';
+
+
+//import { RbMapAlertComponent } from './RbMapAlertComponent';
+
+declare var GMaps: any;
+declare var google: any;
+declare var bootbox: any;
+declare var $: any;
+
+@Component({
+    selector: 'app-rbmaps-test',
+    templateUrl: './rbmaps.componentTest.html',
+    styleUrls: ['./rbmaps.component.css']
+})
+
+export class RbmapsComponentTest extends AppComponentBase implements OnInit {
+
+    @Input() loadOnInit: string = "true";
+
+    map: any;
+    isCreatedMap: boolean = false;
+    busqueda: String;
+    edicion: boolean;
+
+    grupoNuevo: RbMapGrupo;
+    grupoSeleccionado: RbMapGrupo;
+    grupos: RbMapGrupo[];
+    closeResult: string;
+    serviceGrupo: RbMapServicesGrupo;
+    service: RbMapServices;
+
+    linea: RbMapLinea;
+    lineaNueva: RbMapLinea;
+    lineaSeleccionada: RbMapLinea;
+    lineas: RbMapLinea[];
+    serviceLinea: RbMapServicesLinea;
+
+    polyline: any;
+    polylines: any;
+    travelRouteLines: any;
+
+    tiempoDuracionMostrarRuta: boolean;
+
+    kmlFile: any;
+
+    diff = 0.000010;
+
+    modal: NgbModalRef;
+
+    puntos: PuntoInfo[];
+
+    dataRecorrido: DataRecorrido;
+    
+
+    constructor(injector: Injector, private modalService: NgbModal, private cdRef: ChangeDetectorRef) {
+
+        super(injector);
+
+        this.serviceGrupo = new RbMapServicesGrupo();
+        this.serviceLinea = new RbMapServicesLinea();
+        this.service = new RbMapServices();
+        this.busqueda = "pellegrini y sarmiento, rosario";
+        //if (!this.grupos) this.grupos = new Array() as RbMapGrupo[];
+        this.grupos = this.serviceGrupo.getAll();
+        this.lineas = this.serviceLinea.getAll();
+
+        this.tiempoDuracionMostrarRuta = false;
+
+        this.travelRouteLines = [];
+
+        this.puntos = [];
+        this.dataRecorrido = new DataRecorrido();
+    }
+
+    ngOnInit() {
+        if (this.loadOnInit =="true") {
+            this.crearMapa();
+        }
+    }
+
+    crearMapa(): void {
+        if (!this.isCreatedMap) {
+            var rbmaps = this;
+            var myStyles = [
+                {
+                    featureType: "poi",
+                    elementType: "labels",
+                    stylers: [
+                        { visibility: "off" }
+                    ]
+                }
+            ];
+            this.map = new GMaps({
+                div: '#map',
+                lat: -32.954517,
+                lng: -60.655931,
+                click: function (e) {
+                    //rbmaps.addMarkerToMap(e.latLng, false);
+                    rbmaps.test_AgregarMarcador(e.latLng, false);
+                },
+                styles: myStyles,
+                disableDefaultUI: true
+            });
+            this.isCreatedMap = true;
+        }
+    }
+
+    buscar(busqueda: String): void {
+        this.buscar_Gmaps(busqueda);
+    }
+
+    buscar_Gmaps(text): void {
+        var rbmaps = this;
+        GMaps.geocode({
+            address: text,
+            callback: function(results, status) {
+                if (status == 'OK') {
+                    var latlng = results[0].geometry.location;
+                    rbmaps.goTo(latlng.lat(), latlng.lng());
+                }
+            }
+        });
+    }
+
+    goTo(lat, lng): void {
+        this.map.setCenter(lat, lng);
+    }
+
+    // Eventos
+
+    guardarLinea() {
+        if (!this.linea) return;
+
+        this.linea.points = [];
+        this.map.markers.forEach(element => {
+            var punto = new CustomMarker();
+            punto.id = element.details.id;
+            punto.lat = element.position.lat();
+            punto.lng = element.position.lng();
+            punto.tipo = element.details.tipo;
+            punto.info = element.details.info;
+            this.linea.agregarPunto(punto);
+        });
+        this.serviceLinea.save(this.linea);
+        this.mostrarLinea(this.linea.id, false);
+        this.lineas = this.serviceLinea.getAll();
+    }
+
+    descartarCambios() {
+        if (!this.linea) return;
+        this.lineas = this.serviceLinea.getAll();
+        this.mostrarLinea(this.linea.id, false);
+    }
+
+    eliminarNodos() {
+        this.removeMarkersAndPolylines();
+    }
+
+    irInicio() {
+        if (!this.linea) return;
+
+        var inicio = this.linea.points[0];
+        this.goTo(inicio.lat, inicio.lng);
+    }
+
+    irFin() {
+        if (!this.linea) return;
+
+        var fin = this.linea.points[this.linea.points.length - 1];
+        this.goTo(fin.lat, fin.lng);
+    }
+
+    onEdicionChanged() {
+        this.removeMarkersAndPolylines();
+        this.grupoSeleccionado = undefined;
+        this.lineaSeleccionada = undefined;
+    }
+
+    onTimeAndDistanceClicked() {
+        var show = this.tiempoDuracionMostrarRuta;
+        this.getTimeAndDistance(show);
+    }
+
+    onUploadKmlFile() {
+        this.uploadKml();
+    }
+
+    // Marcadores
+
+    addMarkerToMap(latlng, center): void {
+
+        if (!this.edicion || !this.linea) return;
+        var rbm = this;
+        var marker = new RbMapMarker(latlng.lat(), latlng.lng());
+        marker.SetDragend(function(e) { console.log("marcador movido", this); rbm.onNewMarkerDragged(e, rbm); });
+        marker.SetClick(function(e) { rbm.onNewMarkerClicked(e, rbm); })
+
+        this.map.addMarker(marker);
+
+        if (center) {
+            this.map.setCenter(latlng.lat(), latlng.lng());
+        }
+
+        this.mostrarLinea_Polyline(this.linea);
+    }
+
+    mostrarLinea_Marcadores(linea_a_mostrar: RbMapLinea, posicionar: boolean) {
+
+        if (!linea_a_mostrar || !linea_a_mostrar.points) return;
+
+        var last = linea_a_mostrar.points.length - 1;
+        var rbm = this;
+
+        linea_a_mostrar.points.forEach((element, i) => {
+            if (this.edicion || (!this.edicion && element.tipo != 1)) {
+
+                var marker = new RbMapMarker(0, 0);
+                marker.SetSaved(element);
+                marker.SetDragend(function(e) { rbm.onSavedMarkerDragged(e, rbm, element.id) });
+
+                if (this.edicion) {
+                    marker.SetClick(function(e) { rbm.onNewMarkerClicked(e, rbm); });
+                }
+                else {
+                    marker.infoWindow = { content: element.info };
+                }
+
+                this.map.addMarker(marker);
+            }
+
+            if (posicionar && i == last) {
+                this.map.setCenter(element.lat, element.lng);
+            }
+        });
+    }
+
+    onNewMarkerDragged(e, rbm: RbmapsComponentTest) {
+        //rbm.actualizarLineaConMapa();
+        //rbm.mostrarLinea_Polyline(rbm.linea);
+        console.log("dragged", e);
+    }
+
+    onSavedMarkerDragged(e, rbm: RbmapsComponentTest, id: string) {
+        var found = false;
+        for (let i = 0; i < rbm.map.markers.length && !found; i++) {
+            const marcadorEnMapa = rbm.map.markers[i];
+            if (marcadorEnMapa.details.id == id) {
+                marcadorEnMapa.icon.url = rbm.service.markerIcon_Sin_Guardar(marcadorEnMapa.details.tipo);
+                found = true;
+            }
+        }
+
+        rbm.actualizarLineaConMapa();
+        rbm.mostrarLinea_Polyline(rbm.linea);
+    }
+
+    onNewMarkerClicked(e, rbm: RbmapsComponentTest) {
+        var message = "<div>Informacion: " + (e.details.info ? e.details.info : "No ingresada") + "</div>";
+        message += "<div>Tipo: " + rbm.service.pinType(e.details.tipo) + "</div>";
+
+        var dialog = bootbox.dialog({
+            title: 'Seleccionar opcion',
+            message: message,
+            buttons: {
+                editInfo: {
+                    label: "Editar Info",
+                    className: 'btn-success',
+                    callback: function() {
+                        rbm.onAddInfoMarkerClicked(function(info) {
+                            if (!info) return;
+
+                            e.details.info = info;
+                            e.infoWindow = { content: info };
+                        });
+                        //return false;
+                    }
+                },
+                addBefore: {
+                    label: "+1 Antes",
+                    className: 'btn-success',
+                    callback: function() {
+                        var newLat = e.position.lat() - rbm.diff;
+                        var newLng = e.position.lng() - rbm.diff;
+                        var newMarker = new RbMapMarker(newLat, newLng);
+                        newMarker.SetDragend(function(e) { rbm.onNewMarkerDragged(e, rbm); });
+                        newMarker.SetClick(function(e) { rbm.onNewMarkerClicked(e, rbm); })
+                        rbm.map.addMarker(newMarker);
+
+                        var indexNew = rbm.map.markers.length - 1;
+                        var indexClicked = rbm.map.markers.indexOf(e);
+
+                        rbm.arraymove(rbm.map.markers, indexNew, indexClicked);
+                        rbm.mostrarLinea_Polyline(rbm.linea);
+                    }
+                },
+                ok: {
+                    label: "Cambiar Tipo",
+                    className: 'btn-info',
+                    callback: function() {
+                        bootbox.prompt({
+                            title: "Selecciona el tipo de marcador",
+                            inputType: 'select',
+                            inputOptions: [
+                                {
+                                    text: 'Selecciona un tipo',
+                                    value: '',
+                                },
+                                {
+                                    text: rbm.service.pinType(1),
+                                    value: 1,
+                                },
+                                {
+                                    text: rbm.service.pinType(2),
+                                    value: 2,
+                                },
+                                {
+                                    text: rbm.service.pinType(6),
+                                    value: 6,
+                                },
+                                {
+                                    text: rbm.service.pinType(7),
+                                    value: 7,
+                                },
+                                {
+                                    text: rbm.service.pinType(8),
+                                    value: 8,
+                                },
+                                {
+                                    text: rbm.service.pinType(9),
+                                    value: 9,
+                                }
+                            ],
+                            callback: function(tipo) {
+                                if (!tipo) return;
+
+                                e.icon.url = rbm.service.markerIcon_Sin_Guardar(tipo);
+                                e.details.tipo = tipo;
+                                var latTemp = e.position.lat() - rbm.diff;
+                                rbm.map.setCenter(latTemp, e.position.lng());
+                                setTimeout(function() {
+                                    rbm.map.setCenter(e.position.lat(), e.position.lng());
+                                }, 100);
+                            }
+                        });
+
+                    }
+                },
+                cancel: {
+                    label: "Eliminar",
+                    className: 'btn-danger',
+                    callback: function() {
+                        var index = rbm.map.markers.indexOf(e);
+                        if (index > -1) {
+                            rbm.map.markers.splice(index, 1);
+                            e.setMap(null);
+                            rbm.mostrarLinea_Polyline(rbm.linea);
+                        }
+                    }
+                },
+            }
+        });
+
+    }
+
+    onAddInfoMarkerClicked(callback) {
+        bootbox.prompt("Informacion", callback);
+    }
+
+    // Grupos
+
+    modalGrupo(content) {
+        this.grupoNuevo = new RbMapGrupo();
+        this.modal = this.modalService.open(content);
+        this.modal.result.then((result) => {
+            //this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+            //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+    }
+
+    private getDismissReason(reason: any): string {
+        if (reason === ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
+        } else {
+            return `with: ${reason}`;
+        }
+    }
+
+    onSubmitGrupo(form) {
+        if (!form.valid) return;
+
+        this.grupos.push(this.grupoNuevo);
+        this.modal.close();
+
+        this.serviceGrupo.save(this.grupos);
+    }
+
+    onGrupoSelected(grupoId) {
+        if (!this.edicion) this.mostrarTodasLasLineas(grupoId, true);
+    }
+
+    // Lineas
+
+    modalLinea(content) {
+        this.lineaNueva = new RbMapLinea();
+        this.modal = this.modalService.open(content);
+        this.modal.result.then((result) => {
+            //this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+            //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+    }
+
+    onSubmitLinea(form) {
+        if (!form.valid) return;
+
+        this.lineas.push(this.lineaNueva);
+        this.modal.close();
+
+        this.serviceLinea.save(this.lineaNueva);
+    }
+
+    onLineaSelected(lineaId) {
+        this.mostrarLinea(lineaId, true);
+    }
+
+    mostrarLinea(lineaId: string, posicionar: boolean) {
+        this.removeMarkersAndPolylines();
+        var linea = this.serviceLinea.get(lineaId);
+        this.linea = linea;
+        this.mostrarLinea_Marcadores(linea, posicionar);
+        this.mostrarLinea_Polyline(linea);
+    }
+
+    actualizarLineaConMapa() {
+        if (!this.linea) return;
+
+        this.linea.points = [];
+        this.map.markers.forEach(element => {
+            this.linea.points.push({
+                id: element.id,
+                lat: element.position.lat(),
+                lng: element.position.lng(),
+                tipo: element.details.tipo,
+                info: element.details.info
+            });
+        });
+    }
+
+    mostrarTodasLasLineas(grupoId: string, posicionar: boolean) {
+        this.removeMarkersAndPolylines();
+        for (let i = 0; i < this.lineas.length; i++) {
+            const element = this.lineas[i] as RbMapLinea;
+            if (element.grupoId == grupoId) {
+                this.mostrarLinea_Polyline_Multiple(element);
+                this.mostrarLinea_Marcadores(element, posicionar);
+            }
+        }
+    }
+
+    // Polylines
+
+    mostrarLinea_Polyline(linea_a_mostrar: RbMapLinea) {
+
+        var path = [];
+        for (let i = 0; i < this.map.markers.length; i++) {
+            const element = this.map.markers[i];
+            path.push([element.position.lat(), element.position.lng()]);
+        }
+
+        if (this.polyline) this.polyline.setMap(null);
+
+        if (path.length <= 0) return;
+
+        this.polyline = this.map.drawPolyline({
+            path: path,
+            strokeColor: linea_a_mostrar.color,
+            strokeOpacity: 0.6,
+            strokeWeight: linea_a_mostrar.diametro
+        });
+    }
+
+    removeMarkersAndPolylines() {
+        if (this.map) this.map.removeMarkers();
+        if (this.polyline) this.polyline.setMap(null);
+
+        this.removePolylineArray(this.polylines);
+        this.removePolylineArray(this.travelRouteLines);
+
+        //EmptyDiv("gmap_routes_instructions");
+    }
+
+    removePolylineArray(plArray) {
+        if (plArray && plArray.length > 0) {
+            plArray.forEach(element => {
+                if (element) element.setMap(null);
+            });
+
+            plArray = [];
+        }
+    }
+
+    mostrarLinea_Polyline_Multiple(linea_a_mostrar: RbMapLinea) {
+
+        var path = [];
+
+        for (let i = 0; i < linea_a_mostrar.points.length; i++) {
+            const element = linea_a_mostrar.points[i];
+            path.push([element.lat, element.lng]);
+        }
+
+        if (path.length <= 0) return;
+
+        var np = this.map.drawPolyline({
+            path: path,
+            strokeColor: linea_a_mostrar.color,
+            strokeOpacity: 0.6,
+            strokeWeight: linea_a_mostrar.diametro
+        });
+
+        if (!this.polylines) this.polylines = [];
+
+        this.polylines.push(np);
+    }
+
+    // Routes
+
+    // hacerRuta(puntos: CustomMarker[]) {
+    //     var totalPuntos = this.puntos.length;
+
+    //     if (totalPuntos < 2) return;
+
+    //     var puntoA = this.puntos[totalPuntos - 2];
+    //     var puntoB = this.puntos[totalPuntos - 1];
+
+    //     var rbm = this;
+    //     this.map.travelRoute({
+    //         origin: [puntoA.lat, puntoA.lng],
+    //         destination: [puntoB.lat, puntoB.lng],
+    //         travelMode: 'driving',
+    //         step: function(e) { rbm.traveRoute_step(e, rbm) }
+    //     });
+    // }
+
+    getTimeAndDistance(showRoute: boolean) {
+        if (!this.linea) return;
+
+        var marcadores = this.linea.points;
+        var len = marcadores.length;
+
+        if (marcadores.length < 2) return;
+        var inicio = marcadores[0];
+        var fin = marcadores[len - 1];
+
+        var waypoints = [];
+        var maxWaypoints = 23; //20
+        var pasos = Math.ceil(len / maxWaypoints);
+
+        for (let i = 0; i < marcadores.length; i++) {
+            const element = marcadores[i];
+            if (i != 0 && i != len - 1 && i % pasos == 0) {
+                var item = { location: { lat: element.lat, lng: element.lng }, stopover: false };
+                waypoints.push(item);
+            }
+        }
+
+        var rbm = this;
+
+        this.map.getRoutes({
+            origin: [inicio.lat, inicio.lng],
+            destination: [fin.lat, fin.lng],
+            waypoints: waypoints,
+            travelMode: 'driving',
+            callback: function(e) { rbm.getRoutes_callback(e, rbm); }
+        });
+
+        if (showRoute) {
+
+            this.map.travelRoute({
+                origin: [inicio.lat, inicio.lng],
+                destination: [fin.lat, fin.lng],
+                waypoints: waypoints,
+                travelMode: 'driving',
+                step: function(e) { rbm.traveRoute_step(e, rbm) }
+            });
+        }
+    }
+
+    getRoutes_callback(e, rbm: RbmapsComponentTest) {
+        var lastRoute = e[e.length - 1];
+        var l = lastRoute.legs[0];
+        var distancia = l.distance.text;
+        var duracion = l.duration.text;
+        var start_address = l.start_address;
+        var end_address = l.end_address;
+
+        //https://developers.google.com/maps/documentation/javascript/directions#Legs
+
+        var info = "<div> <b>Inicia en</b> " + start_address + "</div>";
+        info += "<div> <b>Finaliza en</b> " + end_address + "</div>";
+        info += "<div> <b>Distancia:</b> " + distancia + "</div>";
+        info += "<div> <b>Duracion:</b> " + duracion + "</div>";
+
+        bootbox.alert(info);
+    }
+
+    traveRoute_step(e, rbm: RbmapsComponentTest) {
+        console.log("step", e);
+        //temp1.end_point.lng()
+        setTimeout(() => {
+            rbm.map.setCenter(e.end_location.lat(), e.end_location.lng());
+            var l = rbm.map.drawPolyline({
+                path: e.path,
+                strokeColor: '#131540',
+                strokeOpacity: 0.6,
+                strokeWeight: 6
+            });
+
+            rbm.travelRouteLines.push(l);
+        }, 800 * e.step_number)
+
+    }
+
+    // KML
+
+    loadKml(event) {
+        let files = event.target.files;
+        if (files && files.length > 0) {
+            this.kmlFile = files[0];
+        }
+    }
+
+    uploadKml() {
+        var rbm = this;
+
+        if (this.kmlFile) {
+            var rbm = this;
+            var reader = new FileReader();
+            reader.readAsText(this.kmlFile, "UTF-8");
+            reader.onload = function(evt: any) {
+                var $viaje = rbm.service.parseKML(evt.target.result);
+                var group = new RbMapGrupo();
+                group.nombre = $viaje.name;
+                var linea1 = rbm.crearLineaKML(group.id, $viaje.ida);
+                var linea2 = rbm.crearLineaKML(group.id, $viaje.vuelta);
+
+                console.log("linea 1", linea1);
+
+                rbm.dibujarDesdeKML(linea1.points, 0, rbm);
+
+                // for (let index = 0; index < linea1.points.length; index++) {
+                //   const customMarker = linea1.points[index];
+                //   rbm.test_AgregarMarcador_lat_lng(customMarker.lat, customMarker.lng, false);
+                // }
+
+                // rbm.lineas.push(linea1);
+                // rbm.lineas.push(linea2);
+                // rbm.grupos.push(group);
+
+                // rbm.serviceLinea.save(linea1);
+                // rbm.serviceLinea.save(linea2);
+                // rbm.serviceGrupo.save(rbm.grupos);
+
+                // bootbox.alert("Recorridos creados.");
+            }
+            reader.onerror = function(evt) {
+                console.log("Error reading")
+            }
+        }
+    }
+
+    dibujarDesdeKML(points: CustomMarker[], i: number, rbm: RbmapsComponentTest) {
+        if (i == points.length) return;
+
+        var customMarker = points[i];
+
+        //console.log("punto " + i, customMarker)
+        var center = i == 0;
+        var next_i = i + 1;
+
+        if (i == 0) {
+            rbm.test_AgregarMarcador_lat_lng(customMarker.lat, customMarker.lng, center);
+            rbm.dibujarDesdeKML(points, next_i, rbm);
+        }
+        else {
+
+            rbm.test_AgregarMarcador_lat_lng(customMarker.lat, customMarker.lng, center, function() {
+                setTimeout(() => {
+                    rbm.dibujarDesdeKML(points, next_i, rbm);
+                }, 800 * 1)
+            });
+        }
+
+    }
+
+    crearLineaKML(groupId, viajeDireccion) {
+
+        var points = new Array() as CustomMarker[];
+        viajeDireccion.points.forEach(element => {
+            var punto = new CustomMarker();
+            punto.lat = element.lat;
+            punto.lng = element.lng;
+            points.push(punto);
+        });
+
+        var linea = new RbMapLinea();
+        linea.nombre = viajeDireccion.name;
+        linea.color = viajeDireccion.color;
+        linea.diametro = viajeDireccion.width;
+        linea.points = points;
+        linea.grupoId = groupId;
+
+        return linea;
+    }
+
+    // Tools
+
+    arraymove(arr, fromIndex, toIndex) {
+        var element = arr[fromIndex];
+        arr.splice(fromIndex, 1);
+        arr.splice(toIndex, 0, element);
+    }
+
+    // TEST 
+
+    test_AgregarMarcador(latlng, center): void {
+        this.test_AgregarMarcador_lat_lng(latlng.lat(), latlng.lng(), center);
+    }
+
+    test_AgregarMarcador_lat_lng(lat: any, lng: any, center, callback?: any): void {
+        var marker = new RbMapMarker(lat, lng);
+        var rbm = this;
+        marker.SetDragend(function(e) {
+            //console.log("marcador movido", this);  rbm.onNewMarkerDragged(e, rbm);
+            rbm.test_MoverMarcador(this, e, rbm);
+        });
+        //marker.SetClick(function(e){ rbm.onNewMarkerClicked(e, rbm); })
+        marker.SetClick(function(e) {
+            rbm.test_ClickMarcador(this, e, rbm);
+        })
+
+        this.map.addMarker(marker);
+
+        if (center) {
+            this.map.setCenter(lat, lng);
+        }
+
+        var totalPuntos = rbm.puntos.length;
+
+        if (totalPuntos == 0) {
+            var punto = new PuntoInfo(marker);
+            this.agregarPunto(punto, rbm);
+        }
+        else {
+            var lat, lng;
+            var punto_anterior = rbm.puntos[totalPuntos - 1];
+            if (punto_anterior.steps.length > 0) {
+                var last = punto_anterior.steps.length - 1;
+                lat = punto_anterior.steps[last].end_location.lat();
+                lng = punto_anterior.steps[last].end_location.lng();
+            }
+            else {
+                lat = punto_anterior.marcador.lat;
+                lng = punto_anterior.marcador.lng;
+            }
+
+            this.hacerRuta(lat, lng, marker, false, rbm, callback);
+        }
+    }
+
+    test_AgregarMarcador_Click_Linea(latlng, marcadorSiguiente: RbMapMarker, center: boolean): void {
+        var marker = new RbMapMarker(latlng.lat(), latlng.lng());
+        var rbm = this;
+        marker.SetDragend(function(e) {
+            rbm.test_MoverMarcador(this, e, rbm);
+        });
+        marker.SetClick(function(e) {
+            rbm.test_ClickMarcador(this, e, rbm);
+        })
+
+        this.map.addMarker(marker);
+
+        if (center) {
+            this.map.setCenter(latlng.lat(), latlng.lng());
+        }
+
+        var totalPuntos = rbm.puntos.length;
+        var encontrado = false;
+        for (let i = 0; i < rbm.puntos.length && !encontrado; i++) {
+            const element = rbm.puntos[i];
+            if (element.marcador.id == marcadorSiguiente.id) {
+                encontrado = true;
+                var nuevoPunto = new PuntoInfo(marker);
+                rbm.puntos.splice(i, 0, nuevoPunto);
+
+                rbm.rehacerLineas(nuevoPunto, i, rbm);
+            }
+        }
+    }
+
+    hacerRuta(lat_i: any, lng_i: any, marcador: RbMapMarker, reemplazar: boolean, rbm: RbmapsComponentTest, callback?: any) {
+
+        if (reemplazar) { // quitamos polyline
+            var encontrado = false;
+            for (let i = 0; i < rbm.puntos.length && !encontrado; i++) {
+                const element = rbm.puntos[i];
+                if (element.marcador.id == marcador.id) {
+                    encontrado = true;
+                    for (let ip = 0; ip < element.polylines.length; ip++) {
+                        element.polylines[ip].setMap(null);
+                    }
+                }
+            }
+        }
+
+        var punto = new PuntoInfo(marcador);
+        var origen = [lat_i, lng_i];
+        var destino = [marcador.lat, marcador.lng];
+
+        var salida1 = new Date();
+        var salida2 = new Date(2018, 4, 25, 23, 9, 0);
+        rbm.getRuta(origen, destino, rbm, salida1, function() {
+            rbm.getRuta(origen, destino, rbm, salida2);
+        })
+
+        rbm.map.travelRoute({
+            origin: origen,
+            destination: destino,
+            travelMode: 'driving',
+            end: function(e) {
+                //console.log("end", e);
+            },
+            step: function(e, total) {
+                //console.log("step", e)
+
+                var p = rbm.map.drawPolyline({
+                    path: e.path,
+                    strokeColor: '#131540',
+                    strokeOpacity: 0.6,
+                    strokeWeight: 6,
+                    click: function(e) {
+                        // Insertar nuevo_marcador antes de marcador
+                        // Mover nuevo_marcador
+                        rbm.test_AgregarMarcador_Click_Linea(e.latLng, marcador, false);
+                    }
+                });
+
+                //rbm._distancia += e.distance.value; // metros
+                //rbm._tiempo += e.duration.value; // segundos
+
+                punto.polylines.push(p);
+                punto.steps.push(e);
+
+                if (total == e.step_number) {
+                    if (reemplazar) rbm.reemplazarPunto(punto);
+                    else rbm.agregarPunto(punto, rbm);
+
+                    if (callback) callback();
+                }
+            }
+        });
+    }
+
+    agregarPunto(punto: PuntoInfo, rbm: RbmapsComponentTest) {
+        this.puntos.push(punto);
+        this.distancia_tiempo_agregar(punto);
+        this.cdRef.detectChanges();
+    }
+
+    eliminarPunto(punto: PuntoInfo, data: any, i: number, rbm: RbmapsComponentTest) {
+        rbm.distancia_tiempo_restar(punto);
+
+        // Quitamos las lineas pertenecientes al nodo a eliminar
+        punto.polylines.forEach(pl => {
+            pl.setMap(null);
+        });
+
+        rbm.puntos.splice(i, 1);
+        var index = rbm.map.markers.indexOf(data);
+        if (index > -1) {
+            rbm.map.markers.splice(index, 1);
+            data.setMap(null);
+        }
+
+        var totalPuntos = rbm.puntos.length;
+
+        // Siguiente punto
+        var i_sig = i;
+        if (i_sig <= totalPuntos) {
+            var punto_sig = rbm.puntos[i_sig];
+            // Quitamos las lineas pertenecientes al nodo siguiente
+            punto_sig.polylines.forEach(pl => {
+                pl.setMap(null);
+            });
+
+            if (i == 0) { // Ahora es el punto inicial
+                rbm.distancia_tiempo_restar(punto_sig);
+                punto_sig.polylines = [];
+                punto_sig.steps = [];
+            }
+
+            rbm.rehacerLineas(punto_sig, i, rbm);
+        }
+
+        this.cdRef.detectChanges();
+    }
+
+    reemplazarPunto(punto: PuntoInfo) {
+        var encontrado = false;
+        for (let i = 0; i < this.puntos.length && !encontrado; i++) {
+            const puntoEnArreglo = this.puntos[i];
+            if (puntoEnArreglo.marcador.id == punto.marcador.id) {
+                this.distancia_tiempo_reemplazar(punto, puntoEnArreglo);
+                this.cdRef.detectChanges();
+
+                puntoEnArreglo.marcador = punto.marcador;
+                puntoEnArreglo.steps = punto.steps;
+                puntoEnArreglo.polylines = punto.polylines;
+                encontrado = true;
+            }
+        }
+    }
+
+    distancia_tiempo_agregar(punto: PuntoInfo) {
+        punto.steps.forEach(step => {
+            this.dataRecorrido.SumarDistancia(step.distance.value);
+            this.dataRecorrido.SumarTiempo(step.duration.value);
+        });
+    }
+
+    distancia_tiempo_restar(punto: PuntoInfo) {
+        punto.steps.forEach(step => {
+            this.dataRecorrido.RestarDistancia(step.distance.value);
+            this.dataRecorrido.RestarTiempo(step.duration.value);
+        });
+    }
+
+    distancia_tiempo_reemplazar(punto: PuntoInfo, punto_reemplazado: PuntoInfo) {
+        this.distancia_tiempo_restar(punto_reemplazado);
+        this.distancia_tiempo_agregar(punto);
+    }
+
+    test_MoverMarcador(marcador: RbMapMarker, data: any, rbm: RbmapsComponentTest) {
+        // console.log("marcador", marcador);
+        // console.log("data", data);
+
+        var encontrado = false;
+        for (let i = 0; i < rbm.puntos.length && !encontrado; i++) {
+            const element = rbm.puntos[i];
+            if (element.marcador.id == marcador.id) {
+
+                element.marcador.lat = data.latLng.lat();
+                element.marcador.lng = data.latLng.lng();
+
+                rbm.rehacerLineas(element, i, rbm);
+
+            }
+        }
+    }
+
+    rehacerLineas(element: PuntoInfo, i: number, rbm: RbmapsComponentTest) {
+        if (i > 0) { // NO ES EL PRIMERO
+            var punto_anterior = rbm.puntos[i - 1];
+            var lat = punto_anterior.marcador.lat;
+            var lng = punto_anterior.marcador.lng;
+            rbm.hacerRuta(lat, lng, element.marcador, true, rbm, function() {
+                var totalPuntos = rbm.puntos.length;
+                if (i < totalPuntos - 1) { // NO ES EL ULTIMO
+                    var punto_sig = rbm.puntos[i + 1];
+                    var lat = element.marcador.lat;
+                    var lng = element.marcador.lng;
+                    rbm.hacerRuta(lat, lng, punto_sig.marcador, true, rbm);
+                }
+            });
+        }
+        else {
+            var totalPuntos = rbm.puntos.length;
+            if (i < totalPuntos - 1) { // NO ES EL ULTIMO
+                var punto_sig = rbm.puntos[i + 1];
+                var lat = element.marcador.lat;
+                var lng = element.marcador.lng;
+                rbm.hacerRuta(lat, lng, punto_sig.marcador, true, rbm);
+            }
+        }
+
+    }
+
+    test_ClickMarcador(marcador: RbMapMarker, e: any, rbm: RbmapsComponentTest) {
+
+        rbm.message.confirm("Eliminar marcador", "Deseas eliminar este marcador?", (a) => {
+
+            if (!a.value) return;
+
+            rbm.test_EliminarMarcador(marcador, e, rbm);
+        });
+
+    }
+
+    test_EliminarMarcador(marcador: RbMapMarker, data: any, rbm: RbmapsComponentTest) {
+        // console.log("marcador", marcador);
+        // console.log("data", data);
+
+        var encontrado = false;
+        var totalPuntos = rbm.puntos.length;
+        for (let i = 0; i < totalPuntos && !encontrado; i++) {
+            const element = rbm.puntos[i];
+            if (element.marcador.id == marcador.id) {
+                // Encontrado
+                encontrado = true;
+
+                // Eliminamos marcador
+                rbm.eliminarPunto(element, data, i, rbm);
+            }
+        }
+    }
+
+    getRuta(origen: any, destino: any, rbm: RbmapsComponentTest, salida: Date, callback1?: any) {
+        rbm.map.getRoutes({
+            origin: origen,
+            destination: destino,
+            travelMode: 'driving',
+            drivingOptions: {
+                departureTime: salida,
+                //trafficModel: google.maps.TrafficModel.PESSIMISTIC
+            },
+            callback: function(data, status) {
+                console.log("getRoutes " + salida, data[0].legs);
+                //console.log("status ------------- ", status);
+                //https://developers.google.com/maps/documentation/javascript/reference/3/#DirectionsLeg ---> duration_in_traffic
+                //Only available to Premium Plan customers when drivingOptions is defined when making the request.
+
+                if (callback1) callback1();
+            }
+        });
+    }
+
+}

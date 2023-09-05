@@ -1,0 +1,54 @@
+﻿<form novalidate 
+      class="smallsize" 
+      [formGroup]="lugarForm" 
+      autocomplete="off">
+ 
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="smallHeight row">
+                <div class="form-group col-md-5" [ngClass]="{'has-danger': lugarForm.controls.Lugar.invalid && (lugarForm.controls.Lugar.dirty || lugarForm.controls.Lugar.touched)}">
+                    <label class="campoRequerido"><b>Ubicaci&oacute;n</b></label>
+                    <input formControlName="Lugar" class="form-control" type="text" name="Lugar" [(ngModel)]="detail.Lugar" maxlength="2000">
+                    <div *ngIf="lugarForm.controls.Lugar.invalid && (lugarForm.controls.Lugar.dirty || lugarForm.controls.Lugar.touched)"
+                         class="form-control-feedback">
+                        <div *ngIf="lugarForm.controls.Lugar.errors.required">
+                            Ubicación requerida.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-5" [ngClass]="{'has-danger': lugarForm.controls.Localidad.invalid && (lugarForm.controls.Localidad.dirty || lugarForm.controls.Localidad.touched)}">
+                    <label class="campoRequerido"><b>Localidad</b></label>
+                    <input formControlName="Localidad" class="form-control" type="text" name="Lugar" [(ngModel)]="detail.Localidad" maxlength="2000">
+                    <div *ngIf="lugarForm.controls.Localidad.invalid && (lugarForm.controls.Localidad.dirty || lugarForm.controls.Localidad.touched)"
+                         class="form-control-feedback">
+                        <div *ngIf="lugarForm.controls.Localidad.errors.required">
+                            Localidad requerida.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-2 m--align-right">
+                    <button class="smallCenteredVertically btn btn-sm btn-primary blue" type="button" (click)="VerMapa()">
+                        <i class="fa fa-map"></i> <span>Ver mapa</span>
+                    </button>
+                </div>
+
+            </div>
+            <div class="row" style="margin-top:13px;">
+                <div class="form-group col-md-3 smallmargin">
+                    <label>Latitud: {{detail.Latitud}}</label>
+                </div>
+                <div class="form-group col-md-3 smallmargin">
+                    <label>Longitud: {{detail.Longitud}}</label>
+                </div>
+                <div class="form-group col-md-6 m--align-left smallmargin">
+                    <label>Direcci&oacute;n: {{detail.Direccion}}</label>
+                </div> 
+            </div>
+        </div>
+     
+    </div>
+
+
+
+</form>

@@ -1,0 +1,169 @@
+﻿<div [busyText]="'Procesando..'" [busyIf]="!active">
+    <div class="m-subheader">
+
+        <div style="text-align: right;">
+            <button (click)="onCreate()"
+                    *ngIf="allowAdd"
+                    class="btn btn-primary blue">
+
+                <i class="fa fa-plus"></i> Crear Diagrama
+
+            </button>
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div 
+             class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form class="horizontal-form filters" autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+
+                        <div class="row m--margin-bottom-10" [hidden]="!advancedFiltersAreShown">
+                            <!--aca los filtros-->
+                            <div class="form-group col-lg-2">
+                                <label>Mes</label>
+                                <month-combo #ComboMes
+                                             name="ComboMes"
+                                             id="ComboMes"
+                                             #Mes="ngModel"
+                                             [(ngModel)]="filter.Mes"
+                                             emptyText="{{'Todos'}}">
+                                </month-combo>
+                            </div>
+
+                            <div class="form-group col-lg-2">
+                                <label>Año</label>
+                                <input #Anio="ngModel"
+                                       class="form-control"
+                                       type="number"
+                                       name="Anio"
+                                       [(ngModel)]="filter.Anio">
+                            </div>
+
+                            <div class="form-group col-lg-4">
+                                <label>Grupo de Inspectores</label>
+                                <gruposinspectores-combo name="ComboGruposInspectores"
+                                                         id="ComboGruposInspectores"
+                                                         #GruposInspectores
+                                                         [(ngModel)]="filter.GruposInspectores"
+                                                         emptyText="Todos">
+                                </gruposinspectores-combo>
+                            </div>
+
+                            <div class="form-group col-lg-4">
+                                <label>Estado</label>
+                                <estadosdiagramas-combo name="ComboEstadoDiagrama"
+                                                                  id="ComboEstadoDiagrama"
+                                                                  #EstadoDiagrama
+                                                                  [(ngModel)]="filter.EstadoDiagrama"
+                                                                  emptyText="Todos">
+                                </estadosdiagramas-combo>
+                            </div>                                                         
+
+                            <div class="col-md-12">    
+                                <button class="btn btn-metal pull-right"
+                                    (click)="onSearch()"
+                                    style="margin-left: 20px;">
+                                    <i class="fa fa-refresh"></i> Actualizar
+                                </button>
+                                <button class="btn btn-metal pull-right"
+                                    (click)="onClearFilters()">
+                                    <i class="fa fa-trash"></i> Borrar Filtros
+                                </button>                               
+                            </div>
+                        </div>
+                            <div class="row margin-bottom-10">
+                                <div class="col-sm-12">
+                                    <span class="clickable-item text-muted" [hidden]="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> Mostrar filtros avanzados</span>
+                                    <span class="clickable-item text-muted" [hidden]="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> Ocultar filtros avanzados</span>
+                                </div>
+                            </div>
+                        </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container"
+                         [busyIf]="primengDatatableHelper.isLoading">
+
+                        <p-dataTable #dataTable
+                                     [lazy]="true"
+                                     (onLazyLoad)="onSearch($event)"
+                                     [value]="primengDatatableHelper.records"
+                                     [paginator]="false"
+                                     emptyMessage="{{l('Sin Datos')}}"
+                                     scrollable="true"
+                                     ScrollWidth="100%"
+                                     responsive="primengDatatableHelper.isResponsive">
+
+                                    <p-column field="Mes" header="Mes" [sortable]="true"></p-column>
+
+                                    <p-column field="Anio" header="Año" [sortable]="true"></p-column>
+
+                                    <p-column field="GrupoInspectores.Descripcion" header="Grupo de Inspectores" [sortable]="true"></p-column>
+                            
+                                    <p-column field="EstadoDiagrama.Descripcion" header="Estado" [sortable]="true"></p-column>
+
+                                    <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                        <ng-template let-col let-row="rowData" pTemplate type="body">
+                                            <div class="dropdown">
+
+                                                <a href="javascript:void(0);" (click)="onEditDiagramacion(row)" title="Editar"
+                                                   class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill">
+                                                    <i class="la la-edit"></i>
+                                                </a>
+                                                <a href="#" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" *ngIf="allowPublicar || allowImprimir || allowDelete "
+                                                   data-toggle="dropdown">
+                                                    <i class="la la-ellipsis-h"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+
+                                                    <a href="javascript:void(0);" class="dropdown-item" *ngIf="allowPublicar" title="Publicar" (click)="onPublicar(row)">
+                                                        <i class="fa fa-share-square-o"></i>Publicar
+                                                    </a>
+
+                                                    <a href="javascript:void(0);" class="dropdown-item" *ngIf="allowDesbloquear" title="Desbloquear" (click)="onDesbloquear(row)">
+                                                        <i class="fa fa-share-square-o"></i>Desbloquear
+                                                    </a>
+
+                                                    <a href="javascript:void(0);" class="dropdown-item" *ngIf="allowImprimir" (click)="GetReporteExcel(row)" title="Imprimir">
+                                                        <i class="fa fa-print"></i>Imprimir
+                                                    </a>
+
+                                                    <a href="javascript:void(0);" *ngIf="allowDelete" class="dropdown-item" (click)="onDelete(row)">
+                                                        <i class="la la-trash"></i>Eliminar
+                                                    </a>
+                                                </div>
+
+                                            </div>
+
+                                        </ng-template>
+                                    </p-column>
+
+                        </p-dataTable>
+
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                                         #paginator
+                                         (onPageChange)="onSearch($event)"
+                                         [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                Registros totales:  {{ primengDatatableHelper.totalRecordsCount}}
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #createOrEdit></ng-template>
+
+</div>
+
+

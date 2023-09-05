@@ -1,0 +1,380 @@
+﻿<div>
+
+    <div class="m-subheader">
+        <div style="text-align: right;">
+            <div class="form-group m-form__group align-items-center">
+                <div class="input-group">
+
+                    <!--<input [(ngModel)]="filter.FilterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="'Buscar...'" type="text">
+    <span class="input-group-append">
+        <button (click)="onSearch()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+    </span>-->
+
+                    <form class="m-form">
+                        <div class="m-form__group form-group row">
+                            <label class="col-3 col-form-label">
+                                Original
+                            </label>
+                            <div class="col-3" style="margin-top: 0.35rem;">
+                                <p-inputSwitch onLabel="SI" offLabel="NO" #OriginalFiltro="ngModel" name="Original" [(ngModel)]="Original"></p-inputSwitch>
+                            </div>
+                            <label class="col-3 col-form-label">
+                                Vigente
+                            </label>
+                            <div class="col-3" style="margin-top: 0.35rem;">
+                                <p-inputSwitch onLabel="SI" offLabel="NO" #VigenteFiltro="ngModel" name="Vigente" [(ngModel)]="Vigente"></p-inputSwitch>
+                            </div>
+                        </div>
+                      </form>
+
+
+                      
+                </div>
+            </div>
+        </div>
+    </div>
+
+ 
+
+    <div class="m-content" [hidden]="!active">
+
+
+        <div class="m-portlet m-portlet--mobile m-portlet--acce m-portlet--head-sm" id="m_portlet_tools_1">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <span class="m-portlet__head-icon">
+                            <i class="fa fa-bus"></i>
+                        </span>
+                        <h3 class="m-portlet__head-text">
+                            Comerciales
+                        </h3>
+                    </div>
+                </div>
+                <div class="m-portlet__head-tools">
+                    <ul class="m-portlet__nav">
+                        <li class="m-portlet__nav-item">
+                            <a href="#" (click)="porletclick('m_portlet_tools_1')" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                                <i class="la la-angle-down"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                <form class="horizontal-form filters" autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <div class="col-md-4">
+                                <span class="ui-fluid">
+                                    <div class="ui-inputgroup">
+                                        <linea-autocomplete style="width:  100% !important;"
+                                                            #LineaFiltro="ngModel" [SucursalId]="Sucursalid" [(ngModel)]="filter.selectLinea" name="lineas" id="lineas" placeHolder="Lineas">
+                                        </linea-autocomplete>
+                                        <button pButton type="button" icon="fa-plus" class="ui-button-success" (click)="addLinea(filter.selectLinea)" [disabled]="!(filter.selectLinea)"></button>
+
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="ui-fluid">
+                                    <div class="ui-inputgroup">
+                                        <ramalcolor-autocomplete #ramalcolorfilter="ngModel"
+                                                          style="width:  100% !important;"
+                                                          name="ramalcolorfilter"                                                        
+                                                          [ItemsModel]="filter.Ramales"
+                                                          [(ngModel)]="filter.selectRamal">
+                                        </ramalcolor-autocomplete>
+                                            <button pButton type="button" icon="fa-plus" class="ui-button-success" (click)="addRamal(filter.selectRamal)" [disabled]="!(filter.selectRamal)"></button>
+                                        
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+
+                                <span class="ui-fluid">
+                                    <div class="ui-inputgroup">
+                                        <bandera-autocomplete #banderaFiltroComercial="ngModel"
+                                                              style="width:  100% !important;"
+                                                              [SucursalId]="Sucursalid"
+                                                              [TipoBanderaId]="1"
+                                                              [MostrarLinea]="true"
+                                                              [RamalesEsRequerido]="false"
+                                                              [(ngModel)]="filter.selectBanderaComercial" name="banderaFiltroComercial" id="banderaFiltroComercial"
+                                                              placeHolder="Banderas">
+                                        </bandera-autocomplete>
+                                        <button pButton type="button"
+                                                icon="fa-plus"
+                                                class="ui-button-success"
+                                                (click)="addBanderaComercial(filter.selectBanderaComercial)"
+                                                [disabled]="!(filter.selectBanderaComercial)"></button>
+
+                                    </div>
+                                </span>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <table class="m-list-badge m-list-badge--light-bg list-initial">
+                            <thead class="m-list-badge__label m--font-info">
+                                <tr>
+                                    <th>
+                                        Líneas
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr class="m-list-badge__items " style="line-height: 30px" *ngFor="let c of filter.Lineas">
+                                    <td>
+                                        <a class="m-list-badge__item"
+                                           [ngClass]="{ 'm-animate-shake': c.animate }">
+                                            <span [routerLink]="['/planificacion/linea/' + Sucursalid,{id: c.Id} ]">{{c.Description}}</span>
+                                            <i class="fa fa-times" (click)="removeLinea(c)"></i>
+                                        </a>
+
+                                        <a class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air" (click)="AddSelectedLinea(c)" href="#" ng-reflect-href="#">
+                                            <i class="la la-arrow-circle-o-right"></i>
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    <div class="col-md-4">
+                        <table class="m-list-badge m-list-badge--light-bg list-initial">
+                            <thead class="m-list-badge__label m--font-info m--font-boldest2">
+                                <tr>
+                                    <th>
+                                        Ramal/Color
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-template ngFor let-l [ngForOf]="filter.RamalesSelect">
+                                    <tr class="m-list-badge__items" style="line-height: 30px">
+                                        <td>
+                                            <span class="m-badge m-badge--brand m-badge--dot"></span>
+                                            <span class="m--font-info">{{l.Description}}</span>
+
+                                        </td>
+                                    </tr>
+                                    <tr class="m-list-badge__items" *ngFor="let c of l.Items">
+                                        <td>
+                                            <a class="m-list-badge__item"
+                                               [ngClass]="{ 'm-animate-shake': c.animate }">
+                                                <span>{{c.Description}}</span>
+                                                <i class="fa fa-times" (click)="removeRamal(c)"></i>
+                                            </a>
+
+                                            <a class="btn btn-secondary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air" (click)="AddSelectedRamal(c)" href="#" ng-reflect-href="#">
+                                                <i class="la la-arrow-circle-o-right"></i>
+                                            </a>
+
+                                        </td>
+
+                                    </tr>
+                                </ng-template>
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    <div class="col-md-4">
+                        <table class="m-list-badge m-list-badge--light-bg list-initial">
+                            <thead class="m-list-badge__label m--font-info m--font-boldest2">
+                                <tr>
+                                    <th>
+                                        Banderas
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-template ngFor let-l [ngForOf]="filter.BanderasComerciales | groupBy:'RamaColorId'">
+                                    <tr class="m-list-badge__items" style="line-height: 30px">
+                                        <td>
+                                            <span class="m-badge m-badge--brand m-badge--dot"></span>
+                                            <span class="m--font-info">{{l.value[0].RamaColor_Nombre}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="m-list-badge__items" *ngFor="let c of l.value">
+                                        <td>
+                                            <a class="m-list-badge__item"
+                                               [ngClass]="{ 'm-animate-shake': c.animate }">
+                                                <span>{{c.Description}}</span>
+                                                <i class="fa fa-times" (click)="removeBanderaComercial(c)"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="m-portlet__foot">
+
+
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 m--valign-middle">
+
+                        </div>
+                        <div class="col-lg-6 m--align-right">
+                            <div class="col-lg-12">
+                                <button class="btn btn-outline-info" (click)="VerMapaComercial()">
+                                    <i class="flaticon-map-location"></i> Ver Mapa
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+           
+        </div>
+
+ 
+
+        <div class="m-portlet m-portlet--head-sm" m-portlet="true" id="m_portlet_tools_2">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <span class="m-portlet__head-icon">
+                            <i class="flaticon-share"></i>
+                        </span>
+                        <h3 class="m-portlet__head-text">
+                            Posicionamiento
+                        </h3>
+                    </div>
+                </div>
+                <div class="m-portlet__head-tools">
+                    <ul class="m-portlet__nav">
+
+                        <li class="m-portlet__nav-item">
+                            <a href="#" (click)="porletclick('m_portlet_tools_2')" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                                <i class="la la-angle-down"></i>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                <form class="horizontal-form filters" autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+                        <div class="row align-items-center m--margin-bottom-10">
+
+                            <div class="col-md-4">
+
+                                <span class="ui-fluid">
+                                    <div class="ui-inputgroup">
+                                        <bandera-autocomplete #banderaposFiltro="ngModel"
+                                                              style="width:  100% !important;"
+                                                              [SucursalId]="Sucursalid"
+                                                              [RamalesEsRequerido]="RamalesEsRequerido"
+                                                              [TipoBanderaId]="2"
+                                                              [(ngModel)]="filter.selectBanderaPosicionamiento" name="banderaFiltroPosicionamiento" id="banderaFiltroPosicionamiento"
+                                                              placeHolder="Banderas">
+                                        </bandera-autocomplete>
+                                        <button pButton type="button"
+                                                icon="fa-plus"
+                                                class="ui-button-success"
+                                                (click)="addBanderaPosicionamiento(filter.selectBanderaPosicionamiento)"
+                                                [disabled]="!(filter.selectBanderaPosicionamiento)"></button>
+
+                                    </div>
+                                </span>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
+
+                <div class="row">
+
+
+
+                    <div class="col-md-4">
+                        <table class="m-list-badge m-list-badge--light-bg list-initial">
+                            <thead class="m-list-badge__label m--font-info m--font-boldest2">
+                                <tr>
+                                    <th>
+                                        Banderas
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-template ngFor let-l [ngForOf]="filter.BanderasPosicionamiento | groupBy:'RamaColorId'">
+                                    
+                                    <tr class="m-list-badge__items" *ngFor="let c of l.value">
+                                        <td>
+                                            <a class="m-list-badge__item"
+                                               [ngClass]="{ 'm-animate-shake': c.animate }">
+                                                <span>{{c.Description}}</span>
+                                                <i class="fa fa-times" (click)="removeBanderaPosicionamiento(c)"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </div>
+                <div class="m-portlet__foot">
+
+
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 m--valign-middle">
+
+                        </div>
+                        <div class="col-lg-6 m--align-right">
+                            <div class="col-lg-12">
+                                <button class="btn btn-outline-info" (click)="VerMapaPosicionamiento()">
+                                    <i class="flaticon-map-location"></i> Ver Mapa
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        
+        </div>
+
+
+    </div>
+
+
+
+</div>
+
+<div class="m-content">
+    <ng-template #createOrEdit></ng-template>
+
+</div>
+    

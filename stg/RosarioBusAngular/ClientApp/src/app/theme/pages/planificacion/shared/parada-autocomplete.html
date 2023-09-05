@@ -1,0 +1,38 @@
+﻿<div class="col-md-12" style="padding:0px; display:inline-flex">
+    <button *ngIf="showAddButton"
+            type="button"
+            class="smallesttext btn btn-primary blue"
+            (click)="onAddButtonClick()">
+        <i class="la la-plus"></i>
+    </button>
+    <p-autoComplete #autocomplete name="autocomplete"
+                    [(ngModel)]="value"
+                    [suggestions]="items"
+                    [disabled]="IsDisabled"
+                    (completeMethod)="filterItems($event)"
+                    forceSelection="true"
+                    (onUnselect)="onUnselect()"
+                    (onSelect)="onSelect()"
+                    (onDropdownClick)="onDropdownClick()"
+                    (onKeyUp)="onKeyUp()"
+                    (onBlur)="onBlur()"
+                    (onClear)="Clear($event)"
+                    placeholder="{{placeHolder}}"
+                    field="{{field}}"
+                    [minLength]="minLength">
+        <ng-template let-brand pTemplate="item">
+            <div data-html="true"
+                 data-toggle="tooltip"
+                 title="Codigo: {{brand.Codigo}} Calle: {{brand.Calle}} Cruce: {{brand.Cruce}}">
+                <div style="font-size:14px">{{brand.Description}}</div>
+                <div style="font-size:12px">Calle: {{brand.Calle}} Cruce: {{brand.Cruce}}</div>
+                <div style="font-size:10px;margin:0px 2px 0 0">{{brand.Localidad}}</div>
+                <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                </div>
+            </div>
+           
+        </ng-template>
+    </p-autoComplete>
+</div>
+
+

@@ -1,0 +1,41 @@
+<form [formGroup]="sendEmailForm"
+      novalidate
+      (ngSubmit)="sendEmailForm.valid && onSubmit()" 
+      autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span>
+                Seleccionar Correo
+            </span>
+        </h4>
+        <div class="m-portlet__nav-item">
+            <a href="#"
+               (click)="close()"
+               class="m-portlet__nav-link m-portlet__nav-link--icon">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+    <div class="modal-body" [busyIf]="sending" [busyText]="'Enviando..'">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" [ngClass]="{ 'is-invalid': sendEmailForm.controls.Email.errors }">
+                    <label>Correo</label>
+                    <input formControlName="Email" class="form-control" type="text" [(ngModel)]="userFilter.UserEmail" [ngClass]="{ 'is-invalid': sendEmailForm.controls.Email.errors }">
+                    <div *ngIf="sendEmailForm.controls.Email.errors" class="invalid-feedback">
+                        <div *ngIf="sendEmailForm.controls.Email.errors.required">Correo es requerido</div>
+                        <div *ngIf="sendEmailForm.controls.Email.errors.email">Correo no es válido</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="form-group col-lg-2">
+            <button class="btn btn-metal" type="submit" [disabled]="sendEmailForm.controls.Email.errors">
+                <i class="fa fa-save" aria-hidden="true"></i> Enviar Correo
+            </button>
+        </div>
+    </div>
+</form>
+

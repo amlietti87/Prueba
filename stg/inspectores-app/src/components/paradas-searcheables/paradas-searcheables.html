@@ -1,0 +1,24 @@
+
+<!-- Todas las paradas -->
+<form [formGroup]="form" novalidate class="form-parada-searcheables">
+  <ion-item no-lines style="border-bottom: none !important; box-shadow: none">
+    <ion-label class="label-form" floating>{{label}}</ion-label>
+    <ionic-selectable 
+      item-content       
+      formControlName="parada_searcheable"
+      [searchFailText]="'NO SE ENCONTRARON PARADAS'"
+      searchPlaceholder="Ingrese 3 o más caracteres"
+      [items]="paradas_searcheables"
+      itemValueField="Id" 
+      itemTextField="Codigo"     
+      [canSearch]="true"
+      (onSearch)="busquedaPorParadas($event)">
+      <ng-template ionicSelectableItemTemplate let-con="item">
+        <span style="font-weight: bold">Codigo: </span>{{con.Codigo}}<br>         
+        <span style="font-weight: bold">Calle: </span>{{con.Calle}}<br>
+        <span style="font-weight: bold">Cruce: </span>{{con.Cruce}}<br>
+        <span style="font-weight: bold">Localidad: </span>{{con.Localidad}}
+    </ng-template>
+    </ionic-selectable>
+  </ion-item>
+</form>

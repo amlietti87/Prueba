@@ -1,0 +1,33 @@
+﻿<div [ngStyle]="{'background':getColor()}" class="template-jornadatrabajada">
+    <table>
+        <tr>
+    <td [ngStyle]="{'background':getColor()}" class="celda-rango">
+        <p-calendar [inputStyle]="{'width':'35px', 'font-size':'7px', 'padding':'0px', 'color': 'black ', 'text-align': 'center', 'font-weight':'bold '}"
+                    [(ngModel)]="item.HoraDesdeModificada"
+                    [timeOnly]="true"
+                    [disabled]="true">
+        </p-calendar>
+        <br />
+        <p-calendar [inputStyle]="{'width':'35px', 'font-size':'7px', 'color':'black', 'padding':'0px', 'text-align': 'center', 'font-weight':'bold'}" 
+                    [(ngModel)]="item.HoraHastaModificada" 
+                    [timeOnly]="true" 
+                    [disabled]="true">
+        </p-calendar>
+        <br />
+        <input [ngStyle]="{'background':getColor()}"  class="template-jornadatrabajada" [(ngModel)]="item.NombreZona" title="{{item.DetalleZona}}" type="text" [disabled]="true" />
+    </td>
+    <td [ngStyle]="{'background':getColor()}" class="celda-acciones">
+        <a href="javascript:void(0);" [hidden]="!allowmodificarDiagramacion" *ngIf="(item.PasadaSueldos | uppercase) != 'S'" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill acciones" title="Editar" (click)="editarJorTrabajo(row)">
+            <i class="la la-edit accion-icon"></i>
+        </a>
+        <br />
+        <a href="javascript:void(0);" [hidden]="!allowmodificarDiagramacion"  *ngIf="(item.PasadaSueldos | uppercase) != 'S'" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill acciones" title="Eliminar" (click)="eliminarJornada(item)">
+            <i class="la la-trash accion-icon"></i>
+        </a>
+        <br />
+        <span *ngIf="item.validations.length > 0" class="fa fa-info informacion" title='{{getErrorMessage(item)}}'></span>
+
+            </td>
+        </tr>
+    </table>
+</div>

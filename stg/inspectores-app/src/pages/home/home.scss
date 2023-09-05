@@ -1,0 +1,13 @@
+page-home {
+
+  .tabs-md .tab-button[aria-selected=true] .tab-button-text {
+    -webkit-transform: none !important;
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  .tabs-md-primary .tab-button, .tabs-md-primary .tab-button-icon {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+}

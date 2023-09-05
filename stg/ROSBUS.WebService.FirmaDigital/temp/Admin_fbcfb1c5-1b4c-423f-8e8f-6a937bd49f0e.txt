@@ -1,0 +1,160 @@
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 08:54:45
+LogMessage: Directorio encontrado correctamente
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 08:54:45
+LogMessage: 1 archivos encontrados en el directorio
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 08:54:45
+LogMessage: Recuperando empleados  con cuils 20050770304 
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 08:54:46
+LogMessage: Se leyeron 1 documentos de los cuales se encuentran 0 correctos. se envian a guardar todos.
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 08:54:47
+LogMessage: Se guardaron los archivos. se procede a mover los archivos.
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 08:54:47
+LogMessage: Se movieron los correctos
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 08:54:47
+LogMessage: Se movieron los incorrectos. Se procede a enviar la notificacion
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 08:54:47
+LogMessage: Vamos a enviar los mails a sebastian.diaz@tecso.coop. 
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 08:54:52
+LogMessage: Final. 
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 09:19:21
+LogMessage: Directorio encontrado correctamente
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 09:19:21
+LogMessage: 6 archivos encontrados en el directorio
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 09:19:21
+LogMessage: Recuperando empleados  con cuils 20115674189,20115674189,20242821379,22024282137,20115674189,20242821379 
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 09:36:50
+LogMessage: Directorio encontrado correctamente
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 09:36:50
+LogMessage: 6 archivos encontrados en el directorio
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 09:36:50
+LogMessage: Recuperando empleados  con cuils 20115674189,20115674189,20242821379,22024282137,20115674189,20242821379 
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 09:36:52
+LogMessage: Se leyeron 6 documentos de los cuales se encuentran 5 correctos. se envian a guardar todos.
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 09:36:54
+LogMessage: Se guardaron los archivos. se procede a mover los archivos.
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 09:36:54
+LogMessage: Se movieron los correctos
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 09:36:54
+LogMessage: Se movieron los incorrectos. Se procede a enviar la notificacion
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 
+----------------------------------------------------------------------------------------------------
+LogDate: 12/2/2019 09:36:54
+LogMessage: Final. 
+LogType: Log
+LogLevel: 1
+SessionId: fbcfb1c5-1b4c-423f-8e8f-6a937bd49f0e
+UserName: Admin
+StackTrace: 

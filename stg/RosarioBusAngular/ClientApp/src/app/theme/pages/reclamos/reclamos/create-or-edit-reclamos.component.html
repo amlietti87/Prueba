@@ -1,0 +1,924 @@
+﻿
+<form novalidate
+      class="smallsize"
+      [formGroup]="reclamosForm"
+      autocomplete="off"
+      (ngSubmit)="save()">
+
+    <div class="modal-header">
+        <h3 class="modal-title">
+            <span *ngIf="viewMode == 2">{{"Editar Reclamo"}}</span>
+            <span *ngIf="viewMode == 1 ">{{"Crear Reclamo"}}</span>
+        </h3>
+        <div class="m-portlet__nav-item">
+            <a href="#"
+               (click)="close()"
+               class="m-portlet__nav-link m-portlet__nav-link--icon">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="modal-body">
+        <div id="scrollInv"
+             class="m-scrollable"
+             data-scrollable="true"
+             data-max-height="75vh"
+             style="height: 75vh; overflow: hidden;">
+            <tabset #tabSet
+                    class="tab-container tabbable-line">
+
+                <tab heading="{{'Datos'}}"
+                     customClass="m-tabs__item">
+
+
+
+                    <mat-expansion-panel class="hideHeder"
+                                         [expanded]="true">
+                        <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+                            <mat-panel-title>
+                            </mat-panel-title>
+                            <mat-panel-description>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div class="col-md-12">
+
+                            <div class="row">
+                                <div class="form-group col-lg-2"
+                                     [ngClass]="{'has-danger': reclamosForm.controls.TipoReclamoId.invalid && (reclamosForm.controls.TipoReclamoId.dirty || reclamosForm.controls.TipoReclamoId.touched)}">
+                                    <label><b>Tipo Reclamo</b></label>
+                                    <tiporeclamo-combo [showAddButton]="false"
+                                                       name="TipoReclamoId"
+                                                       formControlName="TipoReclamoId"
+                                                       #TipoReclamoCombo
+                                                       [(ngModel)]="detail.TipoReclamoId"
+                                                       emptyText="{{'Seleccione..'}}">
+                                    </tiporeclamo-combo>
+                                    <div *ngIf="reclamosForm.controls.TipoReclamoId.invalid && (reclamosForm.controls.TipoReclamoId.dirty || reclamosForm.controls.TipoReclamoId.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="reclamosForm.controls.TipoReclamoId.errors.required">
+                                            El tipo de reclamo es requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-2"
+                                     [ngClass]="{'has-danger': reclamosForm.controls.EstadoId.invalid && (reclamosForm.controls.EstadoId.dirty || reclamosForm.controls.EstadoId.touched)}">
+                                    <label><b>Estado</b></label>
+                                    <estados-combo [showAddButton]="allowAddEstados"
+                                                   name="EstadoId"
+                                                   formControlName="EstadoId"
+                                                   #EstadosCombo
+                                                   (ngModelChange)="OnEstadoChange($event)"
+                                                   [(ngModel)]="detail.EstadoId"
+                                                   emptyText="{{'Seleccione..'}}">
+                                    </estados-combo>
+                                    <div *ngIf="reclamosForm.controls.EstadoId.invalid && (reclamosForm.controls.EstadoId.dirty || reclamosForm.controls.EstadoId.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="reclamosForm.controls.EstadoId.errors.required">
+                                            El estado es requerido
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-2"
+                                     [hidden]="!(detail.EstadoId)"
+                                     [ngClass]="{'has-danger': reclamosForm.controls.SubEstadoId.invalid && (reclamosForm.controls.SubEstadoId.dirty || reclamosForm.controls.SubEstadoId.touched)}">
+                                    <label><b>Sub-Estado</b></label>
+                                    <subestado-combo [showAddButton]="allowAddEstados"
+                                                     name="SubEstadoId"
+                                                     formControlName="SubEstadoId"
+                                                     #SubEstadosCombo
+                                                     [EstadoId]="detail.EstadoId"
+                                                     [SubEstadoId]="detail.SubEstadoId"
+                                                     [(ngModel)]="detail.SubEstadoId"
+                                                     emptyText="{{'Seleccione..'}}">
+                                    </subestado-combo>
+                                    <div *ngIf="reclamosForm.controls.SubEstadoId.invalid && (reclamosForm.controls.SubEstadoId.dirty || reclamosForm.controls.SubEstadoId.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="reclamosForm.controls.SubEstadoId.errors.required">
+                                            El Sub-Estado es requerido
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-2"
+                                     [ngClass]="{'has-danger': reclamosForm.controls.SucursalId.invalid && (reclamosForm.controls.SucursalId.dirty || reclamosForm.controls.SucursalId.touched)}">
+                                    <label><b>Unidad de Negocio</b></label>
+                                    <sucursal-combo name="SucursalId"
+                                                    formControlName="SucursalId"
+                                                    #SucursalCombo
+                                                    [(ngModel)]="detail.SucursalId"
+                                                    emptyText="{{'Unidad de Negocio...'}}">
+                                    </sucursal-combo>
+                                    <div *ngIf="reclamosForm.controls.SucursalId.invalid && (reclamosForm.controls.SucursalId.dirty || reclamosForm.controls.SucursalId.touched)"
+                                         class="form-control-feedback text-sm">
+                                        <div *ngIf="reclamosForm.controls.SucursalId.errors.required">
+                                            Unidad de Negocio requerida.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-2" [ngClass]="{'has-danger': reclamosForm.controls.EmpresaId.invalid && (reclamosForm.controls.EmpresaId.dirty || reclamosForm.controls.EmpresaId.touched)}">
+                                    <label><b>Empresa</b></label>
+                                    <empresa-combo name="EmpresaId"
+                                                   formControlName="EmpresaId"
+                                                   #EmpresaCombo
+                                                   [EmpresaId]="detail.EmpresaId"
+                                                   [(ngModel)]="detail.EmpresaId"
+                                                   emptyText="{{'Empresa...'}}">
+                                    </empresa-combo>
+                                    <div *ngIf="reclamosForm.controls.EmpresaId.invalid && (reclamosForm.controls.EmpresaId.dirty || reclamosForm.controls.EmpresaId.touched)"
+                                         class="form-control-feedback">
+
+                                        <div *ngIf="reclamosForm.controls.EmpresaId.errors.required">
+                                            Empresa requerida.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-2"
+                                     [ngClass]="{'has-danger': reclamosForm.controls.Fecha.invalid && (reclamosForm.controls.Fecha.dirty || reclamosForm.controls.Fecha.touched)}">
+                                    <label><b>Fecha reclamo</b></label>
+                                    <br />
+                                    <mat-form-field class="mat-form-field-mat-datepicker mat-form-field-mat-datepicker-100p">
+                                        <input matInput
+                                               formControlName="Fecha"
+                                               [(ngModel)]="detail.Fecha"
+                                               name="Fecha"
+                                               [matDatepicker]="Fecha">
+                                        <mat-datepicker-toggle matSuffix [for]="Fecha"></mat-datepicker-toggle>
+                                        <mat-datepicker #Fecha></mat-datepicker>
+                                    </mat-form-field>
+                                    <div *ngIf="reclamosForm.controls.Fecha.invalid && (reclamosForm.controls.Fecha.dirty || reclamosForm.controls.Fecha.touched)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="reclamosForm.controls.Fecha.errors.required">
+                                            La Fecha es requerida
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="hideHeder" [hidden]="Involucrado || (!detail.TipoReclamoId || detail.TipoReclamoId == null)"
+                                         [expanded]="true">
+                        <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+                            <mat-panel-title>
+                            </mat-panel-title>
+                            <mat-panel-description>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="form-group col-lg-4"
+                                     [ngClass]="{'has-danger': reclamosForm.controls.EmpleadoId.invalid && (reclamosForm.controls.EmpleadoId.dirty || reclamosForm.controls.EmpleadoId.touched)}">
+                                    <label><b>Empleado</b></label>
+                                    <span class="ui-fluid">
+                                        <empleado-autocomplete #EmpleadoId
+                                                               [(ngModel)]="detail.selectedEmpleado"
+                                                               formControlName="EmpleadoId"
+                                                               style="width: 100% !important;"
+                                                               name="EmpleadoId"
+                                                               id="EmpleadoId"
+                                                               placeHolder="Empleado"
+                                                               (ngModelChange)="OnChangeEmpleado($event)"
+                                                               [UnidadNegocio]="detail.SucursalId">
+                                        </empleado-autocomplete>
+                                    </span>
+                                    <div *ngIf="reclamosForm.controls.EmpleadoId.invalid && (reclamosForm.controls.EmpleadoId.dirty || reclamosForm.controls.EmpleadoId.touched)"
+                                         class="form-control-feedback text-sm">
+                                        <div *ngIf="reclamosForm.controls.EmpleadoId.errors.required">
+                                            Empleado requerido.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-4" *ngIf="detail.selectedEmpleado">
+                                    <label><b>Datos del empleado</b></label>
+                                    <div class="smallpadding  psmallpadding smallSizeFont">
+                                        <span *ngIf="CurrentConductorEmpresa">Empresa: {{CurrentConductorEmpresa.DesEmpr}}</span><br />
+                                        <span *ngIf="CurrentEmpleado">Nom. y Ap.: {{ CurrentEmpleado.Apellido }} {{ CurrentEmpleado.Nombre }}</span><br />
+                                        <span *ngIf="CurrentEmpleado">DNI: {{ CurrentEmpleado.Dni }}</span><br />
+                                        <span *ngIf="CurrentEmpleadoLegajo">Fecha Ing.: {{ CurrentEmpleadoLegajo.FecIngreso | date: 'dd/MM/yyyy' }} </span>
+                                        <span *ngIf="CurrentEmpleado">Antiguedad: {{ CurrentEmpleado.FecAntiguedad | date: 'dd/MM/yyyy' }}</span><br />
+                                        <span *ngIf="CurrentEmpleadoLegajo">Legajo: {{ CurrentEmpleadoLegajo.LegajoSap }} </span>
+                                    </div>
+
+                                </div>
+                                <div class="form-group col-lg-4" *ngIf="detail.selectedEmpleado">
+                                    <label></label>
+                                    <div class="smallpadding  psmallpadding smallSizeFont">
+                                        <span *ngIf="CurrentUnidadDeNegocio">U. de Negocio: {{CurrentUnidadDeNegocio.DscSucursal}}</span><br />
+                                        <span *ngIf="CurrentEmpleado">CUIL: {{ CurrentEmpleado.Cuil }}</span><br />
+                                        <span *ngIf="CurrentEmpleadoLegajo && CurrentEmpleadoLegajo.FecBaja == null">Fecha Egreso: Activo </span><span *ngIf="CurrentEmpleadoLegajo && CurrentEmpleadoLegajo.FecBaja != null">Fecha Egreso: {{ CurrentEmpleadoLegajo.FecBaja | date: 'dd/MM/yyyy' }} </span><br />
+                                        <span *ngIf="CurrentEmpleado">Área empresa: {{ CurrentEmpleado.Area }}</span><br />
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="hideHeder" [hidden]="!detail.TipoReclamoId || detail.TipoReclamoId == null"
+                                         [expanded]="true">
+                        <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+                            <mat-panel-title>
+                            </mat-panel-title>
+                            <mat-panel-description>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="form-group col-lg-6" [hidden]="!Involucrado"
+                                     [ngClass]="{'has-danger': reclamosForm.controls.SiniestroId.invalid && (reclamosForm.controls.SiniestroId.dirty || reclamosForm.controls.SiniestroId.touched)}">
+                                    <label>Siniestro</label>
+                                    <span class="ui-fluid">
+                                        <siniestro-combo formControlName="SiniestroId"
+                                                         name="SiniestroId"
+                                                         style="width: 100% !important;"
+                                                         id="SiniestroId"
+                                                         #SiniestrosCombo
+                                                         [selectEmpleados]="detail.selectedEmpleado"
+                                                         [ReclamosSearch]="Involucrado"
+                                                         [SiniestroId]="detail.SiniestroId"
+                                                         placeHolder="Siniestro..."
+                                                         [(ngModel)]="detail.selectedSiniestro">
+                                        </siniestro-combo>
+                                    </span>
+
+                                    <div *ngIf="reclamosForm.controls.SiniestroId.invalid && (reclamosForm.controls.SiniestroId.dirty || reclamosForm.controls.SiniestroId.touched)"
+                                         class="form-control-feedback text-sm">
+                                        <div *ngIf="reclamosForm.controls.SiniestroId.errors.required">
+                                            El Siniestro es Requerido
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-6" [hidden]="Involucrado">
+                                    <label>Siniestro</label>
+                                    <siniestro-combobyempleado class="without-underline combo-mat-form-fiel-fixed"
+                                                               formControlName="SiniestroEmpleado"
+                                                               name="SiniestroEmpleado"
+                                                               style="width: 100% !important;"
+                                                               id="SiniestroEmpleado"
+                                                               [showAddButton]="false"
+                                                               #SiniestrosCombo
+                                                               [selectEmpleados]="detail.selectedEmpleado"
+                                                               [ReclamosSearch]="Involucrado"
+                                                               emptyText="{{'Seleccione...'}}"
+                                                               [SiniestroId]="detail.SiniestroId"
+                                                               [(ngModel)]="detail.SiniestroId">
+                                    </siniestro-combobyempleado>
+                                </div>
+
+
+
+                                <div class="form-group col-lg-6" [hidden]="!Involucrado || !detail.selectedSiniestro"
+                                     [ngClass]="{'has-danger': reclamosForm.controls.InvolucradoId.invalid && (reclamosForm.controls.InvolucradoId.dirty || reclamosForm.controls.InvolucradoId.touched)}">
+                                    <label><b>Involucrado</b></label>
+                                    <involucrado-combo name="InvolucradoId"
+                                                       formControlName="InvolucradoId"
+                                                       #InvolucradoCombo
+                                                       (selectedItemChange)="InvolucradoChange($event)"
+                                                       [SiniestroId]="detail.SiniestroId"
+                                                       [InvolucradoId]="detail.InvolucradoId"
+                                                       [(ngModel)]="detail.InvolucradoId"
+                                                       emptyText="{{'Seleccione..'}}">
+                                    </involucrado-combo>
+                                    <div *ngIf="reclamosForm.controls.InvolucradoId.invalid && (reclamosForm.controls.InvolucradoId.dirty || reclamosForm.controls.InvolucradoId.touched)"
+                                         class="form-control-feedback text-sm">
+                                        <div *ngIf="reclamosForm.controls.InvolucradoId.errors.required">
+                                            El Involucrado es Requerido
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="hideHeder"
+                                         [expanded]="true" [hidden]="Involucrado || (!detail.TipoReclamoId || detail.TipoReclamoId == null)">
+                        <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+                            <mat-panel-title>
+                            </mat-panel-title>
+                            <mat-panel-description>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <label>Denuncia</label>
+                                    <denuncias-combo class="without-underline combo-mat-form-fiel-fixed"
+                                                     formControlName="DenunciaId"
+                                                     #DenunciasCombo
+                                                     [Empleado]="detail.selectedEmpleado"
+                                                     [ReclamosSearch]="true"
+                                                     [(ngModel)]="detail.DenunciaId">
+                                    </denuncias-combo>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="hideHeder"
+                                         [expanded]="true" *ngIf="detail.Anulado">
+                        <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+                            <mat-panel-title>
+                            </mat-panel-title>
+                            <mat-panel-description>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="form-group  col-lg-2">
+                                    <div class="m-checkbox-list">
+                                        <label class="m-checkbox">
+                                            <input type="checkbox"
+                                                   formControlName="Anulado"
+                                                   name="Anulado"
+                                                   [(ngModel)]="detail.Anulado">
+                                            <em style="font-style: unset;">Anulado</em>
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-10">
+                                    <label>Motivo Anulación</label>
+                                    <textarea class="form-control"
+                                              type="text"
+                                              name="MotivoAnulado"
+                                              rows="3"
+                                              formControlName="MotivoAnulado"
+                                              [(ngModel)]="detail.MotivoAnulado"
+                                              maxlength="2000"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="hideHeder"
+                                         [expanded]="true">
+                        <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+                            <mat-panel-title>
+                            </mat-panel-title>
+                            <mat-panel-description>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div class="col-md-12">
+                            <div class="row">
+
+                                <div class="form-group col-lg-2">
+                                    <label>Monto demandado</label>
+                                    <input currencyMask
+                                           [options]="{ prefix: '', thousands: '.', decimal: ',' }"
+                                           class="form-control"
+                                           type="text"
+                                           name="MontoDemandado"
+                                           formControlName="MontoDemandado"
+                                           [(ngModel)]="detail.MontoDemandado">
+                                </div>
+
+                                <div class="form-group col-lg-2">
+                                    <label>Fecha ofrecimiento</label>
+                                    <br />
+                                    <mat-form-field class="mat-form-field-mat-datepicker mat-form-field-mat-datepicker-100p">
+                                        <input matInput
+                                               [(ngModel)]="detail.FechaOfrecimiento"
+                                               name="FechaOfrecimiento"
+                                               formControlName="FechaOfrecimiento"
+                                               [matDatepicker]="FechaOfrecimiento"
+                                               [disabled]="viewMode == 6">
+                                        <mat-datepicker-toggle matSuffix [for]="FechaOfrecimiento"></mat-datepicker-toggle>
+                                        <mat-datepicker #FechaOfrecimiento></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+
+                                <div class="form-group col-lg-2">
+                                    <label>Monto ofrecido</label>
+                                    <input currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',' }"
+                                           formControlName="MontoOfrecido"
+                                           class="form-control"
+                                           type="text"
+                                           name="MontoOfrecido"
+                                           [(ngModel)]="detail.MontoOfrecido">
+                                </div>
+
+
+                                <div class="form-group col-lg-2">
+                                    <label>Monto reconsideraci&oacute;n</label>
+                                    <input currencyMask
+                                           [options]="{ prefix: '', thousands: '.', decimal: ',' }"
+                                           formControlName="MontoReconsideracion"
+                                           class="form-control"
+                                           type="text"
+                                           name="MontoReconsideracion"
+                                           [(ngModel)]="detail.MontoReconsideracion">
+                                </div>
+
+                                <div class="form-group col-lg-2" [hidden]="Involucrado">
+                                    <label>Causa reclamo</label>
+                                    <causareclamo-combo name="CausaReclamoId"
+                                                        [showAddButton]="allowAddCausaReclamo"
+                                                        formControlName="CausaReclamoId"
+                                                        [CausaReclamoId]="detail.CausaId"
+                                                        [(ngModel)]="detail.CausaId"
+                                                        emptyText="{{'Seleccione...'}}">
+                                    </causareclamo-combo>
+                                </div>
+
+                                <div class="form-group col-lg-2" [hidden]="Involucrado">
+                                    <label>Hechos</label>
+                                    <textarea class="form-control"
+                                              type="text"
+                                              name="Hechos"
+                                              rows="3"
+                                              formControlName="Hechos"
+                                              [(ngModel)]="detail.Hechos"
+                                              maxlength="2000"></textarea>
+                                </div>
+
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="form-group col-lg-2">
+                                    <label>Fecha de pago</label>
+                                    <br />
+                                    <datepicker-keyboard #FechaPagoControl formControlName="FechaPago" [labelError]="'Fecha de pago incorrecta'" [(ngModel)]="detail.FechaPago">
+                                    </datepicker-keyboard>
+                                </div>
+
+                                <div class="form-group col-lg-2">
+                                    <label>Monto pagado</label>
+                                    <input currencyMask
+                                           [options]="{ prefix: '', thousands: '.', decimal: ',' }"
+                                           class="form-control"
+                                           type="text"
+                                           formControlName="MontoPagado"
+                                           name="MontoPagado"
+                                           [(ngModel)]="detail.MontoPagado">
+                                </div>
+
+
+                                <div class="form-group  col-lg-2">
+                                    <div class="m-checkbox-list">
+                                        <label class="m-checkbox">
+                                            <input type="checkbox"
+                                                   formControlName="CuotasCheck"
+                                                   name="Cuotas"
+                                                   [(ngModel)]="detail.Cuotas">
+                                            <em style="font-style: unset;">Pago en cuotas</em>
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-2">
+                                    <label>Monto franquicia</label>
+                                    <input currencyMask
+                                           [options]="{ prefix: '', thousands: '.', decimal: ',' }"
+                                           formControlName="MontoFranquicia"
+                                           class="form-control"
+                                           type="text"
+                                           name="MontoFranquicia"
+                                           [(ngModel)]="detail.MontoFranquicia">
+                                </div>
+
+
+                                <div class="form-group col-lg-2">
+                                    <label>Abogado</label>
+                                    <abogados-combo [showAddButton]="allowAddAbogados"
+                                                    name="AbogadoId"
+                                                    [AbogadoId]="detail.AbogadoId"
+                                                    formControlName="AbogadoId"
+                                                    [(ngModel)]="detail.AbogadoId"
+                                                    emptyText="{{'Seleccione..'}}">
+                                    </abogados-combo>
+                                </div>
+
+                                <div class="form-group col-lg-2">
+                                    <label>Honorarios abogado actor</label>
+                                    <input currencyMask
+                                           [options]="{ prefix: '', thousands: '.', decimal: ',' }"
+                                           formControlName="MontoHonorariosAbogado"
+                                           class="form-control"
+                                           type="text"
+                                           name="MontoHonorariosAbogado"
+                                           [(ngModel)]="detail.MontoHonorariosAbogado">
+                                </div>
+
+
+                            </div>
+
+                            <div class="row">
+
+
+                                <div class="form-group col-lg-2">
+                                    <label>Honorarios mediador</label>
+                                    <input currencyMask
+                                           [options]="{ prefix: '', thousands: '.', decimal: ',' }"
+                                           formControlName="MontoHonorariosMediador"
+                                           class="form-control"
+                                           type="text"
+                                           name="MontoHonorariosMediador"
+                                           [(ngModel)]="detail.MontoHonorariosMediador">
+                                </div>
+
+
+                                <div class="form-group col-lg-2">
+                                    <label>Honorarios perito</label>
+                                    <input currencyMask
+                                           [options]="{ prefix: '', thousands: '.', decimal: ',' }"
+                                           formControlName="MontoHonorariosPerito"
+                                           class="form-control"
+                                           type="text"
+                                           name="MontoHonorariosPerito"
+                                           [(ngModel)]="detail.MontoHonorariosPerito">
+                                </div>
+
+
+                                <div class="form-group  col-lg-2">
+                                    <div class="m-checkbox-list">
+                                        <label class="m-checkbox">
+                                            <input id="JuntaMedica"
+                                                   type="checkbox"
+                                                   name="JuntaMedica"
+                                                   formControlName="JuntaMedica"
+                                                   [(ngModel)]="detail.JuntaMedica">
+                                            <em style="font-style: unset;">Junta m&eacute;dica</em>
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group col-lg-2" [ngClass]="{'has-danger': reclamosForm.controls.PorcentajeIncapacidad.invalid && (reclamosForm.controls.PorcentajeIncapacidad.dirty || reclamosForm.controls.PorcentajeIncapacidad.touched)}">
+                                    <label>Porc. incapacidad</label>
+                                    <input currencyMask
+                                           [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+                                           max="100"
+                                           class="form-control"
+                                           type="text"
+                                           name="PorcentajeIncapacidad"
+                                           id="PorcentajeIncapacidad"
+                                           formControlName="PorcentajeIncapacidad"
+                                           [(ngModel)]="detail.PorcentajeIncapacidad">
+                                    <div *ngIf="reclamosForm.controls.PorcentajeIncapacidad.invalid && (reclamosForm.controls.PorcentajeIncapacidad.dirty || reclamosForm.controls.PorcentajeIncapacidad.touched)"
+                                         class="form-control-feedback text-sm">
+                                        <div *ngIf="reclamosForm.controls.PorcentajeIncapacidad.errors.max">
+                                            El Porc de Incapacidad no debe superar el 100%.
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group col-lg-2" [hidden]="Involucrado">
+                                    <label>Tipo de acuerdo</label>
+                                    <tiposacuerdo-combo [showAddButton]="allowAddAbogados"
+                                                        [TipoAcuerdoId]="detail.TipoAcuerdoId"
+                                                        name="TipoAcuerdoId"
+                                                        id="TipoAcuerdoId"
+                                                        formControlName="TipoAcuerdoId"
+                                                        [(ngModel)]="detail.TipoAcuerdoId"
+                                                        emptyText="{{'Seleccione..'}}">
+                                    </tiposacuerdo-combo>
+                                </div>
+
+
+                                <div class="form-group col-lg-2" [hidden]="Involucrado">
+                                    <label>Rubro Salarial</label>
+                                    <rubrosalarial-combo [showAddButton]="allowAddRubroSalarial"
+                                                         [RubroSalarialId]="detail.RubroSalarialId"
+                                                         name="RubroSalarialId"
+                                                         id="RubroSalarialId"
+                                                         formControlName="RubroSalarialId"
+                                                         [(ngModel)]="detail.RubroSalarialId"
+                                                         emptyText="{{'Seleccione..'}}">
+                                    </rubrosalarial-combo>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="form-group col-lg-2">
+                                    <label>Monto tasas judiciales</label>
+                                    <input currencyMask
+                                           [options]="{ prefix: '', thousands: '.', decimal: ',' }"
+                                           formControlName="MontoTasasJudiciales"
+                                           class="form-control"
+                                           type="text"
+                                           name="MontoTasasJudiciales"
+                                           [(ngModel)]="detail.MontoTasasJudiciales">
+                                </div>
+
+                                <div class="form-group col-lg-5">
+                                    <label>Observaciones</label>
+                                    <textarea class="form-control"
+                                              type="text"
+                                              name="Observaciones"
+                                              rows="2"
+                                              formControlName="Observaciones"
+                                              [(ngModel)]="detail.Observaciones"
+                                              maxlength="2000"></textarea>
+                                </div>
+
+                                <div class="form-group col-lg-5">
+                                    <label>Obs. conv. extrajud.</label>
+                                    <textarea class="form-control"
+                                              type="text"
+                                              rows="2"
+                                              formControlName="ObsConvenioExtrajudicial"
+                                              name="ObsConvenioExtrajudicial"
+                                              [(ngModel)]="detail.ObsConvenioExtrajudicial"
+                                              maxlength="2000"></textarea>
+                                </div>
+                            </div>
+                            <div class="row"
+                                 [hidden]="!(detail.EstadoId && detail.JudicialSelected)">
+
+                                <div class="form-group col-lg-4">
+                                    <label>Autos</label>
+                                    <input formControlName="Autos"
+                                           class="form-control"
+                                           type="text"
+                                           name="Autos"
+                                           [(ngModel)]="detail.Autos"
+                                           maxlength="2000">
+                                </div>
+
+                                <div class="form-group col-lg-2">
+                                    <label>N&uacute;mero expediente</label>
+                                    <input formControlName="NroExpediente"
+                                           class="form-control"
+                                           type="text"
+                                           name="NroExpediente"
+                                           [(ngModel)]="detail.NroExpediente"
+                                           maxlength="50">
+                                </div>
+
+                                <div class="form-group col-lg-3">
+                                    <label>Juzgado</label>
+                                    <juzgados-combo [showAddButton]="allowAddJuzgados"
+                                                    name="JuzgadoId"
+                                                    #JuzgadoCombo
+                                                    id="JuzgadoId"
+                                                    formControlName="JuzgadoId"
+                                                    [(ngModel)]="detail.JuzgadoId"
+                                                    emptyText="{{'Seleccione..'}}">
+                                    </juzgados-combo>
+                                </div>
+
+                                <div class="form-group col-lg-3">
+                                    <label>Abogado de la empresa</label>
+                                    <abogados-combo [showAddButton]="allowAddAbogados"
+                                                    name="AbogadoEmpresaId"
+                                                    id="AbogadoEmpresaId"
+                                                    formControlName="AbogadoEmpresaId"
+                                                    [(ngModel)]="detail.AbogadoEmpresaId"
+                                                    emptyText="{{'Seleccione..'}}">
+                                    </abogados-combo>
+
+                                </div>
+
+                            </div>
+
+                            <div class="row" [hidden]="!detail.Cuotas">
+                                <div class="col-md-12">
+                                    <h3>Cuotas</h3>
+                                </div>
+                                <div class="text-right">
+                                    <button type="button"
+                                            [hidden]="viewMode == 6"
+                                            (click)="addNewReclamoCuotas()"
+                                            class="btn btn-primary blue"
+                                            style="margin-bottom: 15px;">
+                                        <i class="fa fa-plus"></i> Agregar Cuota
+                                    </button>
+                                </div>
+                                <div class="m-form__section m-form__section--first col-md-12" [hidden]="detail.ReclamoCuotas && detail.ReclamoCuotas.length == 0">
+                                    <div class="mat-table__wrapper" formArrayName="Cuotas">
+                                        <mat-table class="lmat-elevation-z8" [dataSource]="datasourceCuotas" matSort matSortActive="id" matSortDirection="asc" matSortDisableClear>
+
+
+
+                                            <ng-container matColumnDef="FechaVencimiento">
+                                                <mat-header-cell *matHeaderCellDef>Fecha Vencimiento</mat-header-cell>
+                                                <mat-cell *matCellDef="let row; let i = index;">
+                                                    <mat-form-field [formGroupName]="i">
+                                                        <input matInput
+                                                               [(ngModel)]="row.FechaVencimiento"
+                                                               name="{{ 'FechaVencimiento' + row.Id }}"
+                                                               [matDatepicker]="FechaVencimiento"
+                                                               formControlName="FechaVencimiento">
+                                                        <mat-datepicker-toggle matSuffix [for]="FechaVencimiento"></mat-datepicker-toggle>
+                                                        <mat-datepicker #FechaVencimiento></mat-datepicker>
+                                                    </mat-form-field>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="MontoCuotas">
+                                                <mat-header-cell *matHeaderCellDef>Monto</mat-header-cell>
+                                                <mat-cell *matCellDef="let row; let i = index;">
+                                                    <mat-form-field floatLabel="never" [formGroupName]="i">
+                                                        <input matInput
+                                                               currencyMask
+                                                               type="text"
+                                                               class="form-control"
+                                                               [options]="{ prefix: '', thousands: '.', decimal: ',' }"
+                                                               name="{{ 'MontoCuotas' + row.Id }}"
+                                                               id="{{ 'MontoCuotas' + row.Id }}"
+                                                               formControlName="MontoCuotas"
+                                                               [(ngModel)]="row.Monto">
+                                                    </mat-form-field>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Concepto">
+                                                <mat-header-cell *matHeaderCellDef>Concepto</mat-header-cell>
+                                                <mat-cell *matCellDef="let row; let i = index;">
+                                                    <mat-form-field floatLabel="never" [formGroupName]="i">
+                                                        <input matInput
+                                                               type="text"
+                                                               class="form-control"
+                                                               name="{{ 'Concepto' + row.Id }}"
+                                                               id="{{ 'Concepto' + row.Id }}"
+                                                               formControlName="Concepto"
+                                                               [(ngModel)]="row.Concepto"
+                                                               [value]="row.Concepto"
+                                                               maxlength="2000">
+                                                    </mat-form-field>
+                                                </mat-cell>
+                                            </ng-container>
+
+
+                                            <ng-container matColumnDef="Acciones">
+
+                                                <mat-header-cell *matHeaderCellDef>
+                                                    Acciones
+                                                </mat-header-cell>
+                                                <mat-cell *matCellDef="let row; let i = index;">
+                                                    <div class="dropdown">
+                                                        <a href="javascript:void(0);"
+                                                           (click)="onDeleteCuotas(row)"
+                                                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                                           title="Eliminar">
+                                                            <i class="la la-trash"></i>
+                                                        </a>
+                                                    </div>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <mat-header-row *matHeaderRowDef="displayedColumnsCuotas"></mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedColumnsCuotas"></mat-row>
+                                        </mat-table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel class="hideHeder"
+                                         [expanded]="true" *ngIf="detail.itemsHistorial && detail.itemsHistorial.length > 0">
+                        <mat-expansion-panel-header [collapsedHeight]="collapsedHeight" [expandedHeight]="expandedHeight">
+                            <mat-panel-title>
+                            </mat-panel-title>
+                            <mat-panel-description>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <div class="col-md-12">
+                            <div class="row"
+                                 *ngIf="viewMode == 6">
+                                <div class="form-group col-lg-3">
+                                    <label>Usuario cambio estado</label><br />
+                                    <label>{{detail.CreatedUserName}}</label>
+                                </div>
+                                <div class="form-group col-lg-3">
+                                    <label>Fecha y hora cambio estado</label><br />
+                                    <label>{{detail.CreatedDate | date :'dd/MM/yyyy HH:mm'}}</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h3>Estados reclamo</h3>
+                                    </div>
+                                    <div class="primeng-datatable-container primeng-small"
+                                         style="overflow:auto;  ">
+                                        <p-dataTable [value]="detail.itemsHistorial"
+                                                     scrollable="true"
+                                                     scrollHeight="300px"
+                                                     responsive="false"
+                                                     #dt
+                                                     emptyMessage="">
+
+                                            <p-column header="Acciones"
+                                                      [sortable]="false"
+                                                      styleClass="col-actions col-primeng-large">
+                                                <ng-template let-col
+                                                             let-row="rowData"
+                                                             pTemplate
+                                                             type="body">
+                                                    <div class="dropdown">
+                                                        <a href="javascript:void(0);"
+                                                           (click)="onView(row)"
+                                                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                                           title="Ver">
+                                                            <i class="la la-edit"></i>
+                                                        </a>
+                                                    </div>
+
+                                                </ng-template>
+                                            </p-column>
+
+
+                                            <p-column field="Fecha"
+                                                      header="Fecha y hora"
+                                                      filterPlaceholder="Buscar..."
+                                                      [sortable]="true">
+                                                <ng-template let-col
+                                                             let-row="rowData"
+                                                             pTemplate
+                                                             type="body">
+                                                    <div>
+                                                        {{row.CreatedDate | date: 'dd/MM/yyyy HH:mm' }}
+                                                    </div>
+                                                </ng-template>
+                                            </p-column>
+                                            <p-column field="Estado.Descripcion"
+                                                      header="Estado"
+                                                      filterPlaceholder="Buscar...">
+                                            </p-column>
+                                            <p-column field="SubEstado.Descripcion"
+                                                      header="Sub-Estado"
+                                                      [sortable]="false"></p-column>
+
+                                            <p-column field="CreatedUserName"
+                                                      header="Usuario"></p-column>
+
+
+                                        </p-dataTable>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+
+                </tab>
+
+                <tab heading="{{'Adjuntos'}}" customClass="m-tabs__item" *ngIf="viewMode != 6 && allowAdjunto">
+                    <div [hidden]="!detail.Id || detail.Id == 0">
+                        <adjuntos [AllowUploadFiles]="allowModify"
+                                  [onlyDownload]="false"
+                                  #ReclamossAdjuntos
+                                  [Parent]="detail.Id"
+                                  [appGetAllFileByParent]="GetAdjuntosReclamos"
+                                  [appUploadUrl]="appUploadFiles + detail.Id"
+                                  [appRemoveFileUrl]="appDeleteFileById">
+
+                        </adjuntos>
+                    </div>
+                    <div [hidden]="!(!detail.Id || detail.Id == 0)">
+                        Debe guardar el reclamo para poder adjuntar archivos
+                    </div>
+                </tab>
+
+            </tabset>
+        </div>
+    </div>
+
+
+    <div class="modal-footer">
+        <div class="col-lg-3" style="float:left" *ngIf="viewMode == 2">
+            <p>Insertó Usuario: <span>{{detail.CreatedUserName}}</span></p>
+        </div>
+        <div>
+            <button [disabled]="saving"
+                    type="button"
+                    class="btn btn-default"
+                    (click)="close()"
+                    [hidden]="!((allowVisualizar && !allowModify && viewMode == 2) || viewMode == 6)">
+                Volver
+            </button>
+            <button [disabled]="saving"
+                    type="button"
+                    class="btn btn-default"
+                    (click)="close()"
+                    [hidden]="(allowVisualizar && !allowModify && viewMode == 2) || viewMode == 6">
+                Cancelar
+            </button>
+
+            <button type="submit"
+                    class="btn btn-primary"
+                    [buttonBusy]="saving"
+                    [busyText]="'Guardando..'"
+                    [hidden]="(allowVisualizar && !allowModify && viewMode == 2) || viewMode == 6">
+                <i class="fa fa-save"></i>
+                <span>Guardar</span>
+            </button>
+        </div>
+    </div>
+</form>
+
+

@@ -1,0 +1,9 @@
+﻿<div class="col-md-12" style="padding:0px; display:inline-flex">
+    <p-autoComplete #autocomplete name="autocomplete"
+                    [(ngModel)]="value"
+                    [suggestions]="items"
+                    (completeMethod)="filterItems($event)"
+                    placeholder="{{placeHolder}}"
+                    [minLength]="minLength">
+    </p-autoComplete>
+</div>

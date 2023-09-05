@@ -1,0 +1,59 @@
+﻿<form #detailForm="ngForm" 
+	  novalidate 
+	  (ngSubmit)="detailForm.form.valid && save(detailForm)" 
+	  autocomplete="off">
+	<div class="modal-header">
+		<h4 class="modal-title">
+			<span *ngIf="detail.Id">{{"Editar Taller-Ivu"}} - Galpón: {{detail.Description}}</span>
+            <span *ngIf="!detail.Id">{{"Crear Taller-Ivu"}}</span>
+		</h4>
+		<button type="button" class="close" (click)="close()" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group col-md-6" [ngClass]="{'has-danger': Galpon.invalid && (Galpon.dirty || Galpon.touched)}">
+                <label>Galpon:</label>
+                <galpon-combo #Galpon="ngModel"
+                              [(ngModel)]="detail.CodGal"
+                              id="Galpon"
+                              name="Galpon"
+                              emptyText="Seleccione..."
+                              required>
+                </galpon-combo>
+
+                <div *ngIf="Galpon.invalid && (Galpon.dirty || Galpon.touched)"
+                     class=" form-control-feedback">
+                    <div *ngIf="Galpon.errors.required">
+                        El Galpon es Requerido
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-6" [ngClass]="{'has-danger': CodGalIvu.invalid && (CodGalIvu.dirty || CodGalIvu.touched)}">
+                <label>Código IVU</label>
+                <input #CodGalIvu class="form-control" type="number" name="CodGalIvu"
+                       [(ngModel)]="detail.CodGalIvu" required min="1">
+                <div *ngIf="CodGalIvu.invalid && (CodGalIvu.dirty || CodGalIvu.touched)"
+                     class=" form-control-feedback">
+                    <div *ngIf="CodGalIvu.errors.required">
+                        El Código de IVU es Requerido
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="modal-footer">
+		<button [disabled]="saving" 
+                type="button" 
+                class="btn btn-default" 
+                (click)="close()">Cancelar</button>
+		<button type="submit" 
+                class="btn btn-primary blue"
+				[buttonBusy]="saving"
+                [busyText]="'Guardando..'"
+				[disabled]="!detailForm.form.valid">
+			<i class="fa fa-save"></i> <span>Guardar</span>
+		</button>
+	</div>
+</form>

@@ -1,0 +1,61 @@
+﻿<div bsModal #editModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #userForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>Líneas por usuario: <span *ngIf="userName"> {{userName}}</span></span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <span class="ui-fluid">
+                                <div class="ui-inputgroup">
+                                    <linea-autocomplete #pepe="ngModel" name="lineas" id="lineas" [(ngModel)]="selectItem" placeHolder="LINEAS" field="Description">
+                                    </linea-autocomplete>
+                                    <button pButton type="button" icon="fa-plus" class="ui-button-success" (click)="addLinea(selectItem)" [disabled]="!(selectItem)"></button>
+                                </div>
+                            </span>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <sucursal-combo #SucursalIdSelect="ngModel"
+                                                style="width:  80% !important;"
+                                                name="SucursalIdSelect"                                                  
+                                                [(ngModel)]="SucursalId" emptyText="{{'Unidad de negocio...'}}">
+                                </sucursal-combo>
+                                <div class="input-group-append">
+                                    <button pButton type="button" icon="fa-plus" class="ui-button-success" (click)="addLineaSucursal()" [disabled]="!(SucursalId)"></button>
+                                </div>   
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="m-list-badge m-list-badge--light-bg col-md-12">
+                            <div class="m-list-badge__label m--font-info" style="display: table-caption;">
+                                Líneas asociadas
+                            </div>
+                            <div class="m-list-badge__items" style="line-height: 30px">
+                                <a class="m-list-badge__item" [ngClass]="{ 'm-animate-shake': c.animate }" *ngFor="let c of model.Lineas">
+
+                                    <span>{{c.Description}}</span>
+                                    <i *ngIf="c.IsSelected" class="fa fa-times" (click)="removeLinea(c)"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary blue" [hidden]="!allowModificarUsr" [disabled]="!userForm.form.valid" [buttonBusy]="saving" [busyText]="'Guardando...'"><i class="fa fa-save"></i> <span>Guardar</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,150 @@
+﻿<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && saveAndClose(detailForm)" autocomplete="off">
+    <div [hidden]="!active" class="m-portlet m-portlet--mobile m-portlet--acce m-portlet--head-sm" id="m_portlet_detail" m-portlet="true">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <span class="m-portlet__head-icon">
+                        <i class="{{icon}}"></i>
+                    </span>
+                    <h3 class="m-portlet__head-text">
+                        <span *ngIf="detail.Id">Editar {{title}}: {{detail.Nombre}}</span>
+                        <span *ngIf="!detail.Id">Crear {{title}}</span>
+                    </h3>
+                </div>
+            </div>
+            <div class="m-portlet__head-tools">
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item">
+                        <a href="#" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-angle-down"></i>
+                        </a>
+                    </li>
+                    <li class="m-portlet__nav-item">
+                        <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-expand"></i>
+                        </a>
+                    </li>
+                    <li class="m-portlet__nav-item">
+                        <a href="#" (click)="closeSinGuardar()" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-close"></i>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--right m-tabs-line-danger" role="tablist" style="padding-right:50px">
+                    <li class="nav-item m-tabs__item">
+                        <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_portlet_tab_generalruta" (click)="tabGeneraClick()" id="m_Heder_portlet_tab_generalruta" role="tab">
+                            General
+                        </a>
+                    </li>
+                    <li class="nav-item m-tabs__item" *ngIf="viewMode != 1">
+                        <a class="nav-link m-tabs__link" data-toggle="tab" id="m_portlet_tab_Mapa_header" href="#m_portlet_tab_Mapa" (click)="tabMapaClick()" role="tab">
+                            Mapa
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="m-portlet__body">
+            <div class="tab-content">
+                <div class="tab-pane active" id="m_portlet_tab_generalruta">
+                    <div class="row">
+                        <div class="form-group col-md-6 ">
+
+                            <mat-form-field>
+                                <input matInput [disabled]="!EditEnabled" placeholder="Nombre" name="NameInput" [(ngModel)]="detail.Nombre" maxlength="100" #NameInput="ngModel" required>
+                                <mat-error>
+                                    Nombre es <strong>requerido</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+
+                        </div>
+                        <div class="form-group col-md-6 col-lg-6 ">
+
+                            <estadoruta-combo #EstadoRutaCombo #EstadoRutaId="ngModel" [isRequired]="true" name="EstadoRutaId" [(ngModel)]="detail.EstadoRutaId" DisplayName="Estado" [disabled]="!estadoEnabled" placeholder="Estado"></estadoruta-combo>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6 col-lg-6">
+                            <mat-form-field>
+                                <input #inputFechaVigenciaDesde="ngModel" matInput required [(ngModel)]="detail.FechaVigenciaDesde" placeholder="Fecha Vigencia desde" [disabled]="!EditEnabled" name="FechaVigenciaDesde" [matDatepicker]="FechaVigenciaDesde">
+                                <mat-datepicker-toggle matSuffix [for]="FechaVigenciaDesde"></mat-datepicker-toggle>
+                                <mat-datepicker #FechaVigenciaDesde></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-6 col-lg-6">
+                            <mat-form-field>
+                                <input matInput placeholder="Fecha Vigencia hasta" [disabled]="!EditEnabled" [(ngModel)]="detail.FechaVigenciaHasta" name="FechaVigenciaHasta" [matDatepicker]="FechaVigenciaHasta">
+                                <mat-datepicker-toggle matSuffix [for]="FechaVigenciaHasta"></mat-datepicker-toggle>
+                                <mat-datepicker #FechaVigenciaHasta></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row" [hidden]="!detail.Id || detail.Id == 0">
+                        <div class="form-group col-md-12 col-lg-12">
+                                <label>Instrucciones:</label>
+                                <textarea #Instructions="ngModel" rows="2" class="form-control" type="text" name="Instructions" [(ngModel)]="detail.Instructions" maxlength="2000"></textarea>
+
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <button type="button" class="btn btn-primary blue" (click)="GetInstructions()">Refrescar</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <div class="m-checkbox-list">
+                                    <label class="m-checkbox">
+                                        <input [disabled]="!EditEnabled" id="Activo" type="checkbox" name="Activo" 
+                                               [checked]="EsOriginal"
+                                                (change)="EsOriginal = !EsOriginal"
+
+                                               >
+                                        <label>Es original</label>
+                                    <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="m_portlet_tab_Mapa" [busyIf]="isLoadingMapa">
+                    <app-rbmaps #mapaComponents [loadOnInit]="loadOnInit" [TipoBanderaId]="detail.TipoBanderaId"></app-rbmaps>
+                    <div class="">
+                        <div class="row align-items-center">
+                            <div class="col-lg-12 m--align-right">
+                                <div>
+                                    <div aria-label="First group" role="group">
+                                        <button type="button" (click)="onSaveAndShowMap()" class="btn btn-primary" *ngIf="allowSaveAndShowMap" [buttonBusy]="saving" [busyText]="'Guardando..'">
+                                            <i class="fa fa-pencil-square-o"></i> <span>Guardar mapa</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="m-portlet__foot">
+            <div class="row align-items-center">
+                <div class="col-lg-6 m--valign-middle">
+                </div>
+                <div class="col-lg-6 m--align-right">
+                    <div>
+                        <div aria-label="First group" role="group" *ngIf="!isTabMapActive">
+                            <button [disabled]="saving" type="button" class="btn btn-outline-dark" (click)="closeSinGuardar()">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" [buttonBusy]="saving" [busyText]="'Guardando..'">
+                                <i class="fa fa-save"></i> <span>Guardar</span>
+                            </button>
+                            <button type="button" (click)="onSaveAndShowMap()" *ngIf="allowSaveAndContinue" class="btn btn-primary" [buttonBusy]="saving" [busyText]="'Guardando..'">
+                                <i class="fa fa-pencil-square-o"></i> <span>Guardar y continuar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

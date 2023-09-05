@@ -1,0 +1,182 @@
+﻿
+
+
+<div>
+
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form class="horizontal-form filters"
+                      autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+                        <div class="row m--margin-bottom-10"
+                             [hidden]="!advancedFiltersAreShown">
+                            <!--aca los filtros-->
+
+                            <div class="form-group col-lg-2">
+                                <label>Fecha Desde</label>
+                                <br />
+                                <mat-form-field style="width: 100%;">
+                                    <input matInput [(ngModel)]="filter.FechaDesde" name="FechaDesde" [matDatepicker]="FechaDesde">
+                                    <mat-datepicker-toggle matSuffix [for]="FechaDesde"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaDesde></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-group col-lg-2">
+                                <label>Fecha Hasta</label>
+                                <br />
+                                <mat-form-field style="width: 100%;">
+                                    <input matInput [(ngModel)]="filter.FechaHasta" name="FechaHasta" [matDatepicker]="FechaHasta">
+                                    <mat-datepicker-toggle matSuffix [for]="FechaHasta"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaHasta></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-group col-lg-2">
+                                <label>Revisado</label>
+                                <yesnoall-combo name="Revisado"
+                                                id="Revisado"
+                                                #RevisadoCombo
+                                                #Revisado="ngModel"
+                                                [(ngModel)]="filter.Revisado"
+                                                emptyText="{{'Todos'}}">
+                                </yesnoall-combo>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-sm-12 text-right">
+                                    <button type="button" class="btn btn-metal" (click)="BorrarFiltros()">
+                                        <i class="fa fa-refresh"></i> Borrar Filtros
+                                    </button>
+                                    <button type="button" class="btn btn-metal"
+                                            (click)="actualizar()">
+                                        <i class="fa fa-refresh"></i> Actualizar
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row margin-bottom-10">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" [hidden]="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> Mostrar filtros avanzados</span>
+                                <span class="clickable-item text-muted" [hidden]="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> Ocultar filtros avanzados</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2" style="padding-top: 1rem;">
+                                <button type="button" class="btn btn-metal" *ngIf="selectedData && selectedData != null && selectedData.length > 0" (click)="Revisar()">
+                                    <i class="fa fa-save"></i> Revisar
+                                </button>
+                            </div>
+                            <div class="form-group col-lg-4" style="padding-top: 1.6rem; margin-bottom: 0;" *ngIf="selectedData != null && selectedData.length > 0">
+                                <b>Total de documentos marcados:  {{selectedData.length}}</b>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+
+                    <div class="primeng-datatable-container primeng-small" style="overflow:auto; "
+                         [busyIf]="primengDatatableHelper.isLoading">
+
+                        <p-dataTable #dataTable
+                                     [lazy]="true"
+                                     (onLazyLoad)="onSearch($event)"
+                                     [value]="primengDatatableHelper.records"
+                                     [paginator]="false"
+                                     emptyMessage="{{l('Sin Datos')}}"
+                                     [scrollable]="false"
+                                     [tableStyle]="{'table-layout':'auto'}"
+                                     [(selection)]="selectedData"
+                                     (onHeaderCheckboxToggle)="onTableHeaderCheckboxToggle($event)"
+                                     (onRowSelect)="onRowSelect($event)"
+                                     responsive="primengDatatableHelper.isResponsive">
+
+                            <p-column>
+                                <ng-template pTemplate="header">
+                                    <label class="m-checkbox m-checkbox--air ">
+                                        <input type="checkbox" id="{{'checkedAllRows'}}" (change)="selectAllRows($event)" /><span></span>
+                                    </label>
+                                </ng-template>
+                                <ng-template let-col let-row="rowData" pTemplate="body" style="text-align:center">
+                                    <div style="text-align:center" *ngIf="!row.Revisado" >
+                                        <label class="m-checkbox m-checkbox--air ">
+                                            <input type="checkbox" id="{{ 'checkbox-' + row.Id }}" (change)="checkRow(row); " /><span></span>
+                                        </label>
+                                    </div>
+                                </ng-template>
+                            </p-column>
+
+                            <p-column field="NombreArchivo" header="Nombre Archivo" [sortable]="true"></p-column>
+                            <p-column field="FechaProcesado" header="Fec. Proceso" styleClass="col-primeng-small" [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">{{row.FechaProcesado | date: 'dd/MM/yyyy HH:mm'}}</ng-template>
+                            </p-column>
+                            <p-column field="DetalleError" header="Detalle Error" [sortable]="true"></p-column>
+                            <p-column field="TipoDocumento.Descripcion" styleClass="col-primeng-medium" header="Tipo Doc." [sortable]="true">
+                                <ng-template let-col
+                                             let-row="rowData"
+                                             pTemplate
+                                             type="body">
+                                    {{row.TipoDocumentoDescripcion}}
+                                </ng-template>
+                            </p-column>
+                            <p-column field="Fecha" header="Fecha" styleClass="col-primeng-small" [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">{{row.Fecha | date: 'dd/MM/yyyy'}}</ng-template>
+                            </p-column>
+                            <p-column field="NombreEmpleado" header="Empleado" [sortable]="true">
+                            </p-column>
+                            <p-column field="Sucursal.DscSucursal" styleClass="col-primeng-small" header="U. de Negocio" [sortable]="true">
+                                <ng-template let-col
+                                             let-row="rowData"
+                                             pTemplate
+                                             type="body">
+                                    {{row.SucursalDescripcion}}
+                                </ng-template>
+                            </p-column>
+                            <p-column field="Empresa.DesEmpr" header="Empresa" [sortable]="true">
+                                <ng-template let-col
+                                             let-row="rowData"
+                                             pTemplate
+                                             type="body">
+                                    {{row.EmpresaDescripcion}}
+                                </ng-template>
+                            </p-column>
+                            <p-column field="Revisado" header="Revisado" [sortable]="true" styleClass="col-primeng-small">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div style="text-align:center">
+                                        <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': row.Revisado}">
+                                            <input [(ngModel)]="row.Revisado" type="checkbox" disabled><span></span>
+                                        </label>
+                                    </div>
+                                </ng-template>
+                            </p-column>
+                        </p-dataTable>
+
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                                         #paginator
+                                         (onPageChange)="onSearch($event)"
+                                         [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">0
+                            </p-paginator>
+                            <span class="total-records-count">
+                                Registros totales:  {{ primengDatatableHelper.totalRecordsCount}}
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+

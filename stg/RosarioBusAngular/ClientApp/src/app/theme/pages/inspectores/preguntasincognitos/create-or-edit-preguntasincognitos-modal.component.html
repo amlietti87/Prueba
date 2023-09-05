@@ -1,0 +1,120 @@
+﻿
+            <form  #detailForm="ngForm" novalidate  (ngSubmit)="detailForm.form.valid && save(detailForm)"  autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="detail.Id">{{"Editar Preguntas Incógnitos"}}</span>
+                        <span *ngIf="!detail.Id">{{"Crear Preguntas Incógnitos"}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group col-lg-12" [ngClass]="{'has-danger': Descripcion.invalid && (Descripcion.dirty || Descripcion.touched)}">
+                        <label>Descripción</label>
+                        <input #Descripcion="ngModel" class="form-control" type="text" name="Descripcion" [(ngModel)]="detail.Descripcion" required maxlength="100">
+
+                        <div *ngIf="Descripcion.invalid && (Descripcion.dirty || Descripcion.touched)"
+                             class=" form-control-feedback">
+                            <div *ngIf="Descripcion.errors.required">
+                                La descripción es Requerida
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Orden</label>
+                        <input #Orden="ngModel" class="form-control" type="text" currencyMask  
+                        [options]="{ allowNegative: false, precision : 0,  prefix: '', thousands: '', decimal: ',' }"                                   
+                        name="Orden" [(ngModel)]="detail.Orden">
+                    </div>
+
+                    <div class="m-checkbox-list row" style="padding: 25px;">
+                        <div class="col-lg-4">
+                            <label class="m-checkbox">
+                                <input #RespuestaRequerida="ngModel" id="RespuestaRequerida" type="checkbox" name="RespuestaRequerida" [(ngModel)]="detail.RespuestaRequerida">
+                                Respuesta requerida
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="m-checkbox">
+                                <input #MostrarObservacion="ngModel" id="MostrarObservacion" type="checkbox" name="MostrarObservacion" [(ngModel)]="detail.MostrarObservacion">
+                                Mostrar observación
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="m-checkbox-list col-lg-4">
+                            <label class="m-checkbox" [hidden]="!detail.Id">
+                                <input #Anulado="ngModel" id="Anulado" type="checkbox" name="Anulado" [(ngModel)]="detail.Anulado">
+                                Anulado
+                                <span></span>
+                            </label>
+                        </div>
+    
+                    </div>
+
+
+                    <tabset class="tab-container tabbable-line">
+                        <tab heading="{{'Respuestas'}}" customClass="m-tabs__item">
+
+                            <div class="form-group" style="padding-left: 0px;">
+                                <button class="btn btn-primary blue" type="button" (click)="OnPreguntasIncognitosRespuestasRowAdded()">
+                                    <i class="fa fa-plus"></i> <span>Agregar Respuesta</span> 
+                                </button>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="primeng-datatable-container primeng-small primeng-small-buttons-small" style="padding-bottom: 6px;">
+                                        <p-dataTable [value]="detail.InspPreguntasIncognitosRespuestas" scrollable="true" scrollHeight="300px" [editable]="true" responsive="false" emptyMessage="">
+                                            <!-- Column Respuesta-->
+                                            <p-column field="Descripcion" header="Respuesta" [editable]="true" [sortable]="true">
+                                                <ng-template let-row="rowData" pTemplate="editor">
+                                                    <div>
+                                                        <respuestas-combo [showAddButton]="allowAddRespuestas" name="{{'Respuesta' + row.Id}}" id="{{'Respuesta' + row.Id}}" [(ngModel)]="row.RespuestaId" [BuscarRespuesta]="false" [Anulado]="2" (ngModelChange)="OnRespuestasComboChanged($event, row)" emptyText="{{'Seleccione..'}}">
+                                                        </respuestas-combo>
+                                                    </div>
+                                                </ng-template>
+                                                <ng-template let-row="rowData" pTemplate="body">
+                                                    <div><span style="color: blue;">{{ row.RespuestaNombre }}</span></div>
+                                                </ng-template>
+                                            </p-column>
+                                            <!-- Column Orden -->
+                                            <p-column field="Orden" [editable]="true" header="Orden" [sortable]="true">
+                                                <ng-template let-row="rowData" pTemplate="editor">                           
+                                                    <input class="form-control" type="text" name="{{ 'Orden' + row.Id }}" id="{{ 'Orden' + row.Id }}" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false, precision: 0 }" [(ngModel)]="row.Orden">
+                                                </ng-template>                          
+                                            </p-column>
+                                            <!-- Column Acciones -->
+                                            <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                                    <div class="dropdown">
+                                                        <a href="javascript:void(0);" (click)="OnPreguntasIncognitosRespuestasRowRemoved(row)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Eliminar">
+                                                            <i class="la la-trash"></i>
+                                                        </a>
+                                                    </div>
+                                                </ng-template>
+                                            </p-column>
+                                        </p-dataTable>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="allowRespuestas" class="form-group" [ngClass]="{'has-danger': allowRespuestas}">
+                                <div style="color: red;" *ngIf="allowRespuestas">
+                                    Debe ingresar al menos una respuesta.
+                                </div>
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary blue"
+                            [buttonBusy]="saving" [busyText]="'Guardando..'"
+                            [disabled]="!detailForm.form.valid"
+                            [hidden]="!allowmodificarpreguntas && detail.Id">
+                        <i class="fa fa-save"></i> <span>Guardar</span>
+                    </button>
+                </div>
+            </form>
+      

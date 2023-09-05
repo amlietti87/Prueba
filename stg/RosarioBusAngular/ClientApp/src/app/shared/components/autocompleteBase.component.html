@@ -1,0 +1,21 @@
+﻿<div class="col-md-12" style="padding:0px; display:inline-flex">
+    <button *ngIf="showAddButton"
+            type="button"
+            class="smallesttext btn btn-primary blue"
+            (click)="onAddButtonClick()">
+        <i class="la la-plus"></i>
+    </button>
+    <p-autoComplete #autocomplete name="autocomplete"
+                    [(ngModel)]="value"
+                    [suggestions]="items"
+                    [disabled]="IsDisabled"
+                    (completeMethod)="filterItems($event)"
+                    forceSelection="true"
+                    (onUnselect)="Unselect($event)"
+                    (onClear)="Clear($event)"
+                    placeholder="{{placeHolder}}"
+                    field="{{field}}"
+                    [minLength]="minLength">
+
+    </p-autoComplete>
+</div>

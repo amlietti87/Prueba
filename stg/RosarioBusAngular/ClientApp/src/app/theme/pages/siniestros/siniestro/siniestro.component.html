@@ -1,0 +1,364 @@
+﻿<div>
+    <div class="m-subheader">
+        <div style="text-align: right;">
+            <button (click)="onCreate()" *ngIf="allowAdd && active" class="btn btn-primary blue">
+
+                <i class="fa fa-plus"></i> Crear Siniestro
+
+            </button>
+        </div>
+    </div>
+    <div class="m-content">
+        <h3 class="m-subheader__title m-subheader__title--separator">
+            Búsqueda
+        </h3>
+        <div [hidden]="!active" class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form class="horizontal-form filters" autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+                        <div class="row m--margin-bottom-10" [hidden]="!advancedFiltersAreShown">
+
+                            <div class="form-group col-xl-2">
+                                <label>Nro. Siniestro</label>
+                                <input #filterNroSiniestro (keyup.enter)="onSearch($event)" class="form-control" type="text" name="filterNroSiniestro" [(ngModel)]="filter.NroSiniestro">
+                            </div>
+
+                            <div class="form-group col-xl-2">
+                                <label>Unidad de Negocio</label>
+                                <sucursal-combo name="SucursalId" [(ngModel)]="filter.SucursalId" emptyText="{{'Todas'}}">
+                                </sucursal-combo>
+                            </div>
+
+                            <div class="form-group col-xl-2">
+                                <label>Fecha Desde</label>
+                                <br />
+                                <mat-form-field>
+                                    <input matInput [(ngModel)]="filter.FechaSiniestroDesde" name="FechaSiniestroDesde" [matDatepicker]="FechaSiniestroDesde" (dateChange)="addEvent('change', $event)">
+                                    <mat-datepicker-toggle matSuffix [for]="FechaSiniestroDesde"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaSiniestroDesde (selectedChanged)="onDate($event)"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-group col-xl-2">
+                                <label>Fecha Hasta</label>
+                                <br />
+                                <mat-form-field>
+                                    <input matInput [(ngModel)]="filter.FechaSiniestroHasta" name="FechaSiniestroHasta" [matDatepicker]="FechaSiniestroHasta" (dateChange)="addEvent('change', $event)">
+                                    <mat-datepicker-toggle matSuffix [for]="FechaSiniestroHasta"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaSiniestroHasta (selectedChanged)="onDate($event)"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-group col-xl-2">
+                                <label>F. Denuncia Desde</label>
+                                <br />
+                                <mat-form-field>
+                                    <input matInput [(ngModel)]="filter.FechaDenunciaDesde" name="FechaDenunciaDesde" [matDatepicker]="FechaDenunciaDesde" (dateChange)="addEvent('change', $event)">
+                                    <mat-datepicker-toggle matSuffix [for]="FechaDenunciaDesde"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaDenunciaDesde (selectedChanged)="onDate($event)"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+
+                            <div class="form-group col-xl-2">
+                                <label>F. Denuncia Hasta</label>
+                                <br />
+                                <mat-form-field>
+                                    <input matInput [(ngModel)]="filter.FechaDenunciaHasta" name="FechaDenunciaHasta" [matDatepicker]="FechaDenunciaHasta" (dateChange)="addEvent('change', $event)">
+                                    <mat-datepicker-toggle matSuffix [for]="FechaDenunciaHasta"></mat-datepicker-toggle>
+                                    <mat-datepicker #FechaDenunciaHasta (selectedChanged)="onDate($event)"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-group col-xl-2">
+                                <label>Empresa</label>
+                                <empresa-combo #EmpresaId name="EmpresaId" [(ngModel)]="filter.EmpresaId" emptyText="{{'Todas'}}">
+                                </empresa-combo>
+                            </div>
+
+                            <div class="form-group col-xl-2">
+                                <label>Ficha</label>
+                                <input #Ficha class="form-control" type="text" name="Ficha" [(ngModel)]="filter.Ficha">
+                            </div>
+
+                            <div class="form-group col-xl-2">
+                                <label>Línea</label><br />
+                                <span class="ui-fluid">
+                                    <linea-autocomplete #Linea
+                                                        [(ngModel)]="filter.Linea"
+                                                        name="Linea"
+                                                        id="Linea"
+                                                        placeHolder="Todos">
+                                    </linea-autocomplete>
+                                </span>
+                            </div>
+
+                            <div class="form-group col-xl-2">
+                                <label>Interno</label>
+                                <input #Interno class="form-control" type="text" name="Interno" [(ngModel)]="filter.Interno">
+                            </div>
+
+                            <div class="form-group col-xl-2">
+                                <label>Dominio</label>
+                                <input #Dominio class="form-control" type="text" name="Dominio" [(ngModel)]="filter.Dominio">
+                            </div>
+
+                            <div class="form-group col-xl-2">
+                                <label>Practicante</label><br />
+
+                                <span class="ui-fluid">
+                                    <practicante-autocomplete #PracticanteId
+                                                              [(ngModel)]="filter.selectPracticantes"
+                                                              name="PracticanteId"
+                                                              id="PracticanteId"
+                                                              placeHolder="Todos">
+                                    </practicante-autocomplete>
+                                </span>
+                            </div>
+
+                            <div class="form-group col-xl-2">
+                                <label>Dominio involucrado</label>
+                                <input #DominioInvolucrado class="form-control" type="text" name="DominioInvolucrado" [(ngModel)]="filter.DominioInvolucrado">
+                            </div>
+                            <div class="form-group col-xl-2">
+                                <label>Nro. doc. involucrado</label>
+                                <input #NroDocInvolucrado class="form-control" type="text" name="NroDocInvolucrado" [(ngModel)]="filter.NroDocInvolucrado">
+                            </div>
+                            <div class="form-group col-xl-2">
+                                <label>Apellido involucrado</label>
+                                <input #ApellidoInvolucrado class="form-control" type="text" name="ApellidoInvolucrado" [(ngModel)]="filter.ApellidoInvolucrado">
+                            </div>
+                            <div class="form-group col-xl-2">
+                                <label>Conductor</label><br />
+                                <span class="ui-fluid">
+                                    <empleado-autocomplete [(ngModel)]="filter.selectEmpleados"
+                                                           #ConductorId
+                                                           name="ConductorId"
+                                                           id="ConductorId"
+                                                           placeHolder="Todos">
+                                    </empleado-autocomplete>
+                                </span>
+                            </div>
+
+                            <div class="form-group col-xl-2">
+                                <label>Ubicación</label>
+                                <input #Ubicacion class="form-control" type="text" name="Ubicacion" [(ngModel)]="filter.Ubicacion">
+                            </div>
+
+                            <div class="form-group col-xl-2">
+                                <label>Responsable</label><br />
+                                <responsable-combo #ResponsableConId name="ResponsableConId" [(ngModel)]="filter.ResponsableConId" emptyText="{{'Todos'}}">
+                                </responsable-combo>
+                            </div>
+
+                            <div class="form-group col-xl-2">
+                                <label>Descargo</label><br />
+                                <descargo-combo #DescargoConId name="DescargoConId" [(ngModel)]="filter.DescargoConId" emptyText="{{'Todos'}}">
+                                </descargo-combo>
+                            </div>
+                            <div class="form-group col-xl-2">
+                                <label>Estado reclamo </label>
+                                <estados-combo name="EstadoReclamo" id="EstadoReclamo" #EstadoReclamo="ngModel" [(ngModel)]="filter.EstadoReclamo" (ngModelChange)="onEstadoReclamoSelected($event)" emptyText="{{'Todos'}}">
+                                </estados-combo>
+                            </div>
+
+                            <div class="form-group col-xl-3">
+                                <label>Sub-Estado reclamo </label>
+                                <p-multiSelect name="SubEstados" id="SubEstados" [options]="listSubEstados" [(ngModel)]="selectedSubEstados" optionLabel="Descripcion" defaultLabel="{{'Todos'}}" selectedItemsLabel="{0} Sub-Estados seleccionados" maxSelectedLabels="1">
+                                </p-multiSelect>
+                            </div>
+
+
+                            <div class="form-group col-xl-3">
+                                <label>Consecuencias</label>
+                                <p-multiSelect name="Consecuencias" id="Consecuencias" [options]="listConsecuencias" [(ngModel)]="selectedConsecuencias" optionLabel="Descripcion" defaultLabel="{{'Todos'}}" selectedItemsLabel="{0} consecuencias seleccionadas" maxSelectedLabels="1">
+                                </p-multiSelect>
+                            </div>
+
+                            <div class="form-group col-xl-2" style="text-align:center">
+                                <label>Todas las consecuencias</label>
+                                <input #CheckAllConsecuencias class="form-control" type="checkbox" name="CheckAllConsecuencias" [(ngModel)]="filter.CheckAllConsecuencias">
+                            </div>
+
+
+                            <div class="form-group col-xl-4">
+                                <label>Causas</label><br />
+                                <causas-combo #CausaId="ngModel" name="CausaId" [(ngModel)]="filter.CausaId" emptyText="{{'Todos'}}">
+                                </causas-combo>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="col-sm-12 text-right">
+                                    <button type="button" class="btn btn-metal" (click)="BorrarFiltros()">
+                                        <i class="fa fa-refresh"></i> Borrar Filtros
+                                    </button>
+                                    <button type="button" class="btn btn-metal" (click)="onSearch()">
+                                        <i class="fa fa-refresh"></i> Actualizar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margin-bottom-10">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> Mostrar filtros avanzados</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> Ocultar filtros avanzados</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class=" primeng-datatable-container primeng-small col-md-12 pTableSectores pTableSiniestros" [busyIf]="primengDatatableHelper.isLoading">
+
+                        <p-table #dataTable [lazy]="true" (onLazyLoad)="onSearch($event)" [value]="primengDatatableHelper.records" [paginator]="false" [scrollable]="true" scrollHeight="300px" frozenWidth="180px" responsive="primengDatatableHelper.isResponsive">
+
+
+
+                            <ng-template pTemplate="frozenheader">
+                                <tr>
+                                    <th class="thDenunciasImportador" style="width:80px !important; min-width: 80px !important;">
+                                        <span style="white-space:nowrap" title="Acciones">Acciones</span>
+                                    </th>
+                                    <th class="thDenunciasImportador" style="width:60px !important; min-width: 60px !important;" [pSortableColumn]='"NroSiniestro"'>
+                                        <span style="white-space:nowrap" title="Nro. Siniestro">Nro.</span>
+                                        <p-sortIcon [field]='NroSiniestro'></p-sortIcon>
+                                    </th>
+                                </tr>
+
+                            </ng-template>
+
+                            <ng-template pTemplate="frozenbody" let-row>
+                                <tr style="min-height: 39px !important; height:39px !important;">
+                                    <td class="tdDenunciasImportador" style="width:80px !important; min-width: 80px !important;">
+                                        <div class="dropdown">
+                                            <a href="javascript:void(0);" (click)="onEdit(row)" data-toggle="tooltip" data-placement="top" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Editar">
+                                                <i class="la la-edit"></i>
+                                            </a>
+                                            <a href="javascript:void(0);" *ngIf="allowImprimirSiniestro" data-toggle="tooltip" data-placement="top" title="Imprimir" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" (click)="onPrint(row)">
+                                                <i class="la la-file-pdf-o"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td class="tdDenunciasImportador" style="width:60px !important; min-width: 60px !important;"><b>{{row.NroSiniestro}}</b></td>
+                                </tr>
+                            </ng-template>
+
+
+
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                    <th class="thDenunciasImportador" [pSortableColumn]='"Fecha"'>
+                                        <span style="white-space:nowrap" title="Fecha">Fecha</span>
+                                        <p-sortIcon [field]='Fecha'></p-sortIcon>
+                                    </th>
+                                    <th class="thDenunciasImportador" [pSortableColumn]='"Responsable"'>
+                                        <span style="white-space:nowrap" title="Responsable">Responsable</span>
+                                        <p-sortIcon [field]='Responsable'></p-sortIcon>
+                                    </th>
+                                    <th class="thDenunciasImportador" style="width:175px !important; min-width: 175px !important;" [pSortableColumn]='"NombreConductor"'>
+                                        <span style="white-space:nowrap" title="Conductor/Practicante">Conductor/Practicante</span>
+                                        <p-sortIcon [field]='NombreConductor'></p-sortIcon>
+                                    </th>
+                                    <th class="thDenunciasImportador" style="width:70px !important; min-width: 70px !important;">
+                                        <span style="white-space:nowrap" title="Legajo">Legajo</span>
+                                    </th>
+                                    <th class="thDenunciasImportador" style="width:65px !important; min-width: 65px !important;" [pSortableColumn]='"CocheInterno"'>
+                                        <span style="white-space:nowrap" title="Interno">Interno</span>
+                                        <p-sortIcon [field]='CocheInterno'></p-sortIcon>
+                                    </th>
+                                    <th class="thDenunciasImportador" style="width:65px !important; min-width: 65px !important;" [pSortableColumn]='"CocheFicha"'>
+                                        <span style="white-space:nowrap" title="Ficha">Ficha</span>
+                                        <p-sortIcon [field]='CocheFicha'></p-sortIcon>
+                                    </th>
+                                    <th class="thDenunciasImportador" style="width:65px !important; min-width: 65px !important;" [pSortableColumn]='"CocheLinea.DesLin"'>
+                                        <span style="white-space:nowrap" title="Línea">Línea</span>
+                                        <p-sortIcon [field]='DescripcionLinea'></p-sortIcon>
+                                    </th>
+                                    <th class="thDenunciasImportador" style="width:65px !important; min-width: 65px !important;" [pSortableColumn]='"CocheDominio"'>
+                                        <span style="white-space:nowrap" title="Dominio">Dominio</span>
+                                        <p-sortIcon [field]='CocheDominio'></p-sortIcon>
+                                    </th>
+                                    <th class="thDenunciasImportador" style="width:175px !important; min-width: 175px !important;" [pSortableColumn]='"Lugar"'>
+                                        <span style="white-space:nowrap" title="Ubicación">Ubicación</span>
+                                        <p-sortIcon [field]='Lugar'></p-sortIcon>
+                                    </th>
+                                    <th class="thDenunciasImportador" style="width:175px !important; min-width: 175px !important;">
+                                        <span style="white-space:nowrap" title="Consecuencias">Consecuencias</span>
+                                    </th>
+                                    <th class="thDenunciasImportador" style="width:110px !important; min-width: 110px !important;">
+                                        <span style="white-space:nowrap" title="Estado reclamo">Estado reclamo</span>
+                                    </th>
+                                    <th class="thDenunciasImportador" style="width:100px !important; min-width: 100px !important;" [pSortableColumn]='"Sucursal.DscSucursal"'>
+                                        <span style="white-space:nowrap" title="Unidad de Negocio">Un. Negocio</span>
+                                        <p-sortIcon [field]='DescripcionSucursal'></p-sortIcon>
+                                    </th>
+                                    <th class="thDenunciasImportador" [pSortableColumn]='"Descargo"'>
+                                        <span style="white-space:nowrap" title="Descargo">Descargo</span>
+                                        <p-sortIcon [field]='Descargo'></p-sortIcon>
+                                    </th>
+                                    <th class="thDenunciasImportador" *ngIf="filter.ApellidoInvolucrado && filter.ApellidoInvolucrado != null" style="width:350px !important; min-width: 350px !important;">
+                                        <span style="white-space:nowrap" title="Apellido Involucrado">Ap. Involucrado</span>
+                                    </th>
+                                </tr>
+                            </ng-template>
+
+
+
+
+                            <ng-template pTemplate="body" let-row>
+                                <tr style="min-height: 39px !important; height:39px !important;">
+                                    <td class="tdDenunciasImportador" title="{{row.Fecha | date: 'dd-MM-yyyy'}}">{{row.Fecha | date: 'dd-MM-yyyy'}}</td>
+                                    <td class="tdDenunciasImportador">
+                                        <div style="text-align:center">
+                                            <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': row.Responsable}">
+                                                <input [(ngModel)]="row.Responsable" type="checkbox" disabled><span></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="tdDenunciasImportador" title="{{row.GrillaConductor.NombreConductor}}" style="width:175px !important; min-width: 175px !important;">{{row.GrillaConductor.NombreConductor}}</td>
+                                    <td class="tdDenunciasImportador" title="{{row.GrillaConductor.Legajo}}" style="width:70px !important; min-width: 70px !important;">{{row.GrillaConductor.Legajo}}</td>
+                                    <td class="tdDenunciasImportador" title="{{row.CocheInterno}}" style="width:65px !important; min-width: 65px !important;">{{row.CocheInterno}}</td>
+                                    <td class="tdDenunciasImportador" title="{{row.CocheFicha}}" style="width:65px !important; min-width: 65px !important;">{{row.CocheFicha}}</td>
+                                    <td class="tdDenunciasImportador" title="{{row.DescripcionLinea}}" style="width:65px !important; min-width: 65px !important;">{{row.DescripcionLinea}}</td>
+                                    <td class="tdDenunciasImportador" title="{{row.CocheDominio}}" style="width:65px !important; min-width: 65px !important;">{{row.CocheDominio}}</td>
+                                    <td class="tdDenunciasImportador" title="{{row.Lugar}}" style="width:175px !important; min-width: 175px !important;">{{row.Lugar}}</td>
+                                    <td class="tdDenunciasImportador" title="{{row.PrimerConsecuencia}}" style="width:175px !important; min-width: 175px !important;">{{row.PrimerConsecuencia}}</td>
+                                    <td class="tdDenunciasImportador" title="{{row.EstadoDeReclamos}}" style="width:110px !important; min-width: 110px !important;">{{row.EstadoDeReclamos}}</td>
+                                    <td class="tdDenunciasImportador" title="{{row.DescripcionSucursal}}" style="width:100px !important; min-width: 100px !important;">{{row.DescripcionSucursal}}</td>
+                                    <td class="tdDenunciasImportador">
+                                        <div style="text-align:center">
+                                            <label class="m-checkbox m-checkbox--air" [ngClass]="{'m-checkbox--state-success': row.Descargo}">
+                                                <input [(ngModel)]="row.Descargo" type="checkbox" disabled><span></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="tdDenunciasImportador" title="{{row.ApellidoInvolucrado}}" *ngIf="filter.ApellidoInvolucrado && filter.ApellidoInvolucrado != null" style="width:350px !important; min-width: 350px !important;">{{row.ApellidoInvolucrado}}</td>
+                                </tr>
+                            </ng-template>
+
+                        </p-table>
+
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}" #paginator (onPageChange)="onSearch($event)" [totalRecords]="primengDatatableHelper.totalRecordsCount" [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                Registros totales:  {{ primengDatatableHelper.totalRecordsCount}}
+                            </span>
+                        </div>
+
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+
+                </div>
+            </div>
+        </div>
+
+        <ng-template #createOrEdit></ng-template>
+
+    </div>
+
+
+
+</div>

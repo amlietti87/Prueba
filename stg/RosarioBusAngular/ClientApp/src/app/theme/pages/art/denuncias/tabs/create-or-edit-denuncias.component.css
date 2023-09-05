@@ -1,0 +1,264 @@
+﻿.without-underline .mat-input-underline {
+    display: none !important;
+}
+
+.mat-column-ObservacionesNotificaciones > mat-form-field.mat-input-container.mat-form-field
+{
+    width: 300px;
+}
+
+.combo-mat-form-fiel-fixed mat-form-field {
+    width: 100% !important;
+}
+
+
+.primeng-datatable-container .ui-datatable table thead tr th {
+    white-space: nowrap;
+}
+
+.primeng-datatable-container .ui-datatable table thead tr td {
+    white-space: nowrap;
+}
+
+.nav.nav-tabs.m-tabs-line {
+    margin-bottom: 0px;
+}
+
+.mat-expansion-panel {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+.mat-expansion-panel-body{
+    padding-left: 24px!important;
+    padding-right: 24px!important;
+}
+
+.notificacion-mat-table .col-md-12{
+    padding-top: 10px!important;
+}
+
+
+
+.mat-form-field-mat-datepicker {
+    width: 85px !important;
+}
+
+mat-form-field-mat-datepicker-100p {
+    width: 100% !important;
+    display: initial;
+}
+
+ngb-timepicker input.form-control {
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 35px;
+}
+
+.mat-expansion-panel-body {
+    padding-bottom: 1px !important;
+}
+
+.hideHeder.mat-expanded .mat-expansion-panel-content {
+    margin-top: -26px;
+}
+
+.hideHeder.mat-expanded .mat-expansion-panel-header-title {
+    display: none;
+}
+
+.mat-expansion-panel-header-title-custom {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+/* Init Small Size */
+
+.smallsize mat-select {
+    height: 2rem !important;
+    padding-top: 5px !important;
+}
+
+.smallsize input.form-control {
+    font-size: 0.8rem !important;
+    padding: 5px;
+    line-height: 1;
+}
+
+.smallsize p {
+    font-size: 0.8rem !important;
+}
+
+.smallsize label{
+    font-size: 0.8rem !important;
+    margin-bottom: 0px;
+    margin-top:0px;
+}
+
+.smallsize textarea {
+    font-size: 0.8rem !important;
+    padding: 3px;
+}
+
+.smallsize input {
+    font-size: 0.8rem !important;
+}
+
+.smallsize input.lauraFecha {
+    font-size: 0.9rem !important;
+}
+
+.smallsize input {
+    font-size: 0.8rem !important;
+}
+
+.smallsize button {
+    font-size: 0.8rem !important;
+}
+
+.smallsize button.smallesttext {
+    font-size: 0.1rem !important;
+    padding: 5px;
+}
+
+.smallsize button.btn.dropdown-toggle {
+    font-size: 0.8rem !important;
+    padding: 5px;
+}
+
+.smallsize .mat-form-field-infix {
+    border-top: initial !important;
+    padding: 0px !important;
+}
+
+
+
+.smallsize span {
+    font-size: 0.8rem !important;
+}
+
+
+.smallsize .m-portlet.m-portlet--fullscreen.m-portlet--head-sm > .m-portlet__body {
+    padding: 0px 15px;
+}
+
+.smallsize .nav.nav-tabs.m-tabs-line {
+    line-height: 3px;
+}
+
+.smallsize .mat-expansion-panel-body {
+    line-height: 13px;
+}
+
+.smallsize .m-checkbox > span, .m-radio > span {
+    height: 11px;
+    width: 11px;
+}
+.smallsize .m-checkbox  {
+    padding-left: 12px;
+}
+
+.smallsize .col-md-10p {
+    padding-left: 3px !important;
+    padding-right: 3px !important;
+    max-width: 14.285714%;
+    margin-bottom: 0px;
+}
+
+.smallsize .smallpadding {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+}
+.smallsize .smallmargin {
+    margin-bottom: 2px !important;
+} 
+
+.smallsize .smallpadding.smallCenteredVertically {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+    padding-top: 19px !important;
+}
+
+.smallsize button.smallCenteredVertically{
+    position: absolute;
+    right: 100px;
+    margin-top: 15px !important;
+}
+
+.smallsize .smallHeight {
+    height: 40px;
+}
+
+
+.smallsize .m-portlet .m-portlet__foot:not(.m-portlet__no-border) {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.smallsize .m-portlet.m-portlet--head-sm .m-portlet__head {
+    height: 2.7rem;
+}
+.smallsize .m-portlet.m-portlet--fullscreen.m-portlet--head-sm > .m-portlet__body{
+    top: 2.7rem;
+}
+
+.psmallpadding p {
+    margin-bottom: 0px;
+}
+
+
+
+.smallSizeFont {
+    font-size: 14px;
+}
+
+.primeng-small.primeng-small-buttons-small div.dropdown a{
+    width: 20px;
+    height: 20px;
+}
+
+.smallsize div {
+    font-size: 0.8rem;
+}
+
+.smallsize .bootstrap-select .dropdown-menu.inner > li > a {
+    font-size: 0.8rem !important;
+    padding: 5px;
+}
+.smallsize .bs-searchbox .form-control {
+    font-size: 0.8rem !important;
+    padding: 5px;
+}
+.smallsize div.bs-searchbox {
+    font-size: 0.7rem !important;
+    padding: 5px;
+}
+
+.smallsize div.form-group.margin-top-10less {
+    margin-top: -10px;
+}
+
+.smallsize h3 {
+    font-size: 1rem;
+}
+.smallsize .mat-form-field-prefix .mat-datepicker-toggle-default-icon, .mat-form-field-suffix .mat-datepicker-toggle-default-icon {
+    width: 1.5em;
+}
+.smallsize .mat-form-field-wrapper {
+    padding-bottom: 1.8em;
+}
+/* End Small Size */
+    div .ui-multiselect {
+    width: 100%;
+    line-height: 15px;
+}
+
+div.ui-multiselect label.ui-multiselect-label {
+    margin-bottom: 0px;
+}
+input.ui-inputtext.ui-widget.ui-state-default.ui-corner-all.ui-autocomplete-input.ng-star-inserted {
+    padding-right: 0px !important;
+}
+.ui-autocomplete .ui-autocomplete-input {
+    padding-right:0px !important;
+}

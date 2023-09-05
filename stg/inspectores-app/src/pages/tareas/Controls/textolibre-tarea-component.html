@@ -1,0 +1,8 @@
+<ion-item no-lines >
+  <ion-label floating class="label-form">{{label}}</ion-label>
+  <ion-textarea class="text-observacion" [(ngModel)]="value" ></ion-textarea>
+</ion-item>   
+
+<ion-item *ngIf="showRequired" no-lines>
+  <p color="danger" ion-text >{{label}} es requerido</p>
+</ion-item>

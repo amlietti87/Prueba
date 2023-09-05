@@ -1,0 +1,55 @@
+page-modal-servicio-seleccionado {
+
+    .nro-servicio{
+        float: right;
+        text-align: left;
+        padding-right: 35px;
+    }
+
+    .content-servicio{
+        background: #EBEDEF;
+    }
+
+    .item-servicio{
+        border-left: 3px solid #2ECC71;
+    }
+
+    .item-servicio-sector{
+        border-left: 3px solid #3498DB;
+    }
+
+    .item-servicio-bandera{
+        border-left: 3px solid #F4D03F;
+    }
+
+    .item-servicio-llega{
+        border-left: 3px solid #E74C3C;
+    }
+
+    .item-servicio-frec{
+        border-left: 3px solid #9B59B6;
+    }
+
+    .label-servicio{
+        font-size: 16px;
+        //padding-left: 15px;
+    }
+
+    .horario-servicio{
+        font-size: 18px;
+        font-style: italic;
+        padding-left: 20px;
+        color: #85929E;
+    }
+
+    .icon-servicio{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .icon-close-servicio{
+        padding-left: 30px;
+    }
+
+}

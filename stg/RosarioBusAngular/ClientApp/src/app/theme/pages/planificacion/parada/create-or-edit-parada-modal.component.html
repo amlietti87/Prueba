@@ -1,0 +1,184 @@
+﻿<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span *ngIf="detail.Id">Editar {{title}}: {{detail.Codigo}}</span>
+            <span *ngIf="!detail.Id">Crear {{title}}</span>
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+
+            <div class="form-group col-md-3" [ngClass]="{'has-danger': Codigo.invalid && (Codigo.dirty || Codigo.touched || detailForm.submitted)}">
+                <label>Codigo</label>
+                <input #Codigo="ngModel" class="form-control"
+                       type="text" name="Codigo" [(ngModel)]="detail.Codigo" required maxlength="50">
+
+                <div *ngIf="Codigo.invalid && (Codigo.dirty || Codigo.touched || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="Codigo.errors.required">
+                        El Codigo es Requerido
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-3" [ngClass]="{'has-danger': Calle.invalid && (Calle.dirty || Calle.touched || detailForm.submitted)}">
+                <label>Calle</label>
+                <input #Calle="ngModel" class="form-control"
+                       type="text" name="Calle" [(ngModel)]="detail.Calle" required maxlength="500">
+
+                <div *ngIf="Calle.invalid && (Calle.dirty || Calle.touched || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="Calle.errors.required">
+                        El campo Calle es Requerido
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group col-md-3" [ngClass]="{'has-danger': Cruce.invalid && (Cruce.dirty || Cruce.touched || detailForm.submitted)}">
+                <label>Cruce</label>
+                <input #Cruce="ngModel" class="form-control"
+                       type="text" name="Cruce" [(ngModel)]="detail.Cruce" required maxlength="500">
+
+                <div *ngIf="Cruce.invalid && (Cruce.dirty || Cruce.touched || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="Cruce.errors.required">
+                        El campo Cruce es Requerido
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-3" [ngClass]="{'has-danger': Sentido.invalid && (Sentido.dirty || Sentido.touched || detailForm.submitted)}">
+                <label>Sentido</label>
+                <input #Sentido="ngModel" class="form-control"
+                       type="text" name="Sentido" [(ngModel)]="detail.Sentido" required maxlength="500">
+
+                <div *ngIf="Sentido.invalid && (Sentido.dirty || Sentido.touched || detailForm.submitted)"
+                     class=" form-control-feedback">
+                    <div *ngIf="Sentido.errors.required">
+                        El campo Sentido es Requerido
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group" [ngClass]="{'has-danger': LocalidadId.invalid && (LocalidadId.dirty || LocalidadId.touched || detailForm.submitted)}">
+                    <label>Localidad</label><br />
+                    <localidad-autocomplete #LocalidadId="ngModel"
+                                            [(ngModel)]="detail.selectLocalidades" required name="LocalidadId" id="LocalidadId" placeHolder="Localidades">
+                    </localidad-autocomplete>
+                    <div *ngIf="LocalidadId.invalid && (LocalidadId.dirty || LocalidadId.touched || detailForm.submitted)"
+                         class=" form-control-feedback">
+                        <div *ngIf="LocalidadId.errors.required">
+                            El campo Localidad es Requerido
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group" [ngClass]="{'has-danger': LocationType.invalid && (LocationType.dirty || LocationType.touched || detailForm.submitted)}">
+                    <label>Tipo de Parada</label><br />
+                    <stoptype-combo #LocationType="ngModel"
+                                    [(ngModel)]="detail.LocationType" (ngModelChange)="cambiotipoparada()" required name="LocationType" id="LocationType" placeHolder="Tipo de paradas" [disabled]="cantChange">
+                    </stoptype-combo> 
+                    <div *ngIf="LocationType.invalid && (LocationType.dirty || LocationType.touched || detailForm.submitted)"
+                            class=" form-control-feedback">
+                        <div *ngIf="LocationType.errors.required">
+                            El tipo de parada es requerido
+                        </div>
+                    </div>                   
+                </div>
+            </div>
+            <div class="col-md-3">
+                    <div class="form-group" [ngClass]="{'has-danger': ParentStationId.invalid && (ParentStationId.dirty || ParentStationId.touched || detailForm.submitted)}">
+                        <label>Estación</label><br />
+                        <parada-autocomplete #ParentStationId="ngModel"
+                            [required]="detail.LocationType == 2"
+                            id="ParentStationId"
+                            [LocationType]="1"
+                            name="ParentStationId"
+                            [disabled]="!addEstacion"
+                            [(ngModel)]="detail.ParentStation">
+                        </parada-autocomplete> 
+                        <div *ngIf="ParentStationId.invalid && (ParentStationId.dirty || ParentStationId.touched || detailForm.submitted)"
+                                class=" form-control-feedback">
+                            <div *ngIf="ParentStationId.errors.required">
+                                La estacion es requerida
+                            </div>
+                        </div>                   
+                    </div>
+                </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <span class="m-list-settings__item-label" style="vertical-align:top">
+                        Latitud:
+                    </span>
+                    <span class="m-list-settings__item-control">
+                        {{detail.Lat | number:'1.6'}}
+                    </span>
+                </div>
+                <div class="form-group">
+                    <span class="m-list-settings__item-label" style="vertical-align:top">
+                        Longitud:
+                    </span>
+                    <span class="m-list-settings__item-control">
+                        {{detail.Long | number:'1.6'}}
+                    </span>
+                </div>
+
+            </div>
+            <div class="col-md-3">
+
+                <button style="padding: 0px;" pButton type="button" icon="fa-search" class="ui-button" (click)="searchGmap()"></button>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="m-checkbox-list">
+                    <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': detail.Anulada}">
+
+                        <input #Anulada="ngModel" id="Anulada" type="checkbox" name="Anulada" [(ngModel)]="detail.Anulada">
+                        <label>Anulada</label>
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="m-checkbox-list">
+                    <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': detail.Anulada}">
+
+                        <input #PickUpType="ngModel" id="PickUpType" type="checkbox" name="PickUpType" [(ngModel)]="detail.PickUpType">
+                        <label>Levantar Pasajeros</label>
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="m-checkbox-list">
+                    <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': detail.Anulada}">
+
+                        <input #DropOffType="ngModel" id="DropOffType" type="checkbox" name="DropOffType" [(ngModel)]="detail.DropOffType">
+                        <label>Bajar Pasajeros</label>
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-12 center">
+            <select-marker-maps #mapaComponents></select-marker-maps>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue"
+                [buttonBusy]="saving" [busyText]="'Guardando..'">
+            <i class="fa fa-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+
+</form>

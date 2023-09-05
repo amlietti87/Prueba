@@ -1,0 +1,102 @@
+﻿<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+    <div [hidden]="!active" class="m-portlet m-portlet--mobile m-portlet--acce m-portlet--head-sm" id="m_portlet_detail" m-portlet="true">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <span class="m-portlet__head-icon">
+                        <i class="{{icon}}"></i>
+                    </span>
+                    <h3 class="m-portlet__head-text">
+                        <span>Sectores de la ruta: {{Descripcion}}</span>
+                    </h3>
+                </div>
+            </div>
+            <div class="m-portlet__head-tools">
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item">
+                        <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-expand"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="m-portlet__body">
+            <div id="timeline3" style="width:100%; height: 200px; overflow-x:auto; overflow-y:hidden;"></div>
+
+
+
+
+            <div class="m-accordion m-accordion--bordered" id="m_accordion_1" role="tablist">
+
+
+                <ng-template ngFor let-sectorItem [ngForOf]="sectoresList" let-mi="index">
+
+                    <div class="m-accordion__item">
+                        <div class="m-accordion__item-head m-accordion__item-head-small collapsed" role="tab" id="{{'m_accordion_1_item_head_' + mi }}" data-toggle="collapse" [attr.href]="'#m_accordion_1_item_body_' + mi " aria-expanded="false">
+                            <span class="m-accordion__item-icon">
+                                <i class="fa flaticon-information"></i>
+                            </span>
+                            <span class="m-accordion__item-title">
+                                {{sectorItem.name}}  ({{sectorItem.desc}})
+                            </span>
+                            <span class="m-accordion__item-mode"></span>
+                        </div>
+                        <div class="m-accordion__item-body collapse" id="{{'m_accordion_1_item_body_' + mi }}">
+                            <div class="m-accordion__item-content">
+
+                                <div class="m-list-timeline m-list-timeline--skin-dark">
+
+                                    <div class="m-list-timeline__items col-md-6">
+
+
+                                        <ng-template ngFor let-itemparada [ngForOf]="sectorItem.Items">
+
+                                            <div class="m-list-timeline__item">
+                                                <span class="m-list-timeline__badge m-list-timeline__badge--brand"></span>
+                                                <span class="m-list-timeline__text">
+                                                    <span class="m-link">{{itemparada.name}}</span>
+                                                </span>
+                                                <span class="m-list-timeline__time" style="width: 100%">
+                                                    {{itemparada.desc}}
+                                                </span>
+                                            </div>
+
+
+
+
+
+                                        </ng-template>
+
+
+
+                                    </div>
+
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </ng-template>
+
+            </div>
+
+            <br />
+            <a href="javascript:void(0);"  (click)="GoToBandera()" class="btn btn-default" title="Volver">
+                Volver
+            </a>
+
+
+
+        </div>
+    </div>
+</form>
+
+
+

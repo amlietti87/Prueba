@@ -1,0 +1,10 @@
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain.Report\bin\Debug\netstandard2.0\ROSBUS.Admin.Domain.Report.deps.json
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain.Report\bin\Debug\netstandard2.0\ROSBUS.Admin.Domain.Report.dll
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain.Report\bin\Debug\netstandard2.0\ROSBUS.Admin.Domain.Report.pdb
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain.Report\obj\Debug\netstandard2.0\ROSBUS.Admin.Domain.Report.csprojAssemblyReference.cache
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain.Report\obj\Debug\netstandard2.0\RdlCompile.cache
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain.Report\obj\Debug\netstandard2.0\RdlCompile.compiled
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain.Report\obj\Debug\netstandard2.0\ROSBUS.Admin.Domain.Report.AssemblyInfoInputs.cache
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain.Report\obj\Debug\netstandard2.0\ROSBUS.Admin.Domain.Report.AssemblyInfo.cs
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain.Report\obj\Debug\netstandard2.0\ROSBUS.Admin.Domain.Report.dll
+D:\RBus\RBusRepo\stg\ROSBUS.Admin.Domain.Report\obj\Debug\netstandard2.0\ROSBUS.Admin.Domain.Report.pdb

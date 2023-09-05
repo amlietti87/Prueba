@@ -1,0 +1,153 @@
+﻿
+<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+    <div [hidden]="!active" class="m-portlet m-portlet--mobile m-portlet--acce m-portlet--head-sm" id="m_portlet_detail" m-portlet="true">
+
+
+
+        <div class="m-portlet__head"> 
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <span class="m-portlet__head-icon">
+                        <i class="{{icon}}"></i>
+                    </span>
+                    <h3 class="m-portlet__head-text">
+                        <span *ngIf="detail.Id">Editar {{title}}: {{detail.Nombre}}</span>
+                        <span *ngIf="!detail.Id">Crear {{title}}</span>
+                    </h3>
+                </div>
+            </div>
+
+            <div class="m-portlet__head-tools">
+
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item">
+                        <a href="#" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-angle-down"></i>
+                        </a>
+                    </li>
+                    <li class="m-portlet__nav-item">
+                        <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-expand"></i>
+                        </a>
+                    </li>
+                    <li class="m-portlet__nav-item">
+                        <a href="#" (click)="close()" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <i class="la la-close"></i>
+                        </a>
+                    </li>
+                </ul>
+
+
+                <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--right m-tabs-line-danger" role="tablist" style="padding-right:50px">
+                    <li class="nav-item m-tabs__item">
+                        <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_portlet_tab_General" id="m_heder_portlet_tab_General" role="tab">
+                            General
+                        </a>
+                    </li>
+                    <li class="nav-item m-tabs__item" >
+                        <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_portlet_tab_Glineas" role="tab">
+                            Líneas
+                        </a>
+                    </li>
+                </ul>
+
+
+
+            </div>
+        </div>
+
+        <div class="m-portlet__body">
+
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="m_portlet_tab_General">
+
+
+                    <div class="form-group" [ngClass]="{'has-danger': NameInput.invalid && ((NameInput.dirty || NameInput.touched) || detailForm.submitted)}">
+                        <label>Nombre</label>
+                        <input #NameInput="ngModel" required class="form-control" type="text" name="NameInput" [(ngModel)]="detail.Nombre" maxlength="32">
+
+                        <div *ngIf="NameInput.invalid && (NameInput.dirty || NameInput.touched)"
+                             class="form-control-feedback">
+                            <div *ngIf="NameInput.errors.required">
+                                El nombre es requerido
+                            </div>
+                        </div>
+
+                    </div> 
+                    <div class="form-group">
+                        <label>Unidad de negocio</label>
+                        <input disabled class="form-control" type="text" name="SucursalNombre" value="{{Sucursal}}">
+                    </div>
+
+                </div>
+                <div class="tab-pane" id="m_portlet_tab_Glineas">
+
+                  
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <span class="ui-fluid">
+                                <div class="ui-inputgroup">
+
+                                   
+                                    <linea-autocomplete [SucursalId]="detail.SucursalId" #pepe="ngModel" name="lineas" id="lineas" [(ngModel)]="selectItem" placeHolder="Lineas" field="Description">
+
+                                    </linea-autocomplete>
+                                    <button pButton type="button" icon="fa-plus" class="ui-button-success" (click)="addLinea(selectItem)" [disabled]="!(selectItem)"></button>
+
+                                </div>
+
+
+                            </span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="m-list-badge__label m--font-info">
+                            Lineas Asociadas
+                        </div>
+                        <div class="m-list-badge m-list-badge--light-bg col-md-12">
+
+                            <div class="m-list-badge__items" style="line-height: 30px">
+                                <a class="m-list-badge__item" [ngClass]="{ 'm-animate-shake': c.animate }" *ngFor="let c of detail.Lineas">
+
+                                    <span [routerLink]="['/planificacion/linea/' + detail.SucursalId,{id: c.Id} ]">{{c.Description}}</span>
+                                    <!--<span  [routerLink]="['/admin/linea/' + detail.SucursalId , {id: c.Id}]">{{c.Description}}</span>-->
+
+                                    <i *ngIf="c.IsSelected" class="fa fa-times" (click)="removeLinea(c)"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                <button type="submit" class="btn btn-primary blue"
+                        [buttonBusy]="saving" [busyText]="'Guardando..'">
+                    <i class="fa fa-save"></i> <span>Guardar</span>
+                </button>
+            </div>
+
+
+
+
+        </div>
+
+       
+
+
+
+
+    </div>
+
+</form>
+

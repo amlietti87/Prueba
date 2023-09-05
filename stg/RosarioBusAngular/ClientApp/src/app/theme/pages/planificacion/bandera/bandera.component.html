@@ -1,0 +1,194 @@
+﻿<div>
+    <div class="m-subheader" [hidden]="!active">
+        <div style="text-align: right;">
+            <button (click)="onCreate()" *ngIf="allowAdd" class="btn btn-primary blue"><i class="fa fa-plus"></i> Crear Bandera de Posicionamiento</button>
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div [hidden]="!active" class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form class="horizontal-form filters" autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <div class="col-xl-12">
+                                <div class="form-group m-form__group align-items-center">
+                                    <div class="input-group">
+
+                                        <input [(ngModel)]="filter.FilterText" name="filterText" autoFocus class="form-control m-input" [placeholder]="'Buscar...'" type="text">
+                                        <span class="input-group-append">
+                                            <button (click)="onSearch()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m--margin-bottom-10" [hidden]="!advancedFiltersAreShown">
+                            <div class="form-group  col-md-4">
+                                <label>Linea</label>
+                                <span class="ui-fluid">
+                                    <linea-autocomplete #Linea="ngModel"
+                                                        [SucursalId]="Sucursalid"
+                                                        [(ngModel)]="filter.Linea"
+                                                        name="lineaFilter"
+                                                        (ngModelChange)="OnLineaChange($event)"
+                                                        placeHolder="Linea...">
+                                    </linea-autocomplete>
+                                </span>
+                            </div>
+
+                            <div class="form-group  col-md-4" *ngIf="showRamalFilterAutocomplete">
+                                <label>Ramal</label>
+                                <span class="ui-fluid">    
+                                    <ramalcolor-autocomplete #ramalcolorfilter="ngModel"
+                                        name="ramalcolorfilter"                                                        
+                                        [ItemsModel]="filter.Ramales"
+                                        [(ngModel)]="filter.Ramal"
+                                        (ngModelChange)="OnRamalChange($event)"
+                                        placeHolder="Ramal...">
+                                    </ramalcolor-autocomplete>
+                                </span>
+                            </div>
+                            <div class="form-group col-md-4 col-lg-4">
+                                <label>Tipo de bandera</label>
+                                <tipoBandera-combo #TipoBanderaIdfilter="ngModel"
+                                                   name="TipoBanderaIdfilter"
+                                                   livesearch="{{false}}"
+                                                   [(ngModel)]="filter.TipoBanderaId" emptyText="{{'Tipo de Bandera...'}}">
+                                </tipoBandera-combo>
+                                <div class="row">
+                                </div>
+                            </div>
+                            <div class="col-md-8" *ngIf="advancedFiltersAreShown">
+                               
+                            </div>
+                            <div class="col-md-4" *ngIf="advancedFiltersAreShown">
+                                <div class="col-sm-12 text-right">
+                                    <button class="btn btn-metal" (click)="onSearch()"><i class="fa fa-refresh"></i> Actualizar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m--margin-bottom-25">
+                            <div class="col-sm-12">
+                                <span class="clickable-item text-muted" *ngIf="!advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-down"></i> Mostrar filtros avanzados</span>
+                                <span class="clickable-item text-muted" *ngIf="advancedFiltersAreShown" (click)="advancedFiltersAreShown=!advancedFiltersAreShown"><i class="fa fa-angle-up"></i> Ocultar filtros avanzados</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container primeng-small"
+                         [busyIf]="primengDatatableHelper.isLoading">
+
+                        <p-dataTable #dataTable
+                                     [lazy]="true"
+                                     (onLazyLoad)="onSearch($event)"
+                                     [value]="primengDatatableHelper.records"
+                                     [paginator]="false"
+                                     emptyMessage="{{l('Sin Datos')}}"
+                                     scrollable="true"
+                                     scrollWidth="100%" 
+                                     responsive="primengDatatableHelper.isResponsive">
+                            <p-column field="RamalColor.LineaId" header="Linea" [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    {{row.LineaNombre}}
+                                </ng-template>
+                            </p-column>
+
+                            <p-column field="RamalColor.Nombre" header="Ramal/Color" [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    {{row.RamalColorNombre}}
+                                </ng-template>
+                            </p-column>
+
+                            <p-column field="AbrBan" header="Bandera (Abreviación)" [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    {{row.AbrBan}}
+                                </ng-template>
+                            </p-column>
+
+                            <p-column field="DesBan" header="Descripción" [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    {{row.Descripcion}}
+                                </ng-template>
+                            </p-column>
+
+                            <p-column field="SentidoBandera.Descripcion" header="Sentido" [sortable]="true">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    {{row.Sentido}}
+                                </ng-template>
+                            </p-column>
+                            
+                            <p-column field="Activo" header="Activo" [sortable]="true" styleClass="col-primeng-small">
+                                >
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div style="text-align:center">
+                                        <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': row.Activo}">
+                                            <input [(ngModel)]="row.Activo" type="checkbox" disabled><span></span>
+                                        </label>
+                                    </div>
+                                </ng-template>
+                            </p-column>
+
+                            <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                <ng-template let-col let-row="rowData" pTemplate type="body">
+                                    <div class="dropdown">
+
+                                        <a href="javascript:void(0);" (click)="onEditRutasEnBandera(row)" *ngIf="allowModify" title="ir a mapas"
+                                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill fa-rotate-270">
+                                            <i class="la la-download"></i>
+                                        </a>
+
+                                        <a href="#" class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown">
+                                            <i class="la la-ellipsis-h"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right" data-container="body">
+                                            <a href="javascript:void(0);" (click)="getReporteCambiosPorSector(row)" *ngIf="allowModify" class="dropdown-item" title="Editar">
+                                                <i class="la la-edit"></i>Cambios por sector
+                                            </a>
+                                            <a href="javascript:void(0);" (click)="onEdit(row)" *ngIf="allowModify" class="dropdown-item" title="Editar">
+                                                <i class="la la-edit"></i>Editar
+                                            </a>
+                                            <a href="javascript:void(0);" (click)="onDelete(row)" *ngIf="allowDelete" class="dropdown-item" title="Eliminar">
+                                                <i class="la la-trash"></i>Eliminar
+                                            </a>
+                                        </div>
+
+
+                                    </div>
+
+                                </ng-template>
+                            </p-column>
+
+                        </p-dataTable>
+
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengDatatableHelper.defaultRecordsCountPerPage}}"
+                                         #paginator
+                                         (onPageChange)="onSearch($event)"
+                                         [totalRecords]="primengDatatableHelper.totalRecordsCount"
+                                         [rowsPerPageOptions]="primengDatatableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                Registros totales:  {{ primengDatatableHelper.totalRecordsCount}}
+                            </span>
+                        </div>
+
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+
+                </div>
+            </div>
+        </div>
+
+        <ng-template #createOrEdit></ng-template>
+
+    </div>
+
+
+</div>
+
+

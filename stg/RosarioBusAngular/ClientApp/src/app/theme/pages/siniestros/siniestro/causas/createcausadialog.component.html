@@ -1,0 +1,119 @@
+﻿
+<h2 mat-dialog-title>Crear Causa</h2>
+
+<mat-dialog-content>
+    <div bsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form *ngIf="active" #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            <span *ngIf="detail.Id">{{"Editar Causa"}}: {{detail.Descripcion}}</span>
+                            <span *ngIf="!detail.Id">{{"Crear Causa"}}</span>
+                        </h4>
+                        <button type="button" class="close" (click)="close()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group" [ngClass]="{'has-danger': Descripcion_Causas.invalid && (Descripcion_Causas.dirty || Descripcion_Causas.touched)}">
+                            <label>Descripción</label>
+                            <input #Descripcion_Causas="ngModel" class="form-control" type="text" name="Descripcion_Causas" [(ngModel)]="detail.Descripcion" required maxlength="2000">
+
+                            <div *ngIf="Descripcion_Causas.invalid && (Descripcion_Causas.dirty || Descripcion_Causas.touched)"
+                                 class=" form-control-feedback">
+                                <div *ngIf="Descripcion_Causas.errors.required">
+                                    La Descripción es Requerida
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="m-checkbox-list">
+                                <label class="m-checkbox">
+                                    <input #Anulado_Causas="ngModel" id="Anulado_Causas" type="checkbox" name="Anulado_Causas" [(ngModel)]="detail.Anulado">
+                                    <em>Anulado</em>
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <div class="text-right">
+                            <button type="button" (click)="addNewSubCausas()" class="btn btn-primary blue" style="margin-bottom: 15px;"><i class="fa fa-plus"></i> Añadir Sub-Causa</button>
+                        </div>
+
+                        <div class="align-items-center">
+                            <!--<Primeng-Datatable-Start>   [busyIf]="primengDatatableHelper.isLoading"-->
+                            <div class="primeng-datatable-container">
+
+                                <p-dataTable #dataTable
+                                             [value]="detail.SubCausas"
+                                             scrollable="true"
+                                             scrollHeight="300px"
+                                             emptyMessage="{{l('Sin Datos')}}"
+                                             [editable]="true"
+                                             responsive="false">
+
+                                    <p-column field="Descripcion" [editable]="true" header="Descripción" [sortable]="true">
+                                        <ng-template let-row="rowData" pTemplate="editor">
+                                            <div>
+                                                <input #Descripcion="ngModel" required class="form-control" type="text" id="{{ 'Descripcion' + row.Id }}" name="{{ 'Descripcion' + row.Id }}" [(ngModel)]="row.Descripcion" maxlength="2000">
+                                            </div>
+                                        </ng-template>
+                                    </p-column>
+                                    <p-column field="Anulado" [editable]="true" header="Anulado" [sortable]="true">
+
+                                        <ng-template let-col let-row="rowData" pTemplate type="body">
+                                            <div style="text-align:center">
+
+                                                <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': row.Anulado}">
+                                                    <input #Anulado="ngModel" id="{{ 'Anulado_e' + row.Id }}" name="{{ 'Anulado_e' + row.Id }}" type="checkbox" [(ngModel)]="row.Anulado"><span></span>
+                                                </label>
+
+                                            </div>
+                                        </ng-template>
+
+                                        <ng-template let-row="rowData" pTemplate="editor">
+                                            <div style="text-align:center">
+
+                                                <label class="m-checkbox m-checkbox--air " [ngClass]="{'m-checkbox--state-success': row.Anulado}">
+                                                    <input #Anulado="ngModel" id="{{ 'Anulado_e' + row.Id }}" name="{{ 'Anulado_e' + row.Id }}" type="checkbox" [(ngModel)]="row.Anulado"><span></span>
+                                                </label>
+
+                                            </div>
+                                        </ng-template>
+                                    </p-column>
+
+                                    <p-column header="Acciones" [sortable]="false" styleClass="col-actions">
+                                        <ng-template let-col let-row="rowData" pTemplate type="body">
+                                            <div class="dropdown">
+                                                <a href="javascript:void(0);" (click)="onCargaDelete(row)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Eliminar">
+                                                    <i class="la la-trash"></i>
+                                                </a>
+                                            </div>
+
+                                        </ng-template>
+                                    </p-column>
+                                </p-dataTable>
+
+                            </div>
+                            <!--<Primeng-Datatable-End>-->
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+    <button type="submit" class="btn btn-primary blue"
+            [buttonBusy]="saving" [busyText]="'Guardando..'"
+            [disabled]="!detailForm.form.valid">
+        <i class="fa fa-save"></i> <span>Guardar</span>
+    </button>
+</mat-dialog-actions>

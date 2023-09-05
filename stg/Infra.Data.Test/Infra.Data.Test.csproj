@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="4.5.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.1.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
+    <PackageReference Include="Moq" Version="4.9.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.3.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ROSBUS.Admin.Domain\ROSBUS.Admin.Domain.csproj" />
+    <ProjectReference Include="..\ROSBUS.Infra.Data\ROSBUS.Infra.Data.csproj" />
+    <ProjectReference Include="..\TECSO.FWK.AppService\TECSO.FWK.AppService.csproj" />
+    <ProjectReference Include="..\TECSO.FWK.Documents\TECSO.FWK.Documents.csproj" />
+    <ProjectReference Include="..\TECSO.FWK.Domain\TECSO.FWK.Domain.csproj" />
+    <ProjectReference Include="..\TECSO.FWK.Infra.Data\TECSO.FWK.Infra.Data.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,218 @@
+﻿<div [hidden]="!active" class="m-portlet m-portlet--mobile m-portlet--acce m-portlet--head-sm" id="m_portlet_detail" m-portlet="true">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon">
+                    <i class="fa fa-map-signs"></i>
+                </span>
+                <h3 class="m-portlet__head-text">
+                    <span *ngIf="detail.Id">{{"Editar Sub Galpon"}}: {{detail.DesSubg}}</span>
+                    <span *ngIf="!detail.Id">{{"Crear Sub Galpon"}}</span>
+                </h3>
+            </div>
+        </div>
+        <div class="m-portlet__head-tools">
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item">
+                    <a href="#" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-angle-down"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item">
+                    <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-expand"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item">
+                    <a href="#" (click)="close()" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-close"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="m-portlet__body">
+
+        <form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+            <div>
+                <div>
+                    <div class="form-group col-md-6" [ngClass]="{'has-danger': DesSubg.invalid && (DesSubg.dirty || DesSubg.touched)}">
+                        <label>Descripcion</label>
+                        <input #DesSubg="ngModel" class="form-control" type="text" name="DesSubg" [(ngModel)]="detail.DesSubg" required maxlength="100">
+
+                        <div *ngIf="DesSubg.invalid && (DesSubg.dirty || DesSubg.touched)"
+                             class=" form-control-feedback">
+                            <div *ngIf="DesSubg.errors.required">
+                                La descripcion es Requerida
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Fecha baja</label>
+                        <br />
+                        <mat-form-field>
+                            <input #FecBaja="ngModel" matInput [(ngModel)]="detail.FecBaja"
+                                   name="FecBaja" [matDatepicker]="FecBaja">
+                            <mat-datepicker-toggle matSuffix [for]="FecBaja"></mat-datepicker-toggle>
+                            <mat-datepicker #FecBaja></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <div class="m-checkbox-list">
+                            <label class="m-checkbox">
+                                <input #Balanceo="ngModel" id="Balanceo" type="checkbox" name="Balanceo" [(ngModel)]="detail.BalanceoCheck">
+                                <em>Balanceo</em>
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <div class="m-checkbox-list">
+                            <label class="m-checkbox">
+                                <input #ComodinesCheck="ngModel" id="ComodinesCheck" type="checkbox" name="ComodinesCheck" [(ngModel)]="detail.ComodinesCheck">
+                                <em>Comodines</em>
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="text-right">
+                    <button type="button" (click)="AgregarConfigu()" class="btn btn-primary blue" style="margin-bottom: 15px;"><i class="fa fa-plus"></i> Añadir Configuración</button>
+                </div>
+
+                <div class="align-items-center">
+                    <!--<Primeng-Datatable-Start>   [busyIf]="primengDatatableHelper.isLoading"-->
+                    <div class="primeng-datatable-container">
+
+                        <p-dataTable #dataTable
+                                     [value]="detail.Configu"
+                                     scrollable="true"
+                                     scrollHeight="150px"
+                                     emptyMessage="{{l('Sin Datos')}}"
+                                     [editable]="false"
+                                     responsive="false">
+
+                            <p-column field="Grupo"
+                                      header="Grupo"
+                                      [editable]="false"
+                                      [sortable]="false">
+
+                                <ng-template let-row="rowData"
+                                             pTemplate="body">
+                                    <div><span>{{ row.GrupoGrilla }}</span></div>
+                                </ng-template>
+
+                            </p-column>
+                            <p-column field="Empresa"
+                                      header="Empresa"
+                                      [editable]="false"
+                                      [sortable]="false">
+
+
+                                <ng-template let-row="rowData"
+                                             pTemplate="body">
+                                    <div><span>{{ row.EmpresaGrilla }}</span></div>
+                                </ng-template>
+
+                            </p-column>
+
+
+                            <p-column field="Sucursal"
+                                      header="Sucursal"
+                                      [editable]="false"
+                                      [sortable]="false">
+
+                                <ng-template let-row="rowData"
+                                             pTemplate="body">
+                                    <div><span>{{ row.SucursalGrilla }}</span></div>
+                                </ng-template>
+
+                            </p-column>
+
+                            <p-column field="Linea"
+                                      header="Linea"
+                                      [editable]="false"
+                                      [sortable]="false">
+
+                                <ng-template let-row="rowData"
+                                             pTemplate="body">
+                                    <div><span *ngIf="row.selectLinea">{{ row.selectLinea.Description }}</span></div>
+                                </ng-template>
+
+                            </p-column>
+
+                            <p-column field="Galpon"
+                                      header="Galpon"
+                                      [editable]="false"
+                                      [sortable]="false">
+
+
+                                <ng-template let-row="rowData"
+                                             pTemplate="body">
+                                    <div><span>{{ row.GalponGrilla }}</span></div>
+                                </ng-template>
+
+                            </p-column>
+
+
+                            <p-column field="FecBaja"
+                                      header="Fecha Baja"
+                                      [sortable]="false"
+                                      [editable]="false">
+
+
+                                <ng-template let-col
+                                             let-row="rowData"
+                                             pTemplate
+                                             type="body">
+                                    {{row.FecBaja | date: 'dd-MM-yyyy'}}
+                                </ng-template>
+
+                            </p-column>
+
+                            <!-- Acciones -->
+                            <p-column header="Acciones"
+                                      [sortable]="false"
+                                      styleClass="col-actions">
+                                <ng-template let-col
+                                             let-row="rowData"
+                                             pTemplate
+                                             type="body">
+                                    <div class="dropdown">
+                                        <a href="javascript:void(0);" (click)="EditarConfigu(row)" 
+                                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                           title="Editar">
+                                            <i class="la la-edit"></i>
+                                        </a>
+                                        <a href="javascript:void(0);"
+                                           (click)="onCargaDelete(row)"
+                                           class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                           title="Eliminar">
+                                            <i class="la la-trash"></i>
+                                        </a>
+                                    </div>
+
+                                </ng-template>
+                            </p-column>
+                        </p-dataTable>
+
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                <button type="submit" class="btn btn-primary blue"
+                        [buttonBusy]="saving" [busyText]="'Guardando..'"
+                        [disabled]="!detailForm.form.valid">
+                    <i class="fa fa-save"></i> <span>Guardar</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+<ng-template #createOrEditChild></ng-template>

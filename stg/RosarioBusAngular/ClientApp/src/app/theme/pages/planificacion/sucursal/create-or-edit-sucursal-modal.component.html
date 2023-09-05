@@ -1,0 +1,48 @@
+﻿<div bsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+
+
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="detail.Id">{{"Editar Unidad de Negocio: "}} {{detail.DscSucursal}}</span>
+                        <span *ngIf="!detail.Id">{{"Crear Unidad de Negocio"}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+
+                <div class="modal-body">
+
+                    <div class="form-group" [ngClass]="{'has-danger': DscSucursal.invalid && (DscSucursal.dirty || DscSucursal.touched)}">
+                        <label>Nombre</label>
+                        <input #DscSucursal="ngModel" class="form-control" type="text" name="DscSucursal" [(ngModel)]="detail.DscSucursal" required maxlength="20">
+
+                        <div *ngIf="DscSucursal.invalid && (DscSucursal.dirty || DscSucursal.touched)"
+                             class=" form-control-feedback">
+                            <div *ngIf="DscSucursal.errors.required">
+                                El nombre es Requerido
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary blue"
+                            [buttonBusy]="saving" [busyText]="'Guardando..'">
+                        <i class="fa fa-save"></i> <span>Guardar</span>
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

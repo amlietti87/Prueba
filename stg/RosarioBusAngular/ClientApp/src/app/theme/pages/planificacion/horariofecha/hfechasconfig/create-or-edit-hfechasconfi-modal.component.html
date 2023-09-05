@@ -1,0 +1,162 @@
+﻿<div [hidden]="!active" class="m-portlet m-portlet--mobile m-portlet--acce m-portlet--head-sm" id="m_portlet_detail" m-portlet="true">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <span class="m-portlet__head-icon">
+                    <i class="la la-clock-o"></i>
+                </span>
+                <h3 class="m-portlet__head-text">
+                    <span>{{"Horario"}}</span>
+                </h3>
+            </div>
+        </div>
+        <div class="m-portlet__head-tools">
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item">
+                    <a href="#" (click)="onChangeScreen()" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-repeat"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item">
+                    <a href="#" m-portlet-tool="toggle" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-angle-down"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item">
+                    <a href="#" m-portlet-tool="fullscreen" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-expand"></i>
+                    </a>
+                </li>
+                <li class="m-portlet__nav-item">
+                    <a href="#" (click)="close()" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                        <i class="la la-close"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="m-portlet__body">
+
+        <form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off">
+
+
+
+
+            <div class="row">
+                <div class="form-group col-md-3 col-lg-3">
+
+                    <mat-form-field>
+                        <input #inputFechaDesde="ngModel" matInput required [(ngModel)]="detail.FechaDesde"
+                               placeholder="Fecha Desde"
+                               [disabled]="!EditEnabled"
+                               name="FechaDesde" [matDatepicker]="FechaDesde">
+                        <mat-datepicker-toggle matSuffix [for]="FechaDesde"></mat-datepicker-toggle>
+                        <mat-datepicker #FechaDesde></mat-datepicker>
+                    </mat-form-field> 
+                </div>
+
+                <div class="form-group col-md-3 col-lg-3">
+
+                    <mat-form-field>
+                        <input #inputFechaHasta="ngModel" matInput [(ngModel)]="detail.FechaHasta"
+                               placeholder="Fecha Hasta"
+                               [disabled]="true"
+                               name="FechaHasta" [matDatepicker]="FechaHasta">
+                        <mat-datepicker-toggle matSuffix [for]="FechaHasta"></mat-datepicker-toggle>
+                        <mat-datepicker #FechaHasta></mat-datepicker>
+                    </mat-form-field>
+
+
+
+
+                </div>
+                <div class="form-group col-md-3 col-lg-3" [ngClass]="{'has-danger': PlaEstadoHorarioFechaId.invalid && (PlaEstadoHorarioFechaId.dirty || PlaEstadoHorarioFechaId.touched || detailForm.submitted)}">
+
+                    <label>Estado</label>
+                    <estadohorariofecha-combo #PlaEstadoHorarioFechaId="ngModel" [(ngModel)]="detail.PlaEstadoHorarioFechaId"
+                                              [livesearch]="false" required
+                                              [allowNullable]="true" emptyText="{{'Seleccione..'}}"
+                                              name="PlaEstadoHorarioFechaId" id="PlaEstadoHorarioFechaId" placeHolder="Estado Horario">
+                    </estadohorariofecha-combo>
+                    <div *ngIf="PlaEstadoHorarioFechaId.invalid && (PlaEstadoHorarioFechaId.dirty || PlaEstadoHorarioFechaId.touched || detailForm.submitted)"
+                         class=" form-control-feedback">
+                        <div *ngIf="PlaEstadoHorarioFechaId.errors.required">
+                            El estado es Requerido
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+            </div>
+            <div class="row col-md-12">
+                <ul id="tabDetalleHorario_tabs" class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
+                    <li class="nav-item m-tabs__item">
+                        <a class="nav-link m-tabs__link active" data-toggle="tab" id="m_h_m_quick_sidebar_tabs_distribuciondecochesAV" href="#m_quick_sidebar_tabs_distribuciondecochesAV" role="tab">
+                            Estimación
+                        </a>
+                    </li>
+                    <li class="nav-item m-tabs__item">
+                        <a class="nav-link m-tabs__link " data-toggle="tab" id="m_h_quick_sidebar_tabs_Servicios" href="#m_quick_sidebar_tabs_Servicios" role="tab">
+                            Banderas Sector
+                        </a>
+                    </li>
+
+
+
+                </ul>
+
+
+                <div class="tab-content">
+
+                    <div class="tab-pane active" id="m_quick_sidebar_tabs_distribuciondecochesAV" role="tabpanel">
+                        <distribuciondecoches-agregation #distribuciondecochesAV
+                                                         [(list)]="detail.DistribucionDeCochesPorTipoDeDia"
+                                                         [parentEntity]="detail">
+
+                        </distribuciondecoches-agregation>
+                    </div>
+
+                    <div class="tab-pane " id="m_quick_sidebar_tabs_Servicios" role="tabpanel">
+                        <asignacion-bandera-hbasec #asignacionBanderaHbasec [detail]="detail"></asignacion-bandera-hbasec>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <div class="modal-footer">
+
+                <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+                <button type="submit" [hidden]="!(detail.BeforeMigration == false) || !hideDefaultSaveButton" class="btn btn-primary blue"
+                        [disabled]="!detailForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="'Guardando..'">
+                    <i class="fa fa-save"></i> <span>Guardar Bandera</span>
+                </button>
+                <button type="submit" [hidden]="!(detail.BeforeMigration == false) || hideDefaultSaveButton" class="btn btn-primary blue"
+                        [disabled]="!detailForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="'Guardando..'">
+                    <i class="fa fa-save"></i> <span>Guardar</span>
+                </button>
+            </div>
+
+        </form>
+
+
+
+    </div>
+</div>
+
+<ng-template #importarhorariofecha></ng-template>

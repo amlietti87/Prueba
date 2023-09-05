@@ -1,0 +1,107 @@
+﻿<div>
+    <div class="m-subheader">
+        <div style="text-align: right;">
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form #SabanaFilterForm="ngForm" class="horizontal-form filters" autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+
+                        <!-- Fecha y Linea -->
+                        <div class="row m--margin-bottom-10">
+
+
+                            <!--Lineas-->
+                            <div class="form-group col-md-3">
+                                <label>Lineas</label>
+                                <span class="ui-fluid" [ngClass]="{'has-danger': LineaFiltro.invalid && (LineaFiltro.dirty || LineaFiltro.touched || SabanaFilterForm.submitted)}">
+                                    <linea-autocomplete #Linea
+                                                        #LineaFiltro="ngModel"
+                                                        [(ngModel)]="linea"
+                                                        name="lineas"
+                                                        id="lineas"
+                                                        required
+                                                        placeHolder="Lineas"
+                                                        (ngModelChange)="OnLineaChange($event)">
+                                    </linea-autocomplete>
+                                    <div *ngIf="LineaFiltro.invalid && (LineaFiltro.dirty || LineaFiltro.touched || SabanaFilterForm.submitted)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="LineaFiltro.errors.required">
+                                            Es requerido
+                                        </div>
+                                    </div>
+                                </span>
+                            </div>
+
+                            <!---->
+                            <div class="form-group col-md-4" [ngClass]="{'has-danger': cod_hfechaFiltro.invalid && (cod_hfechaFiltro.dirty || cod_hfechaFiltro.touched || SabanaFilterForm.submitted)}">
+                                <label>Horario</label>
+                                <hfechasconfi-combo #cod_hfechaFiltro="ngModel"
+                                                    [(ngModel)]="CodHfecha"
+                                                    name="cod_hfecha"
+                                                    [LineaId]="LineaId"
+                                                    [autoLoad]="false"
+                                                    [allowNullable]="true"
+                                                    [autoSelecionaVigente]="true"
+                                                    required>
+
+                                </hfechasconfi-combo>
+                                <div *ngIf="cod_hfechaFiltro.invalid && (cod_hfechaFiltro.dirty || cod_hfechaFiltro.touched || SabanaFilterForm.submitted)"
+                                     class=" form-control-feedback">
+                                    <div *ngIf="cod_hfechaFiltro.errors.required">
+                                        Es requerido
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4" [ngClass]="{'has-danger': FilterCodTdiaDetino.invalid && (FilterCodTdiaDetino.dirty || FilterCodTdiaDetino.touched || SabanaFilterForm.submitted)}">
+                                <label>Tipo de Dia</label>
+                                <tipoDia-combo #codTipoDiaComboDetino
+                                               [(ngModel)]="codTdia"
+                                               livesearch="{{false}}"
+                                               emptyText="{{'Seleccione..'}}"
+                                               CodHfecha="CodHfecha"
+                                               name="FilterCodTdiaDetino"
+                                               id="FilterCodTdiaDetino"
+                                               #FilterCodTdiaDetino="ngModel"
+                                               placeHolder="Tipo de dia">
+                                </tipoDia-combo>
+                                <div *ngIf="FilterCodTdiaDetino.invalid && (FilterCodTdiaDetino.dirty || FilterCodTdiaDetino.touched || SabanaFilterForm.submitted)"
+                                     class=" form-control-feedback">
+                                    <div *ngIf="FilterCodTdiaDetino.errors.required">
+                                        Es requerido
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </form>
+
+
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button [disabled]="generando" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+            <button type="button" class="btn btn-primary blue"
+                    (click)="GetReporte()"
+                    [buttonBusy]="generando" [busyText]="'Generando Reporte...'">
+                <i class="fa fa-save"></i> <span>Generar Reporte</span>
+            </button>
+        </div>
+
+    </div>
+
+
+    <ng-template #createOrEdit></ng-template>
+
+</div>
+
+

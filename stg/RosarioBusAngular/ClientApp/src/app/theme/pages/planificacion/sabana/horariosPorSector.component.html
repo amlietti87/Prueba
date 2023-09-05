@@ -1,0 +1,333 @@
+﻿<div>
+    <div class="m-subheader">
+        <div style="text-align: right;">
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form #SabanaFilterForm="ngForm" class="horizontal-form filters" autocomplete="off">
+                    <div class="m-form m-form--label-align-right">
+
+                        <!--View Mode-->
+                        <div class="row m--margin-bottom-10">
+
+                            <div class="col-md-4">
+                                <p-selectButton id="viewModeList"
+                                                name="viewModeList"
+                                                [options]="viewModeList"
+                                                [(ngModel)]="viewMode"
+                                                optionLabel="Descripcion"
+                                                (onOptionClick)="OnSelectButtonOptionClick($event)">
+                                </p-selectButton>
+                            </div>
+
+                            <div class="col-md-2 offset-6" style="text-align:left">
+                                <button (click)="onSearch()" class="btn btn-primary" type="submit"><i class="flaticon-search-1"></i></button>
+                            </div>
+
+
+                        </div>
+
+                        <!-- Fecha y Linea -->
+                        <div class="row m--margin-bottom-10">
+
+
+                            <!--Lineas-->
+                            <div class="form-group col-md-3" [ngClass]="{'has-danger': LineaFiltro.invalid && (LineaFiltro.dirty || LineaFiltro.touched || SabanaFilterForm.submitted)}">
+                                <label>Lineas</label>
+                                <span class="ui-fluid">
+                                    <linea-autocomplete #Linea
+                                                        #LineaFiltro="ngModel"
+                                                        [(ngModel)]="linea"
+                                                        name="lineas"
+                                                        id="lineas"
+                                                        [required]="true"
+                                                        placeHolder="Lineas"
+                                                        (ngModelChange)="OnLineaChange($event)">
+                                    </linea-autocomplete>
+                                    <div *ngIf="LineaFiltro.invalid && (LineaFiltro.dirty || LineaFiltro.touched || SabanaFilterForm.submitted)"
+                                         class=" form-control-feedback">
+                                        <div *ngIf="LineaFiltro.errors.required">
+                                            Es requerido
+                                        </div>
+                                    </div>
+                                </span>
+                            </div>
+
+                            <!---->
+                            <div class="form-group col-md-4" [ngClass]="{'has-danger': cod_hfechaFiltro.invalid && (cod_hfechaFiltro.dirty || cod_hfechaFiltro.touched || SabanaFilterForm.submitted)}">
+                                <label>Horario</label>
+                                <hfechasconfi-combo #cod_hfechaFiltroCombo
+                                                    #cod_hfechaFiltro="ngModel"
+                                                    [(ngModel)]="CodHfecha"
+                                                    name="cod_hfecha"
+                                                    [LineaId]="LineaId"
+                                                    [autoLoad]="hfechasconfiautoLoad"
+                                                    (ngModelChange)="OnfechasconfiChange($event)"
+                                                    required>
+
+                                </hfechasconfi-combo>
+                                <div *ngIf="cod_hfechaFiltro.invalid && (cod_hfechaFiltro.dirty || cod_hfechaFiltro.touched || SabanaFilterForm.submitted)"
+                                     class=" form-control-feedback">
+                                    <div *ngIf="cod_hfechaFiltro.errors.required">
+                                        Es requerido
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4" [ngClass]="{'has-danger': FilterCodTdiaDetino.invalid && (FilterCodTdiaDetino.dirty || FilterCodTdiaDetino.touched || SabanaFilterForm.submitted)}">
+                                <label>Tipo de Dia</label>
+                                <tipoDia-combo #codTipoDiaComboDetino
+                                               [(ngModel)]="CodTdia"
+                                               livesearch="{{false}}"
+                                               emptyText="{{'Seleccione..'}}"
+                                               CodHfecha="CodHfecha"
+                                               name="FilterCodTdiaDetino"
+                                               id="FilterCodTdiaDetino"
+                                               required
+                                               (ngModelChange)="OnTipoDiaChange($event)"
+                                               #FilterCodTdiaDetino="ngModel"
+                                               placeHolder="Tipo de dia">
+                                </tipoDia-combo>
+                                <div *ngIf="FilterCodTdiaDetino.invalid && (FilterCodTdiaDetino.dirty || FilterCodTdiaDetino.touched || SabanaFilterForm.submitted)"
+                                     class=" form-control-feedback">
+                                    <div *ngIf="FilterCodTdiaDetino.errors.required">
+                                        Es requerido
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <!-- Sabana -->
+                        <div class="row m--margin-bottom-10"
+                             *ngIf="viewMode.Id == 0">
+
+                            <!--Banderas-->
+                            <div class="form-group col-md-3" [ngClass]="{'has-danger': banderaFiltro.invalid && (banderaFiltro.dirty || banderaFiltro.touched || SabanaFilterForm.submitted)}">
+                                <label>Banderas</label>
+
+                                <bandera-combo #banderaComboMinutos
+                                               [(ngModel)]="codBan"
+                                               [IsSabanaMode]="true"
+                                               allowNullable="{{false}}"
+                                               [linea]="linea"
+                                               [sentido]="sentidoBandera"
+                                               [CodHfecha]="CodHfecha"
+                                               [CodTdia]="CodTdia"
+                                               (ngModelChange)="OnBanderaChange($event)"
+                                               emptyText="{{'Seleccione..'}}"
+                                               name="FilterCodBanMinutos"
+                                               id="FilterCodBanMinutos"
+                                               [required]="viewMode.Id == 0"
+                                               #banderaFiltro="ngModel"
+                                               placeHolder="Bandera">
+                                </bandera-combo>
+                                <div *ngIf="banderaFiltro.invalid && (banderaFiltro.dirty || banderaFiltro.touched || SabanaFilterForm.submitted)"
+                                     class=" form-control-feedback">
+                                    <div *ngIf="banderaFiltro.errors.required">
+                                        Es Requerido
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Banderas Relacionadas-->
+                            <div class="form-group col-md-6">
+                                <label>Banderas Relacionadas</label><br />
+                                <p-multiSelect name="BanderasRelacionadas"
+                                               id="BanderasRelacionadas"
+                                               [options]="banderasRelacionadasList"
+                                               [(ngModel)]="banderasRelacionadas"
+                                               optionLabel="Description"
+                                               defaultLabel="{{'Seleccione...'}}"
+                                               selectedItemsLabel="{0} banderas relacionadas seleccionadas"
+                                               maxSelectedLabels="4">
+                                </p-multiSelect>
+                            </div>
+                            <div class="form-group col-md-3" style="padding-top: 2rem;">
+                                <button class="btn btn-metal"
+                                        *ngIf="ReporteSinMinutos && horarios && horarios.Items && horarios.Items.length >= 1"
+                                        (click)="ExportarExcel()">
+                                    <i class="la la-file-excel-o"></i> Exportar a Excel
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Servicio -->
+                        <div class="row m--margin-bottom-10"
+                             *ngIf="viewMode.Id == 1">
+                            <!-- Servicio -->
+                            <div class="form-group col-md-3" [ngClass]="{'has-danger': servicioFiltro.invalid && (servicioFiltro.dirty || servicioFiltro.touched || SabanaFilterForm.submitted)}">
+
+
+                                <label>Servicio</label>
+                                <servicio-combo #servicioComboServicio
+                                                [linea]="linea"
+                                                [CodHfecha]="CodHfecha"
+                                                [CodTdia]="CodTdia"
+                                                [mode]="'sabana.servicio'"
+                                                name="servicio"
+                                                [required]="viewMode.Id == 1"
+                                                id="servicio"
+                                                [(ngModel)]="servicio"
+                                                #servicioFiltro="ngModel">
+                                </servicio-combo>
+
+                                <div *ngIf="servicioFiltro.invalid && (servicioFiltro.dirty || servicioFiltro.touched || SabanaFilterForm.submitted)"
+                                     class=" form-control-feedback">
+                                    <div *ngIf="servicioFiltro.errors.required">
+                                        Es requerido
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label>Banderas</label>
+
+                                <bandera-combo #banderaComboServicio
+                                               [(ngModel)]="codBan"
+                                               [IsSabanaMode]="true"
+                                               [linea]="linea"
+                                               [CodHfecha]="CodHfecha"
+                                               [CodTdia]="CodTdia"
+                                               [servicio]="servicio"
+                                               emptyText="{{'Seleccione..'}}"
+                                               name="banderaComboServicio"
+                                               id="banderaComboServicio"
+                                               #banderaServicioFiltro="ngModel"
+                                               placeHolder="Bandera">
+                                </bandera-combo>
+
+                            </div>
+
+                            <div class="form-group col-md-3" style="padding-top: 2rem;" *ngIf="PDFPuntaPunta && horarios && horarios.Items && horarios.Items.length >= 1">
+                                <button class="btn btn-metal"
+                                        (click)="GetReportePuntaPunta()">
+                                    <i class="la la-file-pdf-o"></i> Punta y Punta
+                                </button>
+                            </div>
+
+                            <div class="form-group col-md-3" style="padding-top: 2rem;" *ngIf="PDFRelevo && horarios && horarios.Items && horarios.Items.length >= 1">
+                                <button class="btn btn-metal"
+                                        (click)="GetReporteRelevo()">
+                                    <i class="la la-file-pdf-o"></i> Relevo
+                                </button>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Bandera -->
+                        <div class="row m--margin-bottom-10"
+                             *ngIf="viewMode.Id == 2">
+                            <div class="form-group col-md-3" [ngClass]="{'has-danger': banderaFiltro.invalid && (banderaFiltro.dirty || banderaFiltro.touched || SabanaFilterForm.submitted)}">
+                                <label>Bandera</label>
+                                <bandera-combo #banderaComboMinutos
+                                               [(ngModel)]="codBan"
+                                               emptyText="{{'Seleccione..'}}"
+                                               name="FilterCodBanMinutos"
+                                               [CodHfecha]="CodHfecha"
+                                               id="FilterCodBanMinutos"
+                                               [required]="viewMode.Id == 2"
+                                               #banderaFiltro="ngModel"
+                                               placeHolder="Bandera">
+                                </bandera-combo>
+                                <div *ngIf="banderaFiltro.invalid && (banderaFiltro.dirty || banderaFiltro.touched || SabanaFilterForm.submitted)"
+                                     class=" form-control-feedback">
+                                    <div *ngIf="banderaFiltro.errors.required">
+                                        Es Requerido
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container p-table-small"
+                         [busyIf]="primengDatatableHelper.isLoading">
+                        <p-table [value]="horarios.Items"
+                                 [scrollable]="true" frozenWidth="100px"
+                                 scrollHeight="300px">
+
+                            <ng-template pTemplate="frozenheader">
+                                <tr>
+                                    <th style="width:50px;height: 50px;">
+                                        Servicio
+                                    </th>
+                                    <th style="width:50px;height: 50px;">
+                                        sale
+                                    </th>
+                                </tr>
+
+                            </ng-template>
+
+
+                            <ng-template pTemplate="frozenbody" let-rowS>
+                                <tr>
+                                    <td style="width:50px">{{rowS.Servicio}}</td>
+                                    <td style="width:50px">{{rowS.Sale}}</td>
+                                </tr>
+                            </ng-template>
+
+
+                            <ng-template pTemplate="header">
+                                <tr>
+
+                                    <th style="width:60px;height: 50px;" *ngFor="let item of horarios.Colulmnas">
+                                        <span [innerHTML]="replaceLineBreak(item.Label)"></span>
+                                    </th>
+                                    <th style="width:50px;height: 50px;">
+                                        Llega
+                                    </th>
+                                    <th style="width:50px;height: 50px;">
+                                        Total Min.
+                                    </th>
+                                    <th style="width:50px;height: 50px;">
+                                        Tipo Hora
+                                    </th>
+                                    <th style="width:50px;height: 50px;">
+                                        Bandera
+                                    </th>
+                                    <th style="width:50px;height: 50px;">
+                                        Frecuencia
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowS>
+                                <tr>
+                                    <td style="width:60px" *ngFor="let item of rowS.ColumnasDinamicas">
+                                        {{item.value}}
+                                    </td>
+                                    <td style="width:50px">{{rowS.Llega}}</td>
+                                    <td style="width:50px">{{rowS.TotalDeMinutos}}</td>
+                                    <td style="width:50px">{{rowS.DesTipoHora}}</td>
+                                    <td style="width:50px">{{rowS.Bandera}}</td>
+                                    <td style="width:50px">{{rowS.Diferencia}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <ng-template #createOrEdit></ng-template>
+
+</div>
+
+

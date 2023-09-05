@@ -1,0 +1,12 @@
+﻿
+.primeng-datatable-container .ui-datatable table thead tr th {
+    white-space: nowrap;
+}
+
+.primeng-datatable-container .ui-datatable table thead tr td {
+    white-space: nowrap;
+}
+
+.form-group mat-form-field {
+    width: 100% !important;
+}

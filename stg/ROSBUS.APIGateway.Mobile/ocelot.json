@@ -1,0 +1,104 @@
+{
+  "ReRoutes": [
+
+    {
+      "DownstreamPathTemplate": "/ROSBUS.WEBSERVICE.ADMIN/{any}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 64039
+        }
+      ],
+      "UpstreamPathTemplate": "/ROSBUS.WEBSERVICE.ADMIN/{any}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ],
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 500000
+      }
+    },
+
+    {
+      "DownstreamPathTemplate": "/ROSBUS.WEBSERVICE.GEO/Geo/SaveEntityList",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 64039
+        }
+      ],
+      "UpstreamPathTemplate": "/ROSBUS.WEBSERVICE.GEO/{any}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
+    },
+    {
+      "DownstreamPathTemplate": "/ROSBUS.WebService.Siniestros/{any}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 64039
+        }
+      ],
+      "UpstreamPathTemplate": "/ROSBUS.WebService.Siniestros/{any}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
+
+    },
+    {
+      "DownstreamPathTemplate": "/ROSBUS.WebService.ART/{any}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 64039
+        }
+      ],
+      "UpstreamPathTemplate": "/ROSBUS.WebService.ART/{any}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
+
+    },
+    {
+      "DownstreamPathTemplate": "/ROSBUS.WebService.FirmaDigital/{any}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 64039
+        }
+      ],
+      "UpstreamPathTemplate": "/ROSBUS.WebService.FirmaDigital/{any}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
+
+    },
+    {
+      "DownstreamPathTemplate": "/ROSBUS.WebService.Reports/{any}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 64039
+        }
+      ],
+      "UpstreamPathTemplate": "/ROSBUS.WebService.Reports/{any}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
+
+    },
+    {
+      "DownstreamPathTemplate": "/ROSBUS.WebService.SignalR/{any}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 64039
+        }
+      ],
+      "UpstreamPathTemplate": "/ROSBUS.WebService.SignalR/{any}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
+
+    }
+
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5000"
+  }
+}

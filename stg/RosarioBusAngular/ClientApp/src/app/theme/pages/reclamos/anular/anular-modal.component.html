@@ -1,0 +1,58 @@
+﻿<form #detailForm="ngForm"
+      novalidate 
+      (ngSubmit)="detailForm.form.valid && save(detailForm)" 
+      autocomplete="off">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span>Anular reclamo</span>
+        </h4>
+        <div class="m-portlet__nav-item">
+            <a href="#"
+               (click)="close()"
+               class="m-portlet__nav-link m-portlet__nav-link--icon">
+                <i class="la la-close"></i>
+            </a>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="form-group col-lg-12" [ngClass]="{'has-danger': MotivoAnulado.invalid && (MotivoAnulado.dirty || MotivoAnulado.touched)}">
+                        <label>Motivo Anulación</label>
+                        <textarea name="MotivoAnulado"
+                                  rows="5"
+                                  class="form-control"
+                                  type="text"
+                                  required
+                                  #MotivoAnulado="ngModel"
+                                  [(ngModel)]="detail.MotivoAnulado"
+                                  maxlength="2000"></textarea>
+                        <div *ngIf="MotivoAnulado.invalid && (MotivoAnulado.dirty || MotivoAnulado.touched)"
+                             class=" form-control-feedback">
+                            <div *ngIf="MotivoAnulado.errors.required">
+                                El motivo anulación es requerido.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button [disabled]="saving" 
+                type="button" 
+                class="btn btn-default" 
+                (click)="close()">Cancelar</button>
+        <button type="submit" 
+                class="btn btn-primary blue"
+                [buttonBusy]="saving" 
+                [busyText]="'Guardando..'"
+                [disabled]="!detailForm.form.valid">
+            <i class="fa fa-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+</form>
+

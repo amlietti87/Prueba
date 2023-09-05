@@ -1,0 +1,104 @@
+﻿
+<form #detailForm="ngForm" novalidate (ngSubmit)="detailForm.form.valid && save(detailForm)" autocomplete="off" [busyText]="diagramacionBusyText" [busyIf]="loading">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span *ngIf="detail.Id">{{"Editar Diagrama de Inspectores"}}</span>
+            <span *ngIf="!detail.Id">{{"Crear Diagrama de Inspectores"}}</span>
+        </h4>
+        <button type="button" class="close" (click)="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <div class="form-group col-md-4" [ngClass]="{'has-danger': ComboMes.invalid }">
+            <label>Mes</label>
+            <month-combo #ComboMes="ngModel"
+                         name="ComboMes"
+                         [(ngModel)]="detail.Mes"
+                         (ngModelChange)="OnMesInspectoresComboChanged($event)"
+                         required
+                         emptyText="{{'Seleccione...'}}">
+            </month-combo>
+
+            <div *ngIf="ComboMes.invalid && (ComboMes.dirty || ComboMes.touched)"
+                 class=" form-control-feedback">
+                <div *ngIf="ComboMes.errors.required">
+                    El Mes es Requerido
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group col-lg-4" [ngClass]="{'has-danger':  (anioRequerido) || (anioIncorrecto)}">
+            <label>Año</label>
+            <input #Anio="ngModel" class="form-control" type="number" (ngModelChange)="OnAnioInspectoresComboChanged($event)" name="Anio" [(ngModel)]="detail.Anio" maxlength="4">
+
+            <div *ngIf="(anioRequerido || anioIncorrecto)"
+                 class=" form-control-feedback">
+                <div *ngIf="(anioRequerido)">
+                    El Año es Requerido
+                </div>
+                <div *ngIf="(anioIncorrecto && !anioRequerido)">
+                    El Año debe tener 4 numeros
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="form-group col-md-4" [ngClass]="{'has-danger': GruposInspectoresId.invalid && (GruposInspectoresId.dirty || GruposInspectoresId.touched)}">
+            <label>Grupo de Inspectores</label>
+            <gruposinspectores-combo #GruposInspectoresId="ngModel"
+                                     name="GruposInspectoresId"
+                                     [Anulado]="2"
+                                     [(ngModel)]="detail.GrupoInspectoresId"
+                                     (ngModelChange)="OnGrupoInspectoresComboChanged($event)"
+                                     required
+                                     emptyText="{{'Seleccione...'}}">
+            </gruposinspectores-combo>
+
+
+            <div *ngIf="GruposInspectoresId.invalid && (GruposInspectoresId.dirty || GruposInspectoresId.touched)"
+                 class=" form-control-feedback">
+                <div *ngIf="GruposInspectoresId.errors.required">
+                    El Grupo de Inspectores es Requerido
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="form-group col-md-4" [ngClass]="{'has-danger': EstadoDiagramaId.invalid && (EstadoDiagramaId.dirty || EstadoDiagramaId.touched)}">
+            <label>Estado del Diagrama</label>
+            <estadosdiagramas-combo #EstadoDiagramaId="ngModel"
+                                    name="EstadoDiagramaId"
+                                    [disabled]="true"
+                                    required
+                                    [(ngModel)]="detail.EstadoDiagramaId"
+                                    emptyText="{{'Seleccione...'}}">
+            </estadosdiagramas-combo>
+
+
+            <div *ngIf="EstadoDiagramaId.invalid && (EstadoDiagramaId.dirty || EstadoDiagramaId.touched)"
+                 class=" form-control-feedback">
+                <div *ngIf="EstadoDiagramaId.errors.required">
+                    El Estado es Requerido
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+    <div class="modal-footer">
+        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary blue"
+                [buttonBusy]="saving" [busyText]="'Guardando..'"
+                [disabled]="!detailForm.form.valid"
+                [hidden]="!allowmodificargropoInsp && detail.Id">
+            <i class="fa fa-save"></i> <span>Guardar</span>
+        </button>
+    </div>
+</form>

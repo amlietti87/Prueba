@@ -1,0 +1,25 @@
+<!-- Paradas -->
+<div *ngIf="parada; else paradaSearcheable">
+  <ion-item class="parada-searcheable">
+    <ion-label class="label-form" floating>{{label}}</ion-label>
+    <ion-select [(ngModel)]="value" interface="popover">
+      <ion-option value="{{item.Id}}" *ngFor="let item of paradas">{{item.Codigo}}</ion-option>
+    </ion-select>
+    <button class="btn-search" ion-button icon-only item-end clear="true" large (click)="verOtrasParadas()">
+      <ion-icon name="ios-search-outline" color="primary"></ion-icon>
+    </button>
+  </ion-item>
+</div>
+<!-- Paradas Searcheables -->
+<ng-template #paradaSearcheable>
+  <ion-item class="parada-searcheable">
+      <paradas-searcheables [label]="label" #paradaSearchables  (paradaSeleccionada)="onParadaChange($event)"></paradas-searcheables>
+      <button class="btn-search" ion-button icon-only item-end clear="true" large (click)="verOtrasParadas()">
+      <ion-icon name="ios-search-outline" color="primary"></ion-icon>
+    </button>
+  </ion-item>
+</ng-template>
+
+<ion-item *ngIf="showRequired" no-lines>
+    <p color="danger" ion-text >{{label}} es requerida</p>
+  </ion-item> 

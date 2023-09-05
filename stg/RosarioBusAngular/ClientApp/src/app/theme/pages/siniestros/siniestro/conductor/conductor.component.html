@@ -1,0 +1,123 @@
+﻿<form novalidate 
+      class="smallsize" 
+      [formGroup]="conductorForm" 
+      autocomplete="off">
+
+    <div class="row">
+        <div [hidden]="!empleadoExiste"
+             class="form-group col-md-2 smallpadding">
+            <label class="campoRequerido"><b>Conductor / Practicante</b></label><br />
+            <EmpPract-combo #EmpPractConId
+                            formControlName="EmpPractConId"
+                            name="EmpPractConId"
+                            [(ngModel)]="detail.EmpPractConId"
+                            emptyText="{{'Seleccione..'}}">
+            </EmpPract-combo>
+            <div *ngIf="conductorForm.controls.EmpPractConId.invalid && (conductorForm.controls.EmpPractConId.dirty || conductorForm.controls.EmpPractConId.touched)"
+                 class="form-control-feedback">
+
+                <div *ngIf="conductorForm.controls.EmpPractConId.errors.required">
+                    Seleccion Conductor / Practicante requerida.
+                </div>
+            </div>
+        </div>
+        <div [hidden]="!(empleadoExiste && EsConductor)"
+             class="form-group col-md-2 smallpadding"
+             [ngClass]="{'has-danger': conductorForm.controls.ConductorId.invalid && (conductorForm.controls.ConductorId.dirty || conductorForm.controls.ConductorId.touched)}">
+            <label class="campoRequerido"><b>Conductor</b></label><br />
+
+                                           <span class="ui-fluid">
+
+                                               <empleado-autocomplete #ConductorId
+                                                                      [(ngModel)]="selectEmpleados"
+                                                                      formControlName="ConductorId"
+                                                                      style="width: 100% !important;"
+                                                                      name="ConductorId"
+                                                                      id="ConductorId"
+                                                                      placeHolder="Conductores"
+                                                                      [UnidadNegocio]="detail.SucursalId">
+                                               </empleado-autocomplete>
+                                           </span>
+            <div *ngIf="conductorForm.controls.ConductorId.invalid && (conductorForm.controls.ConductorId.dirty || conductorForm.controls.ConductorId.touched)"
+                 class="form-control-feedback">
+
+                <div *ngIf="conductorForm.controls.ConductorId.errors.required">
+                    Conductor requerido
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group col-md-2"
+             [hidden]="EsConductor"
+             [ngClass]="{'has-danger': conductorForm.controls.PracticanteId.invalid && (conductorForm.controls.PracticanteId.dirty || conductorForm.controls.PracticanteId.touched)}">
+            <label class="campoRequerido">Practicante</label>
+            <div class="input-group">
+
+                <div>
+                    <practicante-autocomplete [showAddButton]="allowAddPracticante"
+                                              formControlName="PracticanteId"
+                                              [(ngModel)]="selectPracticantes"
+                                              name="PracticanteId"
+                                              id="PracticanteId"
+                                              #PracticanteAutocomplete
+                                              placeHolder="Practicantes">
+                    </practicante-autocomplete>
+                </div>
+            </div>
+
+            <div *ngIf="conductorForm.controls.PracticanteId.invalid && (conductorForm.controls.PracticanteId.dirty || conductorForm.controls.PracticanteId.touched)"
+                 class="form-control-feedback">
+
+                <div *ngIf="conductorForm.controls.PracticanteId.errors.required">
+                    Practicante requerido
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div class="col-md-4 smallpadding  psmallpadding smallSizeFont"
+             *ngIf="CurrentConductor && EsConductor">
+            <div style="padding-left: 6px;">
+                <p><b>Datos</b></p>
+                <p>Apellido y nombre: {{ CurrentConductor.Apellido }} {{ CurrentConductor.Nombre }}</p>
+                <p>DNI: {{ CurrentConductor.Dni }}  <span *ngIf="CurrentConductorLegajo">  Fecha Ingreso: {{ CurrentConductorLegajo.FecIngreso | date: 'dd/MM/yyyy' }} </span> </p>
+                <p> <span *ngIf="CurrentConductorLegajo">Legajo: {{ CurrentConductorLegajo.LegajoSap }} </span>   <span>Fecha Antiguedad: {{ CurrentConductor.FecAntiguedad | date: 'dd/MM/yyyy' }} </span> </p>
+                <p *ngIf="CurrentConductorEmpresa">Empresa: {{ CurrentConductorEmpresa.DesEmpr }} </p>
+            </div>
+        </div>
+        <div class="col-md-4 smallpadding  psmallpadding smallSizeFont" *ngIf="!CurrentConductor && !empleadoExiste">
+            <div style="padding-left: 6px;">
+                <p><b>Datos Conductor</b></p>
+                <p> <span>Legajo: {{ detail.ConductorLegajo }} </span> </p>
+                <p *ngIf="detail.ConductorEmpresa">Empresa: {{ detail.ConductorEmpresa.DesEmpr }} </p>
+            </div>
+        </div>
+
+        <div class="col-md-4 smallpadding  psmallpadding smallSizeFont"
+             *ngIf="CurrentPracticante  && !EsConductor">
+            <div style="padding-left: 6px;">
+                <p><b>Datos</b></p>
+                <p>Apellido y nombre: {{ CurrentPracticante.ApellidoNombre }}</p>
+                <p *ngIf="CurrentPracticante.TipoDoc && CurrentPracticante.NroDoc">Documento: {{ CurrentPracticante.TipoDoc.Descripcion }}: {{ CurrentPracticante.NroDoc }} </p>
+
+            </div>
+        </div>
+
+        <div class="col-md-2 smallpadding psmallpadding smallSizeFont">
+            <div *ngIf="CurrentConductor || CurrentPracticante">
+                <p><b>Historial de Siniestros</b></p>
+                <p *ngIf="CurrentHistorial && EsConductor">Ultimo año:  {{ CurrentHistorial.UltimoAnio }}</p>
+                <p *ngIf="CurrentHistorial && EsConductor">Total:  {{ CurrentHistorial.Total }}</p>
+                <p *ngIf="CurrentHistorial">Como practicante:  {{ CurrentHistorial.Practicante }}</p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</form>
